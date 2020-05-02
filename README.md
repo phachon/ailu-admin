@@ -4,7 +4,7 @@
 <div align="center">
 ailu-admin 是一个基于 React + React-Router + Antd  开发的中后台管理系统
 
-<br>
+</br>
 
 [![Dependencies](https://img.shields.io/david/phachon/ailu-admin.svg)](https://david-dm.org/phachon/ailu-admin) [![DevDependencies](https://img.shields.io/david/dev/phachon/ailu-admin.svg)](https://david-dm.org/phachon/ailu-admin?type=dev)
 [![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/phachon/ailu-admin/) 
