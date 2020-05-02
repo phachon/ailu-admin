@@ -23,6 +23,7 @@ class AdminSider extends React.Component {
 
   onCollapse (collapsed) {
     this.setState({ collapsed: collapsed });
+    this.props.siderChange(collapsed);
   }
 
   render () {
