@@ -1,0 +1,20 @@
+/**
+ * common css style
+ * create by phachon
+ */
+
+ .panel {
+  padding: 15px 15px 0 15px;
+}
+
+.panel-body {
+  padding: 40px 15px 15px 15px;
+}
+
+.hide {
+  display:none;
+}
+
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td {
+  padding: 10px 10px !important;
+}

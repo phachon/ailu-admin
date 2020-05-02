@@ -1,5 +1,6 @@
 /**
- * admin layout css 
+ * admin layout css style
+ * create by phachon
  */
 
 .admin-layout {
@@ -12,6 +13,10 @@
   position: fixed;
   z-index: 1;
   width: 100%;
+}
+
+.admin-header .ant-menu-item .anticon {
+  margin-right: 5px;
 }
 
 .admin-header-logo {
@@ -71,11 +76,6 @@
   box-shadow: 0 1px 1px rgba(0,0,0,.05);
 }
 
-.admin-footer {
-  text-align: center;
-  padding: 14px 50px;
-}
-
 .admin-breadcrumb {
   margin: 72px 8px 8px 8px;
   padding-left: 8px;
@@ -92,4 +92,9 @@
 .admin-breadcrumb-nav a {
   line-height: 35px;
   padding: 0 8px;
+}
+
+.admin-footer {
+  text-align: center;
+  padding: 14px 50px;
 }

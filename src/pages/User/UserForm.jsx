@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Form, Input, InputNumber, Button, Row, Col, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox } from 'antd';
 
 
 const layout = {

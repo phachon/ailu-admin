@@ -1,6 +1,6 @@
 import React from 'react';
-import { Layout, Menu, Affix } from 'antd';
-import { UserOutlined, AccountBookOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { Layout, Menu } from 'antd';
+import { UserOutlined, AccountBookOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 
