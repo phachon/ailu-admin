@@ -1,0 +1,88 @@
+/**
+ * admin layout css 
+ */
+
+.admin-layout {
+  min-height: 100vh;
+}
+
+.admin-header {
+  box-shadow: 0 4px 5px rgba(0,21,41,.08);
+  padding: 0;
+}
+
+.admin-header-logo {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .3s;
+  padding: 0 24px;
+  width: 220px;
+  height: 64px;
+  float: left;
+  margin-bottom: 10px;
+}
+
+.admin-header-logo > a {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+
+.admin-header-logo h1 {
+  margin: 0 0 0 12px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 20px;
+  vertical-align: middle;
+  animation: fade-in;
+  animation-duration: .3s;
+}
+
+.admin-header-logo img {
+  display: inline-block;
+  height: 32px;
+  vertical-align: middle;
+}
+
+.admin-sider {
+  box-shadow: 2px 0 5px rgba(0,21,41,.35);
+}
+
+.admin-content {
+  margin: 0px 8px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.admin-breadcrumb {
+  margin: 10px 0;
+}
+
+.admin-footer {
+  text-align: center;
+  padding: 14px 50px;
+}
+
+.admin-breadcrumb {
+  margin: 8px;
+  padding: 0 8px;
+  background-color: #fff;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+.admin-breadcrumb-nav {
+  height: 35px;
+  line-height: 35px;
+  
+}
+
+.admin-breadcrumb-nav a {
+  line-height: 35px;
+  padding: 0 8px;
+}
