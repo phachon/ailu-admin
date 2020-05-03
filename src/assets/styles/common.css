@@ -4,11 +4,14 @@
  */
 
 .panel {
-  padding: 15px 15px 0 15px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 13px 0 rgba(228, 228, 228, 0.6);
+  padding-bottom: 15px;
 }
 
 .panel-body {
-  padding: 40px 15px 15px 15px;
+  padding: 15px 15px 0px 15px;
 }
 
 .hide {
@@ -17,4 +20,19 @@
 
 .ant-table-thead > tr > th, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td {
   padding: 10px 10px !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: #fff;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #ccc;
 }

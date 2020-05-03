@@ -100,21 +100,21 @@ class UserList extends React.Component {
 
   render () {
     return (
-      <div>
-        <div className="panel">
+      <div className="panel">
+        <div className="panel-body">
           <Row>
             <Col offset={18} span={6}>
               <Search placeholder="请输入用户名" onSearch={value => console.log(value)} enterButton />
             </Col>
           </Row>
         </div>
-        <div className="panel">
+        <div className="panel-body">
           <Table
             columns={columns}
             dataSource={data}
             bordered
-          // title={() => 'Header'}
-          // footer={() => 'Footer'}
+            // title={() => 'Header'}
+            footer={() => 'Footer'}
           />
         </div >
       </div>

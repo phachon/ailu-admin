@@ -30,191 +30,194 @@ class UserForm extends React.Component {
 
   render () {
     return (
-      <div className="panel-body">
-        <Form
-          {...layout}
-          name="basic"
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            label="用户名"
-            name="username"
-            placeholder="请输入用户名"
-            rules={[
-              {
-                required: true,
-                message: '请输入用户名!',
-              },
-            ]}
+      <div className="panel">
+        <br></br>
+        <div className="panel-body">
+          <Form
+            {...layout}
+            name="basic"
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
           >
-            <Input placeholder="请输入用户名" />
-          </Form.Item>
+            <Form.Item
+              label="用户名"
+              name="username"
+              placeholder="请输入用户名"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入用户名!',
+                },
+              ]}
+            >
+              <Input placeholder="请输入用户名" />
+            </Form.Item>
 
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: '请输入密码!',
-              },
-            ]}
-          >
-            <Input.Password placeholder="请输入密码" />
-          </Form.Item>
+            <Form.Item
+              label="密码"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入密码!',
+                },
+              ]}
+            >
+              <Input.Password placeholder="请输入密码" />
+            </Form.Item>
 
-          <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-            <Checkbox>记住密码</Checkbox>
-          </Form.Item>
+            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+              <Checkbox>记住密码</Checkbox>
+            </Form.Item>
 
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              保存
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit">
+                保存
         </Button>
-          </Form.Item>
-        </Form>
-        <Form
-          {...layout}
-          name="basic"
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            label="用户名"
-            name="username"
-            placeholder="请输入用户名"
-            rules={[
-              {
-                required: true,
-                message: '请输入用户名!',
-              },
-            ]}
+            </Form.Item>
+          </Form>
+          <Form
+            {...layout}
+            name="basic"
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
           >
-            <Input placeholder="请输入用户名" />
-          </Form.Item>
+            <Form.Item
+              label="用户名"
+              name="username"
+              placeholder="请输入用户名"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入用户名!',
+                },
+              ]}
+            >
+              <Input placeholder="请输入用户名" />
+            </Form.Item>
 
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: '请输入密码!',
-              },
-            ]}
-          >
-            <Input.Password placeholder="请输入密码" />
-          </Form.Item>
+            <Form.Item
+              label="密码"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入密码!',
+                },
+              ]}
+            >
+              <Input.Password placeholder="请输入密码" />
+            </Form.Item>
 
-          <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-            <Checkbox>记住密码</Checkbox>
-          </Form.Item>
+            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+              <Checkbox>记住密码</Checkbox>
+            </Form.Item>
 
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              保存
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit">
+                保存
         </Button>
-          </Form.Item>
-        </Form>
-        <Form
-          {...layout}
-          name="basic"
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            label="用户名"
-            name="username"
-            placeholder="请输入用户名"
-            rules={[
-              {
-                required: true,
-                message: '请输入用户名!',
-              },
-            ]}
+            </Form.Item>
+          </Form>
+          <Form
+            {...layout}
+            name="basic"
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
           >
-            <Input placeholder="请输入用户名" />
-          </Form.Item>
+            <Form.Item
+              label="用户名"
+              name="username"
+              placeholder="请输入用户名"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入用户名!',
+                },
+              ]}
+            >
+              <Input placeholder="请输入用户名" />
+            </Form.Item>
 
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: '请输入密码!',
-              },
-            ]}
-          >
-            <Input.Password placeholder="请输入密码" />
-          </Form.Item>
+            <Form.Item
+              label="密码"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入密码!',
+                },
+              ]}
+            >
+              <Input.Password placeholder="请输入密码" />
+            </Form.Item>
 
-          <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-            <Checkbox>记住密码</Checkbox>
-          </Form.Item>
+            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+              <Checkbox>记住密码</Checkbox>
+            </Form.Item>
 
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              保存
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit">
+                保存
         </Button>
-          </Form.Item>
-        </Form>
-        <Form
-          {...layout}
-          name="basic"
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            label="用户名"
-            name="username"
-            placeholder="请输入用户名"
-            rules={[
-              {
-                required: true,
-                message: '请输入用户名!',
-              },
-            ]}
+            </Form.Item>
+          </Form>
+          <Form
+            {...layout}
+            name="basic"
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
           >
-            <Input placeholder="请输入用户名" />
-          </Form.Item>
+            <Form.Item
+              label="用户名"
+              name="username"
+              placeholder="请输入用户名"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入用户名!',
+                },
+              ]}
+            >
+              <Input placeholder="请输入用户名" />
+            </Form.Item>
 
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: '请输入密码!',
-              },
-            ]}
-          >
-            <Input.Password placeholder="请输入密码" />
-          </Form.Item>
+            <Form.Item
+              label="密码"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入密码!',
+                },
+              ]}
+            >
+              <Input.Password placeholder="请输入密码" />
+            </Form.Item>
 
-          <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-            <Checkbox>记住密码</Checkbox>
-          </Form.Item>
+            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+              <Checkbox>记住密码</Checkbox>
+            </Form.Item>
 
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              保存
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit">
+                保存
         </Button>
-          </Form.Item>
-        </Form>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
     )
   }

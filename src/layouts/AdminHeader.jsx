@@ -1,6 +1,7 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
-import { UserOutlined, AccountBookOutlined } from '@ant-design/icons';
+import { Layout, Menu, Dropdown, Avatar, Badge } from 'antd';
+import { UserOutlined, AccountBookOutlined, GithubOutlined } from '@ant-design/icons';
+import Icon from '@ant-design/icons';
 
 const { Header } = Layout;
 
@@ -12,7 +13,7 @@ class AdminHeader extends React.Component {
           <Menu.Item key="1"><UserOutlined />我的</Menu.Item>
           <Menu.Item key="2"><AccountBookOutlined />系统</Menu.Item>
         </Menu>
-      </Header>
+      </Header >
     );
   }
 }
