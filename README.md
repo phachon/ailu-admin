@@ -1,10 +1,12 @@
 
-<h1 align="center">
+<h2 align="center">
+  
 ![](./docs/imgs/logo.png)
-</h1>
+
+</h2>
 
 <div align="center">
-
+  
 ailu-admin 是一个基于 React + React-Router + Antd  开发的中后台管理系统
 </br>
 
