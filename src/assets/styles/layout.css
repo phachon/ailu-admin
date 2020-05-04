@@ -11,7 +11,7 @@
   box-shadow: 0 4px 5px rgba(0,21,41,.08);
   padding: 0;
   position: fixed;
-  z-index: 1;
+  z-index:1;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -68,6 +68,7 @@
 
 .admin-right {
   transition: all 0.3s ease 0s;
+  transform: scale3d(1, 1, 1)
 }
 
 .admin-content {
@@ -103,10 +104,9 @@
   padding: 14px 50px;
 }
 
-.admin-header-right {
-  margin-right: 250px;
+.admin-header .admin-header-right {
   display: flex;
-  align-items: center;
+  padding-right: 20px;
 }
 
 .admin-header-right a:hover {
