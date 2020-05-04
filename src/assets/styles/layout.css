@@ -13,6 +13,8 @@
   position: fixed;
   z-index: 1;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .admin-header .ant-menu-item .anticon {
@@ -30,6 +32,7 @@
   height: 64px;
   float: left;
   margin-bottom: 10px;
+  /* border-bottom: #000b17 solid 1px; */
 }
 
 .admin-header-logo > a {
@@ -98,4 +101,22 @@
 .admin-footer {
   text-align: center;
   padding: 14px 50px;
+}
+
+.admin-header-right {
+  margin-right: 250px;
+  display: flex;
+  align-items: center;
+}
+
+.admin-header-right a:hover {
+  color: #fff;
+}
+
+.admin-header-right  a {
+  color: rgba(255, 255, 255, 0.65);;
+}
+
+.admin-header-left .ant-menu.ant-menu-dark .ant-menu-item-selected {
+  background-color: #000b17;
 }
