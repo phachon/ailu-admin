@@ -31,7 +31,7 @@ class AdminSider extends React.Component {
       <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse} width="220px" className="admin-sider">
         <div className="admin-header-logo" >
           <a href="/">
-            <img src="https://preview.pro.ant.design/static/logo.f0355d39.svg" alt="logo"></img>
+            <img src="https://github.com/phachon/ailu-admin/blob/master/docs/imgs/logo_2.png?raw=true" alt="logo"></img>
             <h1 className={this.state.collapsed ? "hide" : ""}>
               AILU管理系统
             </h1>

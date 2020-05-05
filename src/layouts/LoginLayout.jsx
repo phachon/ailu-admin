@@ -14,7 +14,7 @@ class LoginLayout extends React.Component {
       <div className="login">
         <div className="login-header">
           <div className="login-title">
-            <img src="https://preview.pro.ant.design/static/logo.f0355d39.svg" alt="logo"></img>
+            <img src="https://github.com/phachon/ailu-admin/blob/master/docs/imgs/logo_2.png?raw=true" alt="logo"></img>
             <span>AiLu-Admin 系统登录</span>
           </div>
           <p>一个基于 React + Antd 开发的中后台管理系统</p>
