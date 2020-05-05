@@ -1,7 +1,6 @@
 import React from 'react';
-import { Layout, Menu, Dropdown, Avatar, Badge } from 'antd';
+import { Layout, Menu, Dropdown } from 'antd';
 import { UserOutlined, AccountBookOutlined, GithubOutlined, DownOutlined, EditOutlined, SettingOutlined, LoginOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import Icon from '@ant-design/icons';
 
 const { Header } = Layout;
 

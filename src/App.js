@@ -1,13 +1,15 @@
 import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import DefaultLayout from './layouts/DefaultLayout';
+import AdminLayout from './layouts/AdminLayout';
+import LoginLayout from './layouts/LoginLayout';
 import './assets/styles/index.css';
 
 function App () {
   return (
     <Router>
       <Switch>
-        <Route path="/" component={DefaultLayout} />
+        <Route path="/login" component={LoginLayout} />
+        <Route path="/" component={AdminLayout} />
       </Switch>
     </Router>
   );

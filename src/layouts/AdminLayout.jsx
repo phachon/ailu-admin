@@ -2,16 +2,16 @@ import React from 'react';
 import { Layout } from 'antd';
 import { Route, Switch } from 'react-router-dom';
 
-import AdminHeader from './AdminHeader';
-import AdminFooter from './AdminFooter';
-import AdminSider from './AdminSider';
-import AdminBreadcrumb from './AdminBreadcrumb';
+import AdminHeader from '../components/AdminHeader/AdminHeader';
+import AdminFooter from '../components/AdminFooter/AdminFooter';
+import AdminSider from '../components/AdminSider/AdminSider';
+import AdminBreadcrumb from '../components/AdminBreadcrumb/AdminBreadcrumb';
 import UserForm from '../pages/User/UserForm'
 import UserList from '../pages/User/UserList'
 
 const { Content } = Layout;
 
-class DefaultLayout extends React.Component {
+class AdminLayout extends React.Component {
 
   constructor(props) {
     super(props);
@@ -52,4 +52,4 @@ class DefaultLayout extends React.Component {
   }
 }
 
-export default DefaultLayout;
+export default AdminLayout;
