@@ -4,8 +4,10 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 class SystemLogin extends React.Component {
 
-  onFinish () {
-    console.log("ok");
+  onFinish (e) {
+    console.log("login start");
+    console.log(e.username);
+    console.log("login end");
   }
 
   render () {

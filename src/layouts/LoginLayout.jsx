@@ -4,6 +4,7 @@ import { GithubOutlined, LikeOutlined } from '@ant-design/icons';
 
 import SystemLogin from '../components/LoginTab/SystemLogin';
 import DomainLogin from '../components/LoginTab/DomainLogin';
+import logoImg from '../assets/images/logo_2.png'
 
 const { TabPane } = Tabs;
 
@@ -14,7 +15,7 @@ class LoginLayout extends React.Component {
       <div className="login">
         <div className="login-header">
           <div className="login-title">
-            <img src="https://github.com/phachon/ailu-admin/blob/master/docs/imgs/logo_2.png?raw=true" alt="logo"></img>
+            <img src={logoImg} alt="logo"></img>
             <span>AiLu-Admin 系统登录</span>
           </div>
           <p>一个基于 React + Antd 开发的中后台管理系统</p>

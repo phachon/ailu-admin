@@ -6,6 +6,7 @@ import {
   TeamOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import logoImg from '../../assets/images/logo_2.png'
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -31,7 +32,7 @@ class AdminSider extends React.Component {
       <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse} width="220px" className="admin-sider">
         <div className="admin-header-logo" >
           <a href="/">
-            <img src="https://github.com/phachon/ailu-admin/blob/master/docs/imgs/logo_2.png?raw=true" alt="logo"></img>
+            <img src={logoImg} alt="logo"></img>
             <h1 className={this.state.collapsed ? "hide" : ""}>
               AILU管理系统
             </h1>
