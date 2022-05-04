@@ -7,7 +7,7 @@ class App extends React.Component<any, any> {
     render() {
         return (
             <div className="App">
-                <Button type="primary">Button</Button>
+                <Button type="primary">首页</Button>
             </div>
         );
     }
