@@ -1,14 +1,16 @@
+import Frame from "./index";
 import React from "react";
-import {Routes, Route, BrowserRouter} from "react-router-dom";
-import App from "./app";
-import Login from "./login";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Login from "../login/login";
+import './index.css'
 
 class Router extends React.Component<any, any> {
+
     render() {
         return (
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<App />} />
+                    <Route path="/" element={<Frame />} />
                     <Route path="/login" element={<Login />} />
                 </Routes>
             </BrowserRouter>

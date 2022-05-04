@@ -1,0 +1,62 @@
+/**
+ * login css style
+ * created by phachon
+ */
+
+.login {
+    background-color: #eff2f5;
+    height: 100vh;
+    padding-top: 150px;
+}
+
+.login-header {
+    text-align: center;
+}
+
+.login-header p {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: rgba(0,0,0,.45);
+}
+
+.login-title {
+    text-align: center;
+    position: relative;
+}
+
+.login-title span {
+    font-weight: 600;
+    font-size: 26px;
+    margin-left: 10px;
+    vertical-align: middle
+}
+
+.login-title img {
+    height: 36px;
+    vertical-align: middle;
+}
+
+.login-content {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.login-footer {
+    margin-top: 13px;
+    text-align: center;
+}
+
+.login-footer .login-footer-recommed {
+    color: rgba(0,0,0,.45);
+    font-size: 13px;
+}
+
+.login-footer .login-footer-copyright {
+    color: rgba(0, 0, 0, 0.50);
+    font-size: 14px;
+}
+
+.login-footer a {
+    color: rgba(0, 0, 0, 0.50);
+}
