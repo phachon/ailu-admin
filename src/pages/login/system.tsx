@@ -1,8 +1,17 @@
 import {Component} from "react";
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import AuthService from "../../services/auth";
 
 class SystemLogin extends Component<any, any> {
+
+    login(values: { account_name: string; password: string}) {
+        let authService = new AuthService()
+        authService.systemLogin({
+            account_name: values.account_name,
+            password: values.password,
+        })
+    }
 
     render() {
         return (
@@ -10,10 +19,14 @@ class SystemLogin extends Component<any, any> {
                 name="normal_login"
                 className="login-form"
                 initialValues={{ remember: true }}
-                // onFinish={}
+                onFinish={
+                    values => {
+                        this.login(values)
+                    }
+                }
             >
                 <Form.Item
-                    name="username"
+                    name="account_name"
                     rules={[{ required: true, message: '请输入系统登录账号!' }]}
                 >
                     <Input size="large" prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入系统登录账号" />
