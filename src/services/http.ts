@@ -46,6 +46,7 @@ httpService.interceptors.response.use(
             case 0://正常数据
                 return response
             case 10104://登录超时
+                // todo
                 // store.dispatch(logout())
                 window.location.href = `${window.location.origin}`
                 return Promise.reject(res.message)

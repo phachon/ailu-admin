@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import React from "react";
 
-class Frame extends React.Component<any, any> {
+class Home extends React.Component<any, any> {
     render() {
         return (
             <div>
@@ -12,4 +12,4 @@ class Frame extends React.Component<any, any> {
     }
 }
 
-export default Frame
+export default Home
