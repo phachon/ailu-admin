@@ -11,7 +11,7 @@ class Router extends React.Component<any, any> {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Frame />} />
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/login" element={<Login />}/>
                 </Routes>
             </BrowserRouter>
         );

@@ -1,15 +1,25 @@
 import {Component} from "react";
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import AuthService from "../../services/auth";
+import LoginService from "../../services/login";
+import {LoginResponse, loginTokenStore} from "../../store/login";
 
 class SystemLogin extends Component<any, any> {
 
     login(values: { account_name: string; password: string}) {
-        let authService = new AuthService()
-        authService.systemLogin({
+        let loginService = new LoginService()
+        console.log(values)
+        loginService.systemLogin({
             account_name: values.account_name,
             password: values.password,
+            verify_code: "mock",
+        // 登录成功
+        }).then((res: LoginResponse) => {
+            loginTokenStore.storageToken(res.login_token) // 设置 token
+            console.log(res.login_token)
+        // 登录异常
+        }).catch(e => {
+            console.log("system login catch: ", e)
         })
     }
 

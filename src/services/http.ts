@@ -1,19 +1,11 @@
 import { message } from 'antd'
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios'
 import qs from 'qs'
-// import store from '../store/index'
-// import { logout } from '../store/module/user'
 import {loginTokenStore} from "../store/login";
 import {getUUId} from "../utils/utils";
+import {BaseResponse} from "../store/response";
 
-export interface ResponseData<T> {
-    code: number;
-    tips: string;
-    data: T;
-    message: string;
-}
-
-const service = axios.create({
+const httpService = axios.create({
     timeout: 2 * 60 * 1000, // 默认请求超时时间
     headers: {
         Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded'
@@ -21,7 +13,7 @@ const service = axios.create({
 })
 
 // request 请求拦截器
-service.interceptors.request.use(
+httpService.interceptors.request.use(
     (config: AxiosRequestConfig) => {
         if (config.params) {
             for (const item in config.params) {
@@ -45,9 +37,10 @@ service.interceptors.request.use(
         return Promise.reject(error)
     }
 )
+
 // response 返回结果拦截器
-service.interceptors.response.use(
-    (response: AxiosResponse<ResponseData<any>>) => {
+httpService.interceptors.response.use(
+    (response: AxiosResponse<BaseResponse<any>>) => {
         const res = response.data
         switch (res.code) {
             case 0://正常数据
@@ -74,8 +67,8 @@ const httpRequest = {
             responseType: 'json'
         }
         return new Promise((resolve, reject) => {
-            service(options)
-                .then((res: AxiosResponse<ResponseData<T>>) => {
+            httpService(options)
+                .then((res: AxiosResponse<BaseResponse<T>>) => {
                     return resolve(res.data.data)
                 })
                 .catch((err) => {
@@ -83,18 +76,18 @@ const httpRequest = {
                 })
         })
     },
-    post<T>(url: string, params = {}): Promise<T> {
+    post<T>(url: string, params = {}, data = {}): Promise<T> {
         const options: AxiosRequestConfig = {
             url: url,
             method: 'POST',
             params: params,
-            data: qs.stringify(params),
+            data: qs.stringify(data),
             responseType: 'json'
         }
 
         return new Promise((resolve, reject) => {
-            service(options)
-                .then((res: AxiosResponse<ResponseData<T>>) => {
+            httpService(options)
+                .then((res: AxiosResponse<BaseResponse<T>>) => {
                     return resolve(res.data.data)
                 })
                 .catch((err) => {
@@ -110,8 +103,8 @@ const httpRequest = {
             responseType: 'json'
         }
         return new Promise((resolve, reject) => {
-            service(options)
-                .then((res: AxiosResponse<ResponseData<T>>) => {
+            httpService(options)
+                .then((res: AxiosResponse<BaseResponse<T>>) => {
                     return resolve(res.data.data)
                 })
                 .catch((err) => {
