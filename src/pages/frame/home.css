@@ -1,0 +1,132 @@
+/**
+ * admin layout css style
+ * create by phachon
+ */
+
+.admin-layout {
+    min-height: 100vh;
+}
+
+.admin-header {
+    box-shadow: 0 4px 5px rgba(0,21,41,.08);
+    padding: 0;
+    position: fixed;
+    z-index:1;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 48px;
+    line-height: 48px;
+}
+
+.admin-header .ant-menu-item .anticon {
+    margin-right: 5px;
+}
+
+.admin-header-logo {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .3s;
+    padding: 0 20px;
+    width: 220px;
+    height: 48px;
+    line-height: 48px;
+    float: left;
+    /*margin-bottom: 10px;*/
+    /* border-bottom: #000b17 solid 1px; */
+}
+
+.admin-header-logo > a {
+    display: flex;
+    align-items: center;
+    height: 48px;
+}
+
+.admin-header-logo h1 {
+    margin: 0 0 0 10px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    vertical-align: middle;
+    animation: fade-in;
+    animation-duration: .3s;
+}
+
+.admin-header-logo img {
+    display: inline-block;
+    height: 38px;
+    vertical-align: middle;
+}
+
+.admin-sider {
+    box-shadow: 2px 0 5px rgba(0,21,41,.35);
+    overflow-x: visible;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    transition: all 0.3s ease 0s;
+    padding-top: 48px;
+}
+
+.ant-layout-sider-trigger {
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color: #ddd;
+}
+
+.admin-right {
+    transition: all 0.3s ease 0s;
+    transform: scale3d(1, 1, 1)
+}
+
+.admin-content {
+    margin: 0px 10px;
+    /* background: #fff; */
+    /* border: 1px solid #ddd; */
+    /* border-radius: 5px; */
+    /* -moz-border-radius: 5px; */
+    /* box-shadow: 0 1px 1px rgba(0,0,0,.05); */
+}
+
+.admin-breadcrumb {
+    margin: 72px 10px 8px 10px;
+    padding-left: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    box-shadow: 0 2px 13px 0 rgba(228, 228, 228, 0.6);
+}
+
+.admin-breadcrumb-nav {
+    height: 35px;
+    line-height: 35px;
+}
+
+.admin-breadcrumb-nav a {
+    line-height: 35px;
+    padding: 0 8px;
+}
+
+.admin-footer {
+    text-align: center;
+    padding: 14px 50px;
+}
+
+.admin-header .admin-header-right {
+    display: flex;
+    padding-right: 20px;
+}
+
+.admin-header-right a:hover {
+    color: #fff;
+}
+
+.admin-header-right  a {
+    color: rgba(255, 255, 255, 0.65);;
+}
+
+.admin-header-left .ant-menu.ant-menu-dark .ant-menu-item-selected {
+    /*background-color: #000b17;*/
+}

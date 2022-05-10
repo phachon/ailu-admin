@@ -4,11 +4,12 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from "../login/login";
 import './index.css'
 import {loginTokenStore} from "../../store/login";
+import FrameHome from "./home";
 
 class Router extends React.Component<any, any> {
     home() {
         if (loginTokenStore.checkTokenExpire()) {
-            return <Home />;
+            return <FrameHome />;
         }
         return <Login />
     }
