@@ -1,10 +1,9 @@
 import React from 'react';
-import {Menu, Dropdown, Layout} from 'antd';
+import {Menu, Dropdown, Layout, Space} from 'antd';
 import {
     UserOutlined,
     AccountBookOutlined,
     GithubOutlined,
-    DownOutlined,
     EditOutlined,
     LoginOutlined,
 } from '@ant-design/icons';
@@ -15,14 +14,10 @@ class FrameHeader extends React.Component<any, any> {
 
     render () {
         const menu = (
-            <Menu>
-                <Menu.Item>
-                    <EditOutlined /> 个人设置
-                </Menu.Item>
+            <Menu mode="horizontal">
+                <Menu.Item><EditOutlined /> 个人设置</Menu.Item>
                 <Menu.Divider />
-                <Menu.Item>
-                    <LoginOutlined /> 退出登录
-                </Menu.Item>
+                <Menu.Item><LoginOutlined /> 退出登录</Menu.Item>
             </Menu>
         )
 
@@ -32,7 +27,7 @@ class FrameHeader extends React.Component<any, any> {
                     <div className="admin-header-logo" >
                         <a href="/">
                             <img src={logoImg} alt="logo"></img>
-                            <h1 className={""}>AILU管理系统</h1>
+                            <h1> AiLu Admin </h1>
                         </a>
                     </div>
                     <Menu className="admin-header-menu" theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
@@ -41,13 +36,15 @@ class FrameHeader extends React.Component<any, any> {
                     </Menu>
                 </div>
                 <div className="admin-header-right">
-                    <div className="mr15">
-                        <a href=""><GithubOutlined /></a>
-                    </div>
-                    <Dropdown overlay={menu}>
-                        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                            <UserOutlined /> phachon <DownOutlined />
-                        </a>
+                    <Menu theme={"dark"}>
+                        <Menu.Item>
+                            <a href={"#"}><GithubOutlined /></a>
+                        </Menu.Item>
+                    </Menu>
+                    <Dropdown overlay={menu} className="admin-header-dropdown">
+                        <Menu theme={"dark"}>
+                            <Menu.Item><UserOutlined />phachon</Menu.Item>
+                        </Menu>
                     </Dropdown>
                 </div>
             </Layout.Header >

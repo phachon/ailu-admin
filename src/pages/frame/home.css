@@ -3,8 +3,8 @@
  * create by phachon
  */
 
-.admin-layout {
-    min-height: 100vh;
+html, body, .ant-layout {
+
 }
 
 .admin-header {
@@ -29,8 +29,8 @@
     overflow: hidden;
     cursor: pointer;
     transition: all .3s;
-    padding: 0 20px;
-    width: 220px;
+    padding: 0 11px;
+    width: 208px;
     height: 48px;
     line-height: 48px;
     float: left;
@@ -45,7 +45,7 @@
 }
 
 .admin-header-logo h1 {
-    margin: 0 0 0 10px;
+    margin: 0 0 0 8px;
     color: #fff;
     font-weight: 600;
     font-size: 18px;
@@ -61,13 +61,21 @@
 }
 
 .admin-sider {
-    box-shadow: 2px 0 5px rgba(0,21,41,.35);
-    overflow-x: visible;
-    height: 100%;
-    position: fixed;
-    left: 0;
+    box-shadow: 1px 0 4px rgba(0,21,41,.35);
     transition: all 0.3s ease 0s;
-    padding-top: 48px;
+    /*overflow-x: visible;*/
+    /*height: 100vh;*/
+    /*position: fixed;*/
+    left: 0;
+    padding-top: 52px;
+}
+
+.admin-sider-menu {
+    /*border-right: 0;*/
+    /*height: 100vh;*/
+    /*left: 0;*/
+    overflow-y: auto;
+    /*overflow-x: visible;*/
 }
 
 .ant-layout-sider-trigger {
@@ -76,22 +84,30 @@
     border-top-color: #ddd;
 }
 
-.admin-right {
-    transition: all 0.3s ease 0s;
-    transform: scale3d(1, 1, 1)
-}
-
-.admin-content {
-    margin: 0px 10px;
-    /* background: #fff; */
-    /* border: 1px solid #ddd; */
-    /* border-radius: 5px; */
-    /* -moz-border-radius: 5px; */
-    /* box-shadow: 0 1px 1px rgba(0,0,0,.05); */
+.admin-main {
+    min-height: 100%;
 }
 
 .admin-breadcrumb {
-    margin: 72px 10px 8px 10px;
+
+}
+
+.admin-content {
+    margin: 0 8px;
+    padding: 8px 8px;
+    width: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    overflow: scroll;
+    height: 100%;
+    min-height: 100%;
+}
+
+.admin-breadcrumb {
+    margin: 55px 10px 8px 10px;
     padding-left: 10px;
     background-color: #fff;
     border-radius: 5px;
@@ -128,5 +144,25 @@
 }
 
 .admin-header-left .ant-menu.ant-menu-dark .ant-menu-item-selected {
-    /*background-color: #000b17;*/
+    background-color: #000b17;
+    /*background-color: #121626;*/
+}
+
+.admin-header-right .ant-menu.ant-menu-dark .ant-menu-item-selected:hover {
+    background-color: #000b17;
+}
+
+.admin-header-right .ant-menu.ant-menu-dark .ant-menu-item-selected:active {
+    background-color: #000b17;
+}
+
+.admin-header-right .ant-menu.ant-menu-dark .ant-menu {
+    /*padding-left: 5px;*/
+    /*padding-right: 5px;*/
+}
+
+.admin-header-right .ant-menu.ant-menu-dark .ant-menu-item {
+    background-color: #001529;
+    padding-left: 8px;
+    padding-right: 8px;
 }
