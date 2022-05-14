@@ -12,8 +12,10 @@ class FrameSidebar extends React.Component<any, any> {
 
     render () {
         return (
-            <Layout.Sider collapsible collapsedWidth="48px" width="208px" className="admin-sider" theme={"light"}>
-                <Menu mode="inline" className="admin-sider-menu">
+            <Layout.Sider collapsible collapsedWidth="48px" width="208px" className="admin-sidebar" theme="light">
+                <Menu mode="inline" className="admin-sidebar-menu" style={{
+                    height: `${document.body.offsetHeight - 96}px`
+                }}>
                     <Menu.SubMenu key="sub0" title={
                         <span><AccountBookOutlined />
                             <span>个人中心</span>

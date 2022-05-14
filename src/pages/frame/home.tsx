@@ -20,16 +20,75 @@ class FrameHome extends React.Component<any, any> {
                     <Layout className="admin-main">
                         <FrameBreadcrumb />
                         <Layout.Content className="admin-content">
-                            {/*<Routes>*/}
-                            {/*    <Route path="/user/add" />*/}
-                            {/*    <Route path="/user/list" />*/}
-                            {/*</Routes>*/}
+                            <Routes>
+                                <Route path="/user/add" />
+                                <Route path="/user/list" />
+                            </Routes>
                             <h1>这是主页内容这是主页内容这是主页内容这是主页内容</h1>
                             <h1>这是主页内容这是主页内容这是主页内容这是主页内容</h1>
                             <h1>这是主页内容这是主页内容这是主页内容这是主页内容</h1>
                             <h1>这是主页内容这是主页内容这是主页内容这是主页内容</h1>
                             <h1>这是主页内容这是主页内容这是主页内容这是主页内容</h1>
                             ...
+                            <br />
+
+                            content
+                            ...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content
+                            <h1>这是主页内容这是主页内容这是主页内容这是主页内容</h1>
+                            <h1>这是主页内容这是主页内容这是主页内容这是主页内容</h1>
+                            <h1>这是主页内容这是主页内容这是主页内容这是主页内容</h1>
+                            <h1>这是主页内容这是主页内容这是主页内容这是主页内容</h1>
+                            <h1>这是主页内容这是主页内容这是主页内容这是主页内容</h1>
+                            ...
+                            <br />
+
+                            content
+                            ...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
+                            <br />
+
+                            content...
                             <br />
 
                             content
