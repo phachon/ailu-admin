@@ -50,6 +50,11 @@ httpService.interceptors.response.use(
                 // store.dispatch(logout())
                 window.location.href = `${window.location.origin}`
                 return Promise.reject(res.message)
+            case 2104: // token 失效
+                // todo
+                // store.dispatch(logout())
+                window.location.href = `${window.location.origin}`
+                return Promise.reject(res.message)
         }
         message.error(response.data.message)
         return Promise.reject(new Error(response.data.message))

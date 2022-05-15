@@ -1,8 +1,8 @@
 import React from "react";
 import {Col, Row, Tabs} from "antd";
 import { GithubOutlined, LikeOutlined } from '@ant-design/icons';
-import SystemLogin from "./system";
-import DomainLogin from "./domain";
+import LoginSystem from "./system";
+import LoginDomain from "./domain";
 import "./login.css";
 // @ts-ignore
 import logoImg from '../../assets/images/logo_2.png';
@@ -26,10 +26,10 @@ class Login extends React.Component<any, any> {
                             <Col span={6}>
                                 <Tabs defaultActiveKey="1" centered>
                                     <TabPane tab="系统账号登录" key="1">
-                                        <SystemLogin />
+                                        <LoginSystem />
                                     </TabPane>
                                     <TabPane tab="域账号登录" key="2">
-                                        <DomainLogin />
+                                        <LoginDomain />
                                     </TabPane>
                                 </Tabs>
                             </Col>

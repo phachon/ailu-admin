@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import LoginService from "../../services/login";
 import {LoginResponse, loginTokenStore} from "../../store/login";
 
-class SystemLogin extends Component<any, any> {
+class LoginSystem extends Component<any, any> {
 
     login(values: { account_name: string; password: string}) {
         let loginService = new LoginService()
@@ -69,4 +69,4 @@ class SystemLogin extends Component<any, any> {
     }
 }
 
-export default SystemLogin
+export default LoginSystem

@@ -15,9 +15,10 @@ class FrameHeader extends React.Component<any, any> {
     render () {
         const menu = (
             <Menu mode="horizontal">
-                <Menu.Item><EditOutlined /> 个人设置</Menu.Item>
+                <Menu.Item icon={<EditOutlined />}>个人信息</Menu.Item>
+                <Menu.Item icon={<EditOutlined />}>修改密码</Menu.Item>
                 <Menu.Divider />
-                <Menu.Item><LoginOutlined /> 退出登录</Menu.Item>
+                <Menu.Item icon={<LoginOutlined />}>退出登录</Menu.Item>
             </Menu>
         )
 

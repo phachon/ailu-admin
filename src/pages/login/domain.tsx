@@ -2,7 +2,7 @@ import {Component} from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-class DomainLogin extends Component<any, any>{
+class LoginDomain extends Component<any, any>{
     render() {
         return (
             <Form
@@ -43,4 +43,4 @@ class DomainLogin extends Component<any, any>{
         );
     }
 }
-export default DomainLogin
+export default LoginDomain
