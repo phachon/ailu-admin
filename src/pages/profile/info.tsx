@@ -1,21 +1,42 @@
 import React, {RefObject} from "react";
-import {Button, Form, FormInstance, Input} from "antd";
+import {Button, Form, Input, message} from "antd";
 import AccountService from "../../services/account";
-import {AccountInfoResp} from "../../store/account";
+import {AccountInfoResp, AccountUpdateReq} from "../../store/account";
 
 class ProfileInfo extends React.Component<any, any> {
 
     formRef :RefObject<any>
 
+    accountService: AccountService
+
     constructor(props: any) {
         super(props);
         this.formRef = React.createRef()
+        this.accountService = new AccountService()
+    }
+
+    onFinish(values: AccountUpdateReq) {
+        this.accountService.accountUpdate(values).then(
+            (res)  => {
+                message.success("保存成功", () => {
+                    window.location.href = `${window.location.href}`
+                });
+            }
+        ).catch((e) => {
+            console.log(e)
+            message.error("保存失败")
+        })
+        console.log(values)
+    }
+
+    onFinishFailed() {
+        message.error("保存失败", 10).then()
+        console.log("err")
     }
 
     componentDidMount() {
         // 获取账号信息
-        let accountService = new AccountService()
-        accountService.getAccountInfo().then(
+        this.accountService.getAccountInfo().then(
             (res: AccountInfoResp) => {
                 this.formRef.current.setFieldsValue(res)
             }
@@ -46,8 +67,10 @@ class ProfileInfo extends React.Component<any, any> {
                         {...layout}
                         name="basic"
                         ref={this.formRef}
-                        // onFinish={onFinish}
-                        // onFinishFailed={onFinishFailed}
+                        onFinish={values => {
+                            this.onFinish(values)
+                        }}
+                        // onFinishFailed={this.onFinishFailed}
                     >
                         <Form.Item
                             label="账号名"
@@ -59,7 +82,7 @@ class ProfileInfo extends React.Component<any, any> {
                                 },
                             ]}
                         >
-                            <Input disabled placeholder="请输入账号名" />
+                            <Input disabled placeholder="请输入账号名"  />
                         </Form.Item>
 
                         <Form.Item

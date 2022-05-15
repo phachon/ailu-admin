@@ -1,10 +1,11 @@
 import {getUrlConfig} from "../config/url";
 import httpRequest from "./http";
-import {AccountInfoResp} from "../store/account";
+import {AccountInfoResp, AccountUpdateReq} from "../store/account";
 
 
 const accountUrl = {
     accountInfo: "/admin/account/info",
+    accountUpdate: "/admin/account/update",
 }
 
 /**
@@ -12,15 +13,20 @@ const accountUrl = {
  */
 class AccountService {
 
-    getAccountInfoUrl() :string {
-        return getUrlConfig().proxyUrl + accountUrl.accountInfo
-    }
-
     /**
      * getAccountInfo 获取账号信息
      */
     getAccountInfo(): Promise<AccountInfoResp> {
-        return httpRequest.get<AccountInfoResp>(this.getAccountInfoUrl(), {})
+        let accountInfoUrl = getUrlConfig().proxyUrl + accountUrl.accountInfo
+        return httpRequest.get<AccountInfoResp>(accountInfoUrl, {})
+    }
+
+    /**
+     * accountUpdate 账号更新
+     */
+    accountUpdate(accountUpdateReq :AccountUpdateReq): Promise<any> {
+        let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdate
+        return httpRequest.post<any>(accountUpdateUrl, accountUpdateReq)
     }
 }
 export default AccountService

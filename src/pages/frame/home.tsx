@@ -6,8 +6,7 @@ import FrameSidebar from "./sidebar";
 import FrameHeader from "./header";
 import './home.css'
 import FrameBreadcrumb from "./breadcrumb";
-import {Outlet, Route, Routes} from "react-router-dom";
-import ProfileInfo from "../profile/info";
+import {Outlet} from "react-router-dom";
 
 class FrameHome extends React.Component<any, any> {
 
