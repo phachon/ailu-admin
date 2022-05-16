@@ -7,6 +7,7 @@ import {loginTokenStore} from "../../store/login";
 import FrameHome from "./home";
 import ProfileInfo from "../profile/info";
 import ProfileRepass from "../profile/repass";
+import AccountForm from "../account/form";
 
 class Router extends React.Component<any, any> {
     home() {
@@ -24,6 +25,7 @@ class Router extends React.Component<any, any> {
                     <Route path="/" element={<this.home />} >
                         <Route path='/profile/info' element={<ProfileInfo />} />
                         <Route path='/profile/repass' element={<ProfileRepass />} />
+                        <Route path='/account/add' element={<AccountForm />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

@@ -30,11 +30,11 @@ class FrameSidebar extends React.Component<any, any> {
                     </Menu.SubMenu>
                     <Menu.SubMenu key="sub1" title={
                         <span><UserOutlined />
-                            <span>用户管理</span>
+                            <span>账号管理</span>
                         </span>
                     }>
-                        <Menu.Item key="3"><UnorderedListOutlined /><Link to="/user/add"> 添加用户</Link></Menu.Item>
-                        <Menu.Item key="4"><UnorderedListOutlined /><Link to="/user/list"> 用户列表</Link></Menu.Item>
+                        <Menu.Item key="3" icon={<UnorderedListOutlined />}><Link to="/account/add"> 添加账号</Link></Menu.Item>
+                        <Menu.Item key="4" icon={<UnorderedListOutlined />}><Link to="/account/list"> 账号列表</Link></Menu.Item>
                     </Menu.SubMenu>
                     <Menu.SubMenu key="sub2" title={
                         <span><TeamOutlined />

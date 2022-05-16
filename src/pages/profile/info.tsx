@@ -47,20 +47,6 @@ class ProfileInfo extends React.Component<any, any> {
     }
 
     render() {
-        const layout = {
-            labelCol: {
-                span: 3,
-            },
-            wrapperCol: {
-                span: 6,
-            },
-        };
-        const tailLayout = {
-            wrapperCol: {
-                offset: 3,
-                span: 6,
-            },
-        };
         return (
             <div className="panel">
                 <div className="panel-body">

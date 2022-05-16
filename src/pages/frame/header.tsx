@@ -9,8 +9,14 @@ import {
 } from '@ant-design/icons';
 // @ts-ignore
 import logoImg from "../../assets/images/logo_2.png";
+import {loginTokenStore} from "../../store/login";
 
 class FrameHeader extends React.Component<any, any> {
+
+    logout() {
+        loginTokenStore.removeToken() // 清除token
+        window.location.href = "/"
+    }
 
     render () {
         const menu = (
@@ -18,7 +24,7 @@ class FrameHeader extends React.Component<any, any> {
                 <Menu.Item icon={<EditOutlined />}>个人信息</Menu.Item>
                 <Menu.Item icon={<EditOutlined />}>修改密码</Menu.Item>
                 <Menu.Divider />
-                <Menu.Item icon={<LoginOutlined />}>退出登录</Menu.Item>
+                <Menu.Item icon={<LoginOutlined />} onClick={this.logout}>退出登录</Menu.Item>
             </Menu>
         )
 

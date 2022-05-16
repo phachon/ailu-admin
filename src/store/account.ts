@@ -32,3 +32,14 @@ export type AccountUpdatePassReq = {
     new_pwd: string, // 新密码
     confirm_pwd: string, // 确认密码
 }
+
+/**
+ * AccountUpdateAddReq 添加账号
+ */
+export type AccountUpdateAddReq = {
+    name: string, // 账号名
+    given_name: string, // 昵称
+    email: string, // 邮箱
+    phone: string, // 电话
+    mobile: string, // 手机号码
+}
