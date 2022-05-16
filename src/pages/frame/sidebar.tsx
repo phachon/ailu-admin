@@ -24,7 +24,9 @@ class FrameSidebar extends React.Component<any, any> {
                         <Menu.Item key="1" icon={<UnorderedListOutlined />}>
                             <Link to="/profile/info">个人信息</Link>
                         </Menu.Item>
-                        <Menu.Item key="2" icon={<UnorderedListOutlined />}>修改密码</Menu.Item>
+                        <Menu.Item key="2" icon={<UnorderedListOutlined />}>
+                            <Link to="/profile/repass">修改密码</Link>
+                        </Menu.Item>
                     </Menu.SubMenu>
                     <Menu.SubMenu key="sub1" title={
                         <span><UserOutlined />

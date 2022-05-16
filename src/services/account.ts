@@ -1,11 +1,12 @@
 import {getUrlConfig} from "../config/url";
 import httpRequest from "./http";
-import {AccountInfoResp, AccountUpdateReq} from "../store/account";
+import {AccountInfoResp, AccountUpdatePassReq, AccountUpdateReq} from "../store/account";
 
 
 const accountUrl = {
     accountInfo: "/admin/account/info",
     accountUpdate: "/admin/account/update",
+    accountUpdatePass: "/admin/account/update_password",
 }
 
 /**
@@ -26,7 +27,15 @@ class AccountService {
      */
     accountUpdate(accountUpdateReq :AccountUpdateReq): Promise<any> {
         let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdate
-        return httpRequest.post<any>(accountUpdateUrl, accountUpdateReq)
+        return httpRequest.post<any>(accountUpdateUrl, {}, accountUpdateReq)
+    }
+
+    /**
+     * accountUpdatePass 账号更新密码
+     */
+    accountUpdatePass(accountRePassReq :AccountUpdatePassReq): Promise<any> {
+        let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdatePass
+        return httpRequest.post<any>(accountUpdateUrl, {}, accountRePassReq)
     }
 }
 export default AccountService

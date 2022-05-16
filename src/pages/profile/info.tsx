@@ -2,6 +2,7 @@ import React, {RefObject} from "react";
 import {Button, Form, Input, message} from "antd";
 import AccountService from "../../services/account";
 import {AccountInfoResp, AccountUpdateReq} from "../../store/account";
+import {LayoutForm, LayoutFormButton} from "../../config/layout";
 
 class ProfileInfo extends React.Component<any, any> {
 
@@ -63,10 +64,7 @@ class ProfileInfo extends React.Component<any, any> {
         return (
             <div className="panel">
                 <div className="panel-body">
-                    <Form
-                        {...layout}
-                        name="basic"
-                        ref={this.formRef}
+                    <Form {...LayoutForm} name="basic" ref={this.formRef}
                         onFinish={values => {
                             this.onFinish(values)
                         }}
@@ -127,10 +125,8 @@ class ProfileInfo extends React.Component<any, any> {
                         >
                             <Input disabled />
                         </Form.Item>
-                        <Form.Item {...tailLayout}>
-                            <Button type="primary" htmlType="submit">
-                                保存
-                            </Button>
+                        <Form.Item {...LayoutFormButton}>
+                            <Button type="primary" htmlType="submit">保存</Button>
                         </Form.Item>
                     </Form>
                 </div>
