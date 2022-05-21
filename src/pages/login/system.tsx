@@ -15,6 +15,7 @@ class LoginSystem extends Component<any, any> {
             verify_code: "mock",
         // 登录成功
         }).then((res: LoginResponse) => {
+            // redux =>
             console.log(res.login_token)
             loginTokenStore.storageToken(res.login_token) // 设置 token
             window.location.href = '/home'

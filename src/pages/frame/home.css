@@ -99,7 +99,7 @@ html,body,#root{
 
 .admin-content {
     margin: 0 8px;
-    padding: 8px 8px;
+    /*padding: 8px 8px;*/
     width: auto;
     background: #fff;
     border: 1px solid #ddd;

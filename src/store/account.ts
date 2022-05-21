@@ -1,3 +1,4 @@
+import {PageInfo} from "./response";
 
 /**
  * account info 返回结构
@@ -43,3 +44,12 @@ export type AccountUpdateAddReq = {
     phone: string, // 电话
     mobile: string, // 手机号码
 }
+
+/**
+ * AccountListResp 账号列表返回
+ */
+export type AccountListResp = {
+    list: Array<AccountInfoResp>
+    page_info: PageInfo
+}
+

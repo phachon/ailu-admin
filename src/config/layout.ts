@@ -11,6 +11,5 @@ export const LayoutForm = {
 export const LayoutFormButton = {
     wrapperCol: {
         offset: 3,
-        span: 6,
     },
 };

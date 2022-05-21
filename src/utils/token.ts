@@ -31,6 +31,7 @@ class Token {
     // removeToken 清除 token
     removeToken() {
         sessionStorage.removeItem(this.tokenKey)
+        sessionStorage.removeItem(this.tokenExpireKey)
     }
 
     // 检查 token 是否失效

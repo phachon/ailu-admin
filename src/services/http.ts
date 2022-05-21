@@ -41,6 +41,7 @@ httpService.interceptors.request.use(
 // response 返回结果拦截器
 httpService.interceptors.response.use(
     (response: AxiosResponse<BaseResponse<any>>) => {
+        console.log("res:", response)
         const res = response.data
         switch (res.code) {
             case 0://正常数据
@@ -50,16 +51,18 @@ httpService.interceptors.response.use(
                 // store.dispatch(logout())
                 window.location.href = `${window.location.origin}`
                 return Promise.reject(res.message)
-            case 2104: // token 失效
-                // todo
-                // store.dispatch(logout())
-                window.location.href = `${window.location.origin}`
-                return Promise.reject(res.message)
         }
         message.error(response.data.message)
         return Promise.reject(new Error(response.data.message))
     },
     (error) => {
+        const status = error.response?.status
+        // token失效
+        if (status === 401) {
+            loginTokenStore.removeToken()
+            window.location.href = `${window.location.origin}`
+            return Promise.reject(error)
+        }
         return Promise.reject(error)
     }
 )

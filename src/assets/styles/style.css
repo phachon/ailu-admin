@@ -11,7 +11,7 @@
 }
 
 .panel-body {
-    padding-top: 32px;
+    padding: 18px 16px 0 16px
 }
 
 .hide {
@@ -50,10 +50,17 @@
 }
 
 /* margin-right */
-.mr10{margin-right: 10px;}
-.mr15{margin-right: 15px;}
-.mr20{margin-right: 20px;}
+.mgr10{margin-right: 10px;}
+.mgr15{margin-right: 15px;}
+.mgr20{margin-right: 20px;}
+.mgr0{margin-right: 0;}
 
+/* padding */
+.pdr0{padding-right: 0}
+.pdr10{padding-right: 10px}
+.pdr20{padding-right: 20px}
+.pdr30{padding-right: 30px}
+.pdr40{padding-right: 40px}
 
 /* width 按百分比 */
 .w5p{width:5%;}

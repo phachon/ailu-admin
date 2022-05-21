@@ -1,10 +1,10 @@
-import React, {RefObject} from "react";
+import React, {Component, RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
+import {LayoutFormButton} from "../../config/layout";
 import AccountService from "../../services/account";
-import {AccountInfoResp, AccountUpdateReq} from "../../store/account";
-import {LayoutForm, LayoutFormButton} from "../../config/layout";
+import {AccountUpdateAddReq} from "../../store/account";
 
-class ProfileInfo extends React.Component<any, any> {
+class AccountEdit extends Component {
 
     formRef :RefObject<any>
 
@@ -16,46 +16,27 @@ class ProfileInfo extends React.Component<any, any> {
         this.accountService = new AccountService()
     }
 
-    onFinish(values: AccountUpdateReq) {
-        this.accountService.accountUpdate(values).then(
+    onFinish(values: AccountUpdateAddReq) {
+        this.accountService.accountAdd(values).then(
             (res)  => {
                 message.success("保存成功", () => {
-                    window.location.href = `${window.location.href}`
+                    window.location.href = `/account/list`
                 });
             }
         ).catch((e) => {
             console.log(e)
-            message.error("保存失败")
         })
         console.log(values)
-    }
-
-    onFinishFailed() {
-        message.error("保存失败", 10).then()
-        console.log("err")
-    }
-
-    componentDidMount() {
-        // 获取账号信息
-        // loading
-        this.accountService.getAccountInfo().then(
-            (res: AccountInfoResp) => {
-                this.formRef.current.setFieldsValue(res)
-            }
-        ).catch(e => {
-            console.log(e)
-        })
     }
 
     render() {
         return (
             <div className="panel">
-                <div className="panel-body"></div>
-                <div className="panel-body">
-                    <Form {...LayoutForm} name="basic" ref={this.formRef}
-                        onFinish={values => {
-                            this.onFinish(values)
-                        }}
+                <div className="panel-body ">
+                    <Form labelCol={{span:4}} name="basic" ref={this.formRef}
+                          onFinish={values => {
+                              this.onFinish(values)
+                          }}
                         // onFinishFailed={this.onFinishFailed}
                     >
                         <Form.Item
@@ -68,7 +49,7 @@ class ProfileInfo extends React.Component<any, any> {
                                 },
                             ]}
                         >
-                            <Input disabled placeholder="请输入账号名"  />
+                            <Input placeholder="请输入账号名"  />
                         </Form.Item>
 
                         <Form.Item
@@ -101,19 +82,7 @@ class ProfileInfo extends React.Component<any, any> {
                         >
                             <Input placeholder="请输入手机号码" />
                         </Form.Item>
-                        <Form.Item
-                            label="创建时间"
-                            name="create_time"
-                        >
-                            <Input disabled />
-                        </Form.Item>
-                        <Form.Item
-                            label="修改时间"
-                            name="update_time"
-                        >
-                            <Input disabled />
-                        </Form.Item>
-                        <Form.Item {...LayoutFormButton}>
+                        <Form.Item wrapperCol={{offset: 4}}>
                             <Button type="primary" htmlType="submit">保存</Button>
                         </Form.Item>
                     </Form>
@@ -123,4 +92,4 @@ class ProfileInfo extends React.Component<any, any> {
     }
 }
 
-export default ProfileInfo
+export default AccountEdit;

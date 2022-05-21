@@ -20,7 +20,6 @@ class FrameHome extends React.Component<any, any> {
                     <Layout className="admin-main">
                         <FrameBreadcrumb />
                         <Layout.Content className="admin-content">
-                            {/*<Spin size={"large"}/>*/}
                             <Outlet />
                         </Layout.Content>
                         <FrameFooter />
