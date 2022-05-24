@@ -1,8 +1,6 @@
 import React, {RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
-import {LayoutFormButton} from "../../config/layout";
 import AccountService from "../../services/account";
-import {AccountUpdateAddReq} from "../../store/account";
 
 class AccountAdd extends React.Component<any, any> {
 
@@ -16,7 +14,7 @@ class AccountAdd extends React.Component<any, any> {
         this.accountService = new AccountService()
     }
 
-    onFinish(values: AccountUpdateAddReq) {
+    onFinish(values: any) {
         this.accountService.accountAdd(values).then(
             (res)  => {
                 message.success("保存成功", () => {

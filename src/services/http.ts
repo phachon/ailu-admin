@@ -1,9 +1,9 @@
 import { message } from 'antd'
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios'
 import qs from 'qs'
-import {loginTokenStore} from "../store/login";
+import {LoginTokenStore} from "../store";
 import {getUUId} from "../utils/utils";
-import {BaseResponse} from "../store/response";
+import {BaseResponse} from "../store/types/response";
 
 const httpService = axios.create({
     timeout: 2 * 60 * 1000, // 默认请求超时时间
@@ -23,7 +23,7 @@ httpService.interceptors.request.use(
             }
         }
         if (config && config.headers) {
-            const loginToken = loginTokenStore.getToken()
+            const loginToken = LoginTokenStore.getToken()
             if (loginToken) {
                 config.headers['X-KT-Login-Token'] = loginToken
             }
@@ -59,7 +59,7 @@ httpService.interceptors.response.use(
         const status = error.response?.status
         // token失效
         if (status === 401) {
-            loginTokenStore.removeToken()
+            LoginTokenStore.removeToken()
             window.location.href = `${window.location.origin}`
             return Promise.reject(error)
         }

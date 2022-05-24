@@ -8,9 +8,9 @@ export interface BaseResponse<T> {
 }
 
 /**
- * PageInfo 列表分页结构
+ * PageInfoType 列表分页结构
  */
-export type PageInfo = {
+export type PageInfoType = {
     total_num  :bigint  // 数据总条数
     total_page :bigint  // 总页数
     page_size  :bigint  // 每一页条数

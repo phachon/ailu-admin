@@ -1,8 +1,6 @@
 import React, {Component, RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
-import {LayoutFormButton} from "../../config/layout";
 import AccountService from "../../services/account";
-import {AccountUpdateAddReq} from "../../store/account";
 
 class AccountEdit extends Component {
 
@@ -16,10 +14,10 @@ class AccountEdit extends Component {
         this.accountService = new AccountService()
     }
 
-    onFinish(values: AccountUpdateAddReq) {
-        this.accountService.accountAdd(values).then(
+    onFinish(values: any) {
+        this.accountService.accountUpdate(values).then(
             (res)  => {
-                message.success("保存成功", () => {
+                message.success("修改成功", () => {
                     window.location.href = `/account/list`
                 });
             }

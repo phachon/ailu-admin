@@ -10,7 +10,7 @@ import {
     Select,
     Form, Button
 } from "antd";
-import {AccountListResp} from "../../store/account";
+import {AccountListType} from "../../store/types/account";
 import AccountService from "../../services/account";
 import {
     FormOutlined, StopOutlined,
@@ -80,7 +80,7 @@ class AccountList extends Component<any,any> {
 
     getAccountList(pageSize :number, current :number, keywords :{}) {
         this.accountService.accountList(pageSize, current, keywords).then(
-            (res: AccountListResp) => {
+            (res: AccountListType) => {
                 this.setState({
                     data: res.list,
                     loading: false,

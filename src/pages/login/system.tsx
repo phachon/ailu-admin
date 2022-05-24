@@ -2,7 +2,8 @@ import {Component} from "react";
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import LoginService from "../../services/login";
-import {LoginResponse, loginTokenStore} from "../../store/login";
+import {LoginTokenStore} from "../../store";
+import {LoginResponseType} from "../../store/types/login";
 
 class LoginSystem extends Component<any, any> {
 
@@ -14,10 +15,10 @@ class LoginSystem extends Component<any, any> {
             password: values.password,
             verify_code: "mock",
         // 登录成功
-        }).then((res: LoginResponse) => {
+        }).then((res: LoginResponseType) => {
             // redux =>
             console.log(res.login_token)
-            loginTokenStore.storageToken(res.login_token) // 设置 token
+            LoginTokenStore.storageToken(res.login_token) // 设置 token
             window.location.href = '/home'
         // 登录异常
         }).catch(e => {

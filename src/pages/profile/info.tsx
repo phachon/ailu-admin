@@ -1,7 +1,7 @@
 import React, {RefObject} from "react";
 import {Button, Form, Input, message} from "antd";
 import AccountService from "../../services/account";
-import {AccountInfoResp, AccountUpdateReq} from "../../store/account";
+import {AccountInfoType} from "../../store/types/account";
 import {LayoutForm, LayoutFormButton} from "../../config/layout";
 
 class ProfileInfo extends React.Component<any, any> {
@@ -16,7 +16,7 @@ class ProfileInfo extends React.Component<any, any> {
         this.accountService = new AccountService()
     }
 
-    onFinish(values: AccountUpdateReq) {
+    onFinish(values: any) {
         this.accountService.accountUpdate(values).then(
             (res)  => {
                 message.success("保存成功", () => {
@@ -37,9 +37,8 @@ class ProfileInfo extends React.Component<any, any> {
 
     componentDidMount() {
         // 获取账号信息
-        // loading
         this.accountService.getAccountInfo().then(
-            (res: AccountInfoResp) => {
+            (res: AccountInfoType) => {
                 this.formRef.current.setFieldsValue(res)
             }
         ).catch(e => {

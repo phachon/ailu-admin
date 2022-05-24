@@ -9,12 +9,12 @@ import {
 } from '@ant-design/icons';
 // @ts-ignore
 import logoImg from "../../assets/images/logo_2.png";
-import {loginTokenStore} from "../../store/login";
+import {LoginTokenStore} from "../../store";
 
 class FrameHeader extends React.Component<any, any> {
 
     logout() {
-        loginTokenStore.removeToken() // 清除token
+        LoginTokenStore.removeToken() // 清除token
         window.location.href = "/"
     }
 

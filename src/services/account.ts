@@ -1,8 +1,6 @@
 import {getUrlConfig} from "../config/url";
 import httpRequest from "./http";
-import {AccountInfoResp, AccountUpdateAddReq, AccountUpdatePassReq, AccountUpdateReq} from "../store/account";
-import qs from "qs";
-
+import {AccountInfoType} from "../store/types/account";
 
 const accountUrl = {
     accountInfo: "/admin/account/info",
@@ -20,33 +18,33 @@ class AccountService {
     /**
      * getAccountInfo 获取账号信息
      */
-    getAccountInfo(): Promise<AccountInfoResp> {
+    getAccountInfo(): Promise<AccountInfoType> {
         let accountInfoUrl = getUrlConfig().proxyUrl + accountUrl.accountInfo
-        return httpRequest.get<AccountInfoResp>(accountInfoUrl, {})
+        return httpRequest.get<AccountInfoType>(accountInfoUrl, {})
     }
 
     /**
      * accountUpdate 账号更新
      */
-    accountUpdate(accountUpdateReq :AccountUpdateReq): Promise<any> {
+    accountUpdate(accountInfo :{name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
         let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdate
-        return httpRequest.post<any>(accountUpdateUrl, {}, accountUpdateReq)
+        return httpRequest.post<any>(accountUpdateUrl, {}, accountInfo)
     }
 
     /**
      * accountUpdatePass 账号更新密码
      */
-    accountUpdatePass(accountRePassReq :AccountUpdatePassReq): Promise<any> {
+    accountUpdatePass(passInfo :{old_pwd :string, new_pwd: string, confirm_pwd: string}): Promise<any> {
         let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdatePass
-        return httpRequest.post<any>(accountUpdateUrl, {}, accountRePassReq)
+        return httpRequest.post<any>(accountUpdateUrl, {}, passInfo)
     }
 
     /**
      * accountAddReq 添加账号
      */
-    accountAdd(accountAddReq :AccountUpdateAddReq): Promise<any> {
+    accountAdd(accountInfo :{name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
         let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountAdd
-        return httpRequest.post<any>(accountUpdateUrl, {}, accountAddReq)
+        return httpRequest.post<any>(accountUpdateUrl, {}, accountInfo)
     }
 
     /**

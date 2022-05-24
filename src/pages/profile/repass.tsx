@@ -1,7 +1,6 @@
 import React, {Component, RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
 import AccountService from "../../services/account";
-import {AccountUpdatePassReq, AccountUpdateReq} from "../../store/account";
 import {LayoutForm, LayoutFormButton} from "../../config/layout";
 
 class ProfileRepass extends Component {
@@ -16,7 +15,7 @@ class ProfileRepass extends Component {
         this.accountService = new AccountService()
     }
 
-    onFinish(values: AccountUpdatePassReq) {
+    onFinish(values :{old_pwd :string, new_pwd: string, confirm_pwd: string}) {
 
         // 判断两次密码是否一致
         if (values.confirm_pwd !== values.new_pwd) {

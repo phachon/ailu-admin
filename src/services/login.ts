@@ -1,6 +1,6 @@
 import httpRequest from "./http";
 import {getUrlConfig} from "../config/url";
-import {LoginRequest, LoginResponse} from "../store/login";
+import {LoginResponseType} from "../store/types/login";
 
 const authUrl = {
     systemLogin: "/admin/auth/login",
@@ -19,8 +19,8 @@ class LoginService {
     /**
      * 系统登录
      */
-    systemLogin(loginRequest :LoginRequest) :Promise<LoginResponse> {
-        return httpRequest.post<LoginResponse>(this.getSystemLoginUrl(), {}, loginRequest)
+    systemLogin(loginInfo :{account_name: string, password: string, verify_code: string}) :Promise<LoginResponseType> {
+        return httpRequest.post<LoginResponseType>(this.getSystemLoginUrl(), {}, loginInfo)
     }
 
     /**
