@@ -7,12 +7,9 @@ class ProfileRepass extends Component {
 
     formRef :RefObject<any>
 
-    accountService: AccountService
-
     constructor(props: any) {
         super(props);
         this.formRef = React.createRef()
-        this.accountService = new AccountService()
     }
 
     onFinish(values :{old_pwd :string, new_pwd: string, confirm_pwd: string}) {
@@ -22,7 +19,7 @@ class ProfileRepass extends Component {
             message.error("确认密码与新密码不一致")
             return
         }
-        this.accountService.accountUpdatePass(values).then(
+        AccountService.accountUpdatePass(values).then(
             (res)  => {
                 message.success("保存成功", () => {
                     window.location.href = `${window.location.href}`

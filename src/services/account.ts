@@ -11,9 +11,9 @@ const accountUrl = {
 }
 
 /**
- * AccountService 账号服务
+ * Account 账号服务
  */
-class AccountService {
+class Account {
 
     /**
      * getAccountInfo 获取账号信息
@@ -59,4 +59,6 @@ class AccountService {
         })
     }
 }
+
+const AccountService = new Account()
 export default AccountService

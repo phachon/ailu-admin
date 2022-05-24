@@ -41,7 +41,6 @@ httpService.interceptors.request.use(
 // response 返回结果拦截器
 httpService.interceptors.response.use(
     (response: AxiosResponse<BaseResponse<any>>) => {
-        console.log("res:", response)
         const res = response.data
         switch (res.code) {
             case 0://正常数据

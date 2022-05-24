@@ -6,16 +6,13 @@ class AccountAdd extends React.Component<any, any> {
 
     formRef :RefObject<any>
 
-    accountService: AccountService
-
     constructor(props: any) {
         super(props);
         this.formRef = React.createRef()
-        this.accountService = new AccountService()
     }
 
     onFinish(values: any) {
-        this.accountService.accountAdd(values).then(
+        AccountService.accountAdd(values).then(
             (res)  => {
                 message.success("保存成功", () => {
                     window.location.href = `/account/list`

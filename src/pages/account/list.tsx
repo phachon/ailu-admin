@@ -5,12 +5,11 @@ import {
     Tag,
     Popconfirm,
     message,
-    Space,
     Modal,
     Select,
     Form, Button
 } from "antd";
-import {AccountListType} from "../../store/types/account";
+import {AccountInfoType, AccountListType} from "../../store/types/account";
 import AccountService from "../../services/account";
 import {
     FormOutlined, StopOutlined,
@@ -19,11 +18,8 @@ import AccountEdit from "./edit";
 
 class AccountList extends Component<any,any> {
 
-    accountService :AccountService
-
     constructor(props :any) {
         super(props);
-        this.accountService = new AccountService()
         this.state = {
             isModalVisible: false,
             data: [],
@@ -60,7 +56,8 @@ class AccountList extends Component<any,any> {
         })
     }
 
-    confirmDelete(accountId :number) {
+    confirmDelete(accountInfo :AccountInfoType) {
+        console.log(accountInfo)
         message.success('删除成功');
     }
 
@@ -79,7 +76,7 @@ class AccountList extends Component<any,any> {
     }
 
     getAccountList(pageSize :number, current :number, keywords :{}) {
-        this.accountService.accountList(pageSize, current, keywords).then(
+        AccountService.accountList(pageSize, current, keywords).then(
             (res: AccountListType) => {
                 this.setState({
                     data: res.list,
@@ -97,67 +94,6 @@ class AccountList extends Component<any,any> {
     }
 
     render() {
-        const columns = [
-            {
-                title: '账号ID',
-                dataIndex: 'account_id',
-                width: 30,
-            },
-            {
-                title: '账号名',
-                dataIndex: 'name',
-            },
-            {
-                title: '昵称',
-                dataIndex: 'given_name',
-            },
-            {
-                title: '邮箱',
-                dataIndex: 'email',
-            },
-            {
-                title: '电话号',
-                dataIndex: 'phone',
-            },
-            {
-                title: '手机号',
-                dataIndex: 'mobile',
-            },
-            {
-                title: '状态',
-                dataIndex: 'status',
-                width: 20,
-                render: (status :number) => {
-                    return <div>{status === 0 ? <Tag color="blue">正常</Tag> : <Tag color="error">禁用</Tag>}</div>
-                }
-            },
-            {
-                title: '操作',
-                dataIndex: 'account_id',
-                key: 'action',
-                width: 140,
-                render: (accountId :number) => {
-                    return (
-                    <span>
-                        <Space>
-                           <a onClick={this.edit}><FormOutlined /> 修改 </a>
-                            <Popconfirm
-                                title="确定要禁用吗?"
-                                onConfirm={() => {
-                                    this.confirmDelete(accountId)
-                                }}
-                                // onCancel={cancel}
-                                okText="确定"
-                                cancelText="取消"
-                            >
-                            <a href="#"><StopOutlined /> 禁用 </a>
-                        </Popconfirm>
-                        </Space>
-                    </span>
-                    )
-                },
-            },
-        ];
         const { data, loading, pagination, isModalVisible} = this.state
         pagination.showQuickJumper = true
         pagination.showSizeChanger = true
@@ -193,13 +129,40 @@ class AccountList extends Component<any,any> {
                 </div>
                 <div className="panel-body">
                     <Table bordered
-                        columns={columns}
                         dataSource={data}
                         loading={loading}
                         pagination={pagination}
                         onChange={this.onChange}
                         footer={()=> ''}
-                    />
+                    >
+                        <Table.Column title={"账号ID"} dataIndex="account_id" width={30} />
+                        <Table.Column title={"账号名"} dataIndex="name" />
+                        <Table.Column title={"昵称"} dataIndex="given_name" />
+                        <Table.Column title={"邮箱"} dataIndex="email" />
+                        <Table.Column title={"电话号"} dataIndex="phone" />
+                        <Table.Column title={"手机号"} dataIndex="mobile" />
+                        <Table.Column title={"状态"} dataIndex="status" width={20} render={(status :number) => {
+                            return <div>{status === 0 ? <Tag color="blue">正常</Tag> : <Tag color="error">禁用</Tag>}</div>
+                        }} />
+                        <Table.Column title={"操作"} dataIndex={""} width={140} render={(accountInfo :AccountInfoType) => {
+                            return (
+                                <span>
+                                   <a onClick={this.edit}><FormOutlined /> 修改 </a>
+                                    <Popconfirm
+                                        title="确定要禁用吗?"
+                                        onConfirm={() => {
+                                            this.confirmDelete(accountInfo)
+                                        }}
+                                        // onCancel={cancel}
+                                        okText="确定"
+                                        cancelText="取消"
+                                    >
+                                    <a href="#"><StopOutlined /> 禁用 </a>
+                                </Popconfirm>
+                                </span>
+                            )
+                        }} />
+                    </Table>
                 </div>
                 <Modal title="账号修改" width={570} visible={isModalVisible} onOk={this.editHandleOk} onCancel={this.editHandleCancel}>
                     <AccountEdit />

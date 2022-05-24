@@ -8,9 +8,9 @@ const authUrl = {
 }
 
 /**
- * LoginService 登录服务
+ * Login 登录服务
  */
-class LoginService {
+class Login {
 
     getSystemLoginUrl() :string {
         return getUrlConfig().proxyUrl + authUrl.systemLogin
@@ -32,4 +32,5 @@ class LoginService {
 
 }
 
+const LoginService = new Login()
 export default LoginService

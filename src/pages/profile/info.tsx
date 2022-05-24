@@ -8,16 +8,13 @@ class ProfileInfo extends React.Component<any, any> {
 
     formRef :RefObject<any>
 
-    accountService: AccountService
-
     constructor(props: any) {
         super(props);
         this.formRef = React.createRef()
-        this.accountService = new AccountService()
     }
 
     onFinish(values: any) {
-        this.accountService.accountUpdate(values).then(
+        AccountService.accountUpdate(values).then(
             (res)  => {
                 message.success("保存成功", () => {
                     window.location.href = `${window.location.href}`
@@ -37,7 +34,7 @@ class ProfileInfo extends React.Component<any, any> {
 
     componentDidMount() {
         // 获取账号信息
-        this.accountService.getAccountInfo().then(
+        AccountService.getAccountInfo().then(
             (res: AccountInfoType) => {
                 this.formRef.current.setFieldsValue(res)
             }

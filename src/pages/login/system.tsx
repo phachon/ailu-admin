@@ -8,9 +8,8 @@ import {LoginResponseType} from "../../store/types/login";
 class LoginSystem extends Component<any, any> {
 
     login(values: { account_name: string; password: string}) {
-        let loginService = new LoginService()
         console.log(values)
-        loginService.systemLogin({
+        LoginService.systemLogin({
             account_name: values.account_name,
             password: values.password,
             verify_code: "mock",
