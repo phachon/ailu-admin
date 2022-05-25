@@ -33,16 +33,16 @@ class FrameSidebar extends React.Component<any, any> {
                             <span>账号管理</span>
                         </span>
                     }>
-                        <Menu.Item key="3" icon={<UnorderedListOutlined />}><Link to="/account/add"> 添加账号</Link></Menu.Item>
-                        <Menu.Item key="4" icon={<UnorderedListOutlined />}><Link to="/account/list"> 账号列表</Link></Menu.Item>
+                        <Menu.Item key="3" icon={<UnorderedListOutlined />}><Link to="/account/add">添加账号</Link></Menu.Item>
+                        <Menu.Item key="4" icon={<UnorderedListOutlined />}><Link to="/account/list">账号列表</Link></Menu.Item>
                     </Menu.SubMenu>
                     <Menu.SubMenu key="sub2" title={
                         <span><TeamOutlined />
                             <span>角色管理</span>
                         </span>
                     }>
-                        <Menu.Item key="6"><UnorderedListOutlined />添加角色</Menu.Item>
-                        <Menu.Item key="8"><UnorderedListOutlined />角色列表</Menu.Item>
+                        <Menu.Item key="6" icon={<UnorderedListOutlined />}><Link to="/role/add">添加角色</Link></Menu.Item>
+                        <Menu.Item key="8" icon={<UnorderedListOutlined />}><Link to="/role/list">角色列表</Link></Menu.Item>
                     </Menu.SubMenu>
                 </Menu>
             </Layout.Sider>

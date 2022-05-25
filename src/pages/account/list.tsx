@@ -7,7 +7,7 @@ import {
     message,
     Modal,
     Select,
-    Form, Button
+    Form, Button, TablePaginationConfig
 } from "antd";
 import {AccountInfoType, AccountListType} from "../../store/types/account";
 import AccountService from "../../services/account";
@@ -16,35 +16,43 @@ import {
 } from '@ant-design/icons';
 import AccountEdit from "./edit";
 
-class AccountList extends Component<any,any> {
+interface AccountListState {
+    tableLoading: boolean
+    editModalVisible?: boolean
+    accountList? :AccountInfoType[]
+    pagination :TablePaginationConfig
+    searchKeyWords :{}
+    editAccountInfo? :AccountInfoType
+}
+
+class AccountList extends Component<any, AccountListState> {
 
     constructor(props :any) {
         super(props);
         this.state = {
-            isModalVisible: false,
-            data: [],
-            loading: true,
+            tableLoading: true,
             pagination: {
-                current: 1, // 默认页数
-                pageSize: 10, // 默认条数
+                current: 1,
+                pageSize: 10,
                 total: 0,
             },
-            keywords: {} // 搜索信息
+            searchKeyWords: {}
         }
     }
 
     onSearch(values :any) {
         this.setState({
-            loading: true,
-            keywords: values,
+            tableLoading: true,
+            searchKeyWords: values,
         });
-        const { pagination, keywords } = this.state;
-        this.getAccountList(pagination.pageSize, pagination.current, keywords)
+        const { pagination, searchKeyWords } = this.state;
+        this.getAccountList(pagination.pageSize, pagination.current, searchKeyWords)
     }
 
-    edit = () => {
+    editClick(accountInfo :AccountInfoType) {
         this.setState({
-            isModalVisible: true,
+            editModalVisible: true,
+            editAccountInfo: accountInfo
         })
     }
     editHandleOk = () => {
@@ -52,7 +60,7 @@ class AccountList extends Component<any,any> {
     }
     editHandleCancel = () => {
         this.setState({
-            isModalVisible: false,
+            editModalVisible: false,
         })
     }
 
@@ -63,24 +71,24 @@ class AccountList extends Component<any,any> {
 
     onChange = (pageConfig :any, filters :any, sorter :any) => {
         this.setState({
-            loading: true,
+            tableLoading: true,
         });
-        const { keywords } = this.state;
-        this.getAccountList(pageConfig.pageSize, pageConfig.current, keywords)
+        const { searchKeyWords } = this.state;
+        this.getAccountList(pageConfig.pageSize, pageConfig.current, searchKeyWords)
     }
 
     componentDidMount() {
-        this.setState({ loading: true });
-        const { pagination, keywords } = this.state;
-        this.getAccountList(pagination.pageSize, pagination.current, keywords)
+        this.setState({ tableLoading: true });
+        const { pagination, searchKeyWords } = this.state;
+        this.getAccountList(pagination.pageSize, pagination.current, searchKeyWords)
     }
 
-    getAccountList(pageSize :number, current :number, keywords :{}) {
+    getAccountList(pageSize :number | undefined, current :number | undefined, keywords :{}) {
         AccountService.accountList(pageSize, current, keywords).then(
             (res: AccountListType) => {
                 this.setState({
-                    data: res.list,
-                    loading: false,
+                    accountList: res.list,
+                    tableLoading: false,
                     pagination: {
                         current: res.page_info?.page_num,
                         pageSize: res.page_info?.page_size,
@@ -94,7 +102,7 @@ class AccountList extends Component<any,any> {
     }
 
     render() {
-        const { data, loading, pagination, isModalVisible} = this.state
+        const { accountList, tableLoading, pagination, editModalVisible, editAccountInfo} = this.state
         pagination.showQuickJumper = true
         pagination.showSizeChanger = true
         pagination.showTotal = (total :number) => {return `总共 ${total} 条`}
@@ -129,25 +137,27 @@ class AccountList extends Component<any,any> {
                 </div>
                 <div className="panel-body">
                     <Table bordered
-                        dataSource={data}
-                        loading={loading}
+                        dataSource={accountList}
+                        loading={tableLoading}
                         pagination={pagination}
                         onChange={this.onChange}
                         footer={()=> ''}
                     >
-                        <Table.Column title={"账号ID"} dataIndex="account_id" width={30} />
-                        <Table.Column title={"账号名"} dataIndex="name" />
-                        <Table.Column title={"昵称"} dataIndex="given_name" />
-                        <Table.Column title={"邮箱"} dataIndex="email" />
-                        <Table.Column title={"电话号"} dataIndex="phone" />
-                        <Table.Column title={"手机号"} dataIndex="mobile" />
-                        <Table.Column title={"状态"} dataIndex="status" width={20} render={(status :number) => {
+                        <Table.Column title={"账号ID"} dataIndex="account_id" width={30} key={"account_id"} />
+                        <Table.Column title={"账号名"} dataIndex="name" key={"name"} />
+                        <Table.Column title={"昵称"} dataIndex="given_name" key={"given_name"} />
+                        <Table.Column title={"邮箱"} dataIndex="email" key={"email"} />
+                        <Table.Column title={"电话号"} dataIndex="phone" key={"phone"} />
+                        <Table.Column title={"手机号"} dataIndex="mobile" key={"mobile"} />
+                        <Table.Column title={"状态"} dataIndex="status" width={20} key={"status"} render={(status :number) => {
                             return <div>{status === 0 ? <Tag color="blue">正常</Tag> : <Tag color="error">禁用</Tag>}</div>
                         }} />
-                        <Table.Column title={"操作"} dataIndex={""} width={140} render={(accountInfo :AccountInfoType) => {
+                        <Table.Column title={"操作"} width={140} key={"action"} render={(accountInfo :AccountInfoType) => {
                             return (
                                 <span>
-                                   <a onClick={this.edit}><FormOutlined /> 修改 </a>
+                                   <a onClick={() => {
+                                       this.editClick(accountInfo)
+                                   }}><FormOutlined /> 修改 </a>
                                     <Popconfirm
                                         title="确定要禁用吗?"
                                         onConfirm={() => {
@@ -164,8 +174,8 @@ class AccountList extends Component<any,any> {
                         }} />
                     </Table>
                 </div>
-                <Modal title="账号修改" width={570} visible={isModalVisible} onOk={this.editHandleOk} onCancel={this.editHandleCancel}>
-                    <AccountEdit />
+                <Modal title="账号修改" width={570} visible={editModalVisible} onOk={this.editHandleOk} onCancel={this.editHandleCancel}>
+                    <AccountEdit accountInfo={editAccountInfo}/>
                 </Modal>
             </div>
         );

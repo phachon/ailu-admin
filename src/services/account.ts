@@ -50,7 +50,7 @@ class Account {
     /**
      * accountList 账号列表
      */
-    accountList(pageSize :number, pageNum :number, keywords :{}): Promise<any> {
+    accountList(pageSize :number|undefined, pageNum :number|undefined, keywords :{}): Promise<any> {
         let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountList
         return httpRequest.get<any>(accountUpdateUrl, {
             page_size: pageSize,

@@ -1,12 +1,12 @@
-// import {Route, Routes} from "react-router-dom";
 import React from "react";
 import {Layout, Spin} from "antd";
 import FrameFooter from "./footer";
 import FrameSidebar from "./sidebar";
 import FrameHeader from "./header";
-import './home.css'
 import FrameBreadcrumb from "./breadcrumb";
 import {Outlet} from "react-router-dom";
+import './home.css'
+import AccountAdd from "../account/add";
 
 class FrameHome extends React.Component<any, any> {
 

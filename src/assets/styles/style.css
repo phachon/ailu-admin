@@ -2,6 +2,7 @@
  * common css style
  * create by phachon
  */
+@import '~antd/dist/antd.css';
 
 .panel {
     /*background-color: #fff;*/
