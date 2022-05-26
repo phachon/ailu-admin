@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Result, Button} from "antd";
 
-class Page404 extends Component<any, any> {
+class Error404 extends Component<any, any> {
     render() {
         return (
             <>
@@ -16,4 +16,4 @@ class Page404 extends Component<any, any> {
     }
 }
 
-export default Page404;
+export default Error404;

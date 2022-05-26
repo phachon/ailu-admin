@@ -14,7 +14,7 @@ import AccountService from "../../services/account";
 import {
     FormOutlined, StopOutlined,
 } from '@ant-design/icons';
-import AccountEdit from "./edit";
+import AccountEdit from "./AccountEdit";
 
 interface AccountListState {
     tableLoading: boolean

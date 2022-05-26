@@ -1,12 +1,12 @@
 import {ReactNode} from "react";
-import Login from "../pages/login/login";
-import ProfileInfo from "../pages/profile/info";
-import ProfileRepass from "../pages/profile/repass";
-import AccountAdd from "../pages/account/add";
-import AccountList from "../pages/account/list";
-import Page404 from "../pages/Page404";
+import Login from "../pages/Login/Login";
+import ProfileInfo from "../pages/Profile/ProfileInfo";
+import ProfileRepass from "../pages/Profile/ProfileRepass";
+import AccountAdd from "../pages/Account/AccountAdd";
+import AccountList from "../pages/Account/AccountList";
+import Error404 from "../pages/Error/Error404";
+import FrameHome from "../pages/Frame/FrameHome";
 import {LoginTokenStore} from "../store";
-import FrameHome from "../pages/frame/home";
 
 function home() {
     if (LoginTokenStore.checkTokenExpire()) {
@@ -51,7 +51,7 @@ const AdminRouters :IRouter[] = [
                 path: "/account/list", key: "account_list", component: <AccountList />
             },
             {
-                path: "*", key: "page_404", component: <Page404 />
+                path: "*", key: "error_404", component: <Error404 />
             }
         ]
     }
