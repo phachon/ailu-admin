@@ -33,10 +33,14 @@ class AccountAdd extends React.Component<any, any> {
         return (
             <div className="panel">
                 <div className="panel-body" style={{marginTop: 18}}>
-                      <Form labelCol={{span:3}} wrapperCol={{span: 6}} name="basic" ref={this.formRef}
-                            onFinish={values => {
-                                this.onFinish(values)
-                            }}
+                      <Form
+                          labelCol={{span:3}}
+                          wrapperCol={{span: 6}}
+                          name="basic"
+                          ref={this.formRef}
+                          onFinish={values => {
+                              this.onFinish(values)
+                          }}
                           // onFinishFailed={this.onFinishFailed}
                       >
                           <Form.Item
@@ -82,7 +86,9 @@ class AccountAdd extends React.Component<any, any> {
                           >
                               <Input placeholder="请输入手机号码" />
                           </Form.Item>
-                          <Form.Item wrapperCol={{offset: 3}}>
+                          <Form.Item
+                              wrapperCol={{offset: 3}}
+                          >
                               <Button type="primary" htmlType="submit">保存</Button>
                           </Form.Item>
                       </Form>

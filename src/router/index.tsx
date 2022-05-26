@@ -8,7 +8,7 @@ import Error404 from "../pages/Error/Error404";
 import FrameHome from "../pages/Frame/FrameHome";
 import {LoginTokenStore} from "../store";
 
-function home() {
+function home() :ReactNode {
     if (LoginTokenStore.checkTokenExpire()) {
         return <FrameHome />;
     }

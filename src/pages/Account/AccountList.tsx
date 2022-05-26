@@ -55,9 +55,11 @@ class AccountList extends Component<any, AccountListState> {
             editAccountInfo: accountInfo
         })
     }
+
     editHandleOk = () => {
         message.success("修改成功")
     }
+
     editHandleCancel = () => {
         this.setState({
             editModalVisible: false,
@@ -109,22 +111,35 @@ class AccountList extends Component<any, AccountListState> {
         return (
             <div className="panel">
                 <div className="panel-body pdr0">
-                    <Form layout={"inline"} style={{justifyContent: "end"}}
-                          onFinish={values => {
-                              this.onSearch(values)
-                          }}
+                    <Form
+                        layout={"inline"}
+                        style={{justifyContent: "end"}}
+                        onFinish={values => {
+                            this.onSearch(values)
+                        }}
                     >
-                        <Form.Item name="status" label="状态">
+                        <Form.Item
+                            name="status"
+                            label="状态"
+                        >
                             <Select defaultValue="">
                                 <Select.Option value={""}>全部</Select.Option>
                                 <Select.Option value={"0"}>正常</Select.Option>
                                 <Select.Option value={"-1"}>禁用</Select.Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item name="account_name" label="账号名" style={{width: 260}}>
+                        <Form.Item
+                            name="account_name"
+                            label="账号名"
+                            style={{width: 260}}
+                        >
                             <Input placeholder="请输入账号名"/>
                         </Form.Item>
-                        <Form.Item name="given_name" label="昵称" style={{width: 260}}>
+                        <Form.Item
+                            name="given_name"
+                            label="昵称"
+                            style={{width: 260}}
+                        >
                             <Input placeholder="请输入昵称"/>
                         </Form.Item>
                         <Form.Item>
@@ -136,28 +151,61 @@ class AccountList extends Component<any, AccountListState> {
                     </Form>
                 </div>
                 <div className="panel-body">
-                    <Table bordered
+                    <Table
+                        bordered={true}
                         dataSource={accountList}
                         loading={tableLoading}
                         pagination={pagination}
                         onChange={this.onChange}
                         footer={()=> ''}
                     >
-                        <Table.Column title={"账号ID"} dataIndex="account_id" width={30} key={"account_id"} />
-                        <Table.Column title={"账号名"} dataIndex="name" key={"name"} />
-                        <Table.Column title={"昵称"} dataIndex="given_name" key={"given_name"} />
-                        <Table.Column title={"邮箱"} dataIndex="email" key={"email"} />
-                        <Table.Column title={"电话号"} dataIndex="phone" key={"phone"} />
-                        <Table.Column title={"手机号"} dataIndex="mobile" key={"mobile"} />
-                        <Table.Column title={"状态"} dataIndex="status" width={20} key={"status"} render={(status :number) => {
-                            return <div>{status === 0 ? <Tag color="blue">正常</Tag> : <Tag color="error">禁用</Tag>}</div>
-                        }} />
-                        <Table.Column title={"操作"} width={140} key={"action"} render={(accountInfo :AccountInfoType) => {
-                            return (
+                        <Table.Column
+                            title={"账号ID"}
+                            dataIndex="account_id"
+                            width={30}
+                            key={"account_id"}
+                        />
+                        <Table.Column
+                            title={"账号名"}
+                            dataIndex="name"
+                            key={"name"}
+                        />
+                        <Table.Column
+                            title={"昵称"}
+                            dataIndex="given_name"
+                            key={"given_name"}
+                        />
+                        <Table.Column
+                            title={"邮箱"}
+                            dataIndex="email"
+                            key={"email"}
+                        />
+                        <Table.Column
+                            title={"电话号"}
+                            dataIndex="phone"
+                            key={"phone"}
+                        />
+                        <Table.Column
+                            title={"手机号"}
+                            dataIndex="mobile"
+                            key={"mobile"}
+                        />
+                        <Table.Column
+                            title={"状态"}
+                            dataIndex="status"
+                            width={20}
+                            key={"status"}
+                            render={(status :number) => (
+                                <div>{status === 0 ? <Tag color="blue">正常</Tag> : <Tag color="error">禁用</Tag>}</div>
+                            )}
+                        />
+                        <Table.Column
+                            title={"操作"}
+                            width={140}
+                            key={"action"}
+                            render={(accountInfo: AccountInfoType) => (
                                 <span>
-                                   <a onClick={() => {
-                                       this.editClick(accountInfo)
-                                   }}><FormOutlined /> 修改 </a>
+                                    <a onClick={() => this.editClick(accountInfo)}><FormOutlined/> 修改</a>
                                     <Popconfirm
                                         title="确定要禁用吗?"
                                         onConfirm={() => {
@@ -167,15 +215,21 @@ class AccountList extends Component<any, AccountListState> {
                                         okText="确定"
                                         cancelText="取消"
                                     >
-                                    <a href="#"><StopOutlined /> 禁用 </a>
+                                    <a href="#"><StopOutlined/> 禁用 </a>
                                 </Popconfirm>
                                 </span>
-                            )
-                        }} />
+                            )}
+                        />
                     </Table>
                 </div>
-                <Modal title="账号修改" width={570} visible={editModalVisible} onOk={this.editHandleOk} onCancel={this.editHandleCancel}>
-                    <AccountEdit accountInfo={editAccountInfo}/>
+                <Modal
+                    title="账号修改"
+                    width={570}
+                    visible={editModalVisible}
+                    onOk={this.editHandleOk}
+                    onCancel={this.editHandleCancel}
+                >
+                    <AccountEdit accountInfo={editAccountInfo} />
                 </Modal>
             </div>
         );

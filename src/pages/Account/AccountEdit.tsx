@@ -34,16 +34,19 @@ class AccountEdit extends Component<AccountEditProps, any> {
         return (
             <div className="panel">
                 <div className="panel-body ">
-                    <Form labelCol={{span:4}} name="basic" ref={this.formRef}
-                          onFinish={values => {
-                              this.onFinish(values)
-                          }}
-                          initialValues={
-                              {...this.props.accountInfo}
-                          }
+                    <Form
+                        labelCol={{span:4}}
+                        name="basic"
+                        ref={this.formRef}
+                        onFinish={values => {
+                            this.onFinish(values)
+                        }}
+                        initialValues={
+                            {...this.props.accountInfo}
+                        }
                         // onFinishFailed={this.onFinishFailed}
                     >
-                        <Form.Item shouldUpdate={true}
+                        <Form.Item
                             label="账号名"
                             name="name"
                             rules={[
@@ -56,7 +59,7 @@ class AccountEdit extends Component<AccountEditProps, any> {
                             <Input placeholder="请输入账号名"  />
                         </Form.Item>
 
-                        <Form.Item shouldUpdate
+                        <Form.Item
                             label="昵称"
                             name="given_name"
                             rules={[
@@ -68,19 +71,19 @@ class AccountEdit extends Component<AccountEditProps, any> {
                         >
                             <Input placeholder="请输入昵称" />
                         </Form.Item>
-                        <Form.Item shouldUpdate
+                        <Form.Item
                             label="邮箱"
                             name="email"
                         >
                             <Input placeholder="请输入邮箱地址：xxx@xxx.com" />
                         </Form.Item>
-                        <Form.Item shouldUpdate
+                        <Form.Item
                             label="电话号"
                             name="phone"
                         >
                             <Input placeholder="请输入电话号码" />
                         </Form.Item>
-                        <Form.Item shouldUpdate
+                        <Form.Item
                             label="手机号"
                             name="mobile"
                         >
