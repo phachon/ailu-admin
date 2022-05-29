@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, ReactNode} from 'react';
 import {
     Input,
     Table,
@@ -56,19 +56,26 @@ class AccountList extends Component<any, AccountListState> {
         })
     }
 
-    editHandleOk = () => {
-        message.success("修改成功")
-    }
-
     editHandleCancel = () => {
         this.setState({
             editModalVisible: false,
         })
     }
 
-    confirmDelete(accountInfo :AccountInfoType) {
-        console.log(accountInfo)
-        message.success('删除成功');
+    editCallback = () => {
+        this.setState({
+            editModalVisible: false,
+        })
+    }
+
+    confirmForbid(accountInfo :AccountInfoType) {
+        AccountService.accountUpdateStatus(accountInfo.account_id, -1).then(
+            () => {
+                message.success("禁用成功", 1).then(
+                    () => window.location.reload()
+                )
+            }
+        )
     }
 
     onChange = (pageConfig :any, filters :any, sorter :any) => {
@@ -195,9 +202,15 @@ class AccountList extends Component<any, AccountListState> {
                             dataIndex="status"
                             width={20}
                             key={"status"}
-                            render={(status :number) => (
-                                <div>{status === 0 ? <Tag color="blue">正常</Tag> : <Tag color="error">禁用</Tag>}</div>
-                            )}
+                            render={(status :number) => {
+                                if(status === 0){
+                                    return <Tag color="blue">正常</Tag>
+                                }else if(status === -1){
+                                    return <Tag color="error">禁用</Tag>
+                                }else {
+                                    return <Tag color="error">未知</Tag>
+                                }
+                            }}
                         />
                         <Table.Column
                             title={"操作"}
@@ -205,18 +218,17 @@ class AccountList extends Component<any, AccountListState> {
                             key={"action"}
                             render={(accountInfo: AccountInfoType) => (
                                 <span>
-                                    <a onClick={() => this.editClick(accountInfo)}><FormOutlined/> 修改</a>
+                                    <a onClick={() => this.editClick(accountInfo)}><FormOutlined/> 修改 </a>
                                     <Popconfirm
                                         title="确定要禁用吗?"
                                         onConfirm={() => {
-                                            this.confirmDelete(accountInfo)
+                                            this.confirmForbid(accountInfo)
                                         }}
-                                        // onCancel={cancel}
                                         okText="确定"
                                         cancelText="取消"
                                     >
-                                    <a href="#"><StopOutlined/> 禁用 </a>
-                                </Popconfirm>
+                                        <a><StopOutlined/> 禁用</a>
+                                    </Popconfirm>
                                 </span>
                             )}
                         />
@@ -226,10 +238,10 @@ class AccountList extends Component<any, AccountListState> {
                     title="账号修改"
                     width={570}
                     visible={editModalVisible}
-                    onOk={this.editHandleOk}
                     onCancel={this.editHandleCancel}
+                    footer={null}
                 >
-                    <AccountEdit accountInfo={editAccountInfo} />
+                    <AccountEdit accountInfo={editAccountInfo} editCallback={this.editCallback} />
                 </Modal>
             </div>
         );

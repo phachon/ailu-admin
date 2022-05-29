@@ -4,7 +4,8 @@ import AccountService from "../../services/account";
 import {AccountInfoType} from "../../store/types/account";
 
 interface AccountEditProps {
-    accountInfo? :AccountInfoType
+    accountInfo?: AccountInfoType
+    editCallback: () => void
 }
 
 class AccountEdit extends Component<AccountEditProps, any> {
@@ -19,14 +20,16 @@ class AccountEdit extends Component<AccountEditProps, any> {
     onFinish(values: any) {
         AccountService.accountUpdate(values).then(
             (res)  => {
-                message.success("修改成功", () => {
-                    window.location.href = `/account/list`
-                });
+                message.success("修改成功", 1).then(
+                    () => {
+                        this.props.editCallback()
+                        window.location.reload()
+                    }
+                );
             }
         ).catch((e) => {
             console.log(e)
         })
-        console.log(values)
     }
 
     render() {
@@ -47,6 +50,17 @@ class AccountEdit extends Component<AccountEditProps, any> {
                         // onFinishFailed={this.onFinishFailed}
                     >
                         <Form.Item
+                            label="账号id"
+                            name="account_id"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <Input disabled placeholder="请输入账号名"  />
+                        </Form.Item>
+                        <Form.Item
                             label="账号名"
                             name="name"
                             rules={[
@@ -56,7 +70,7 @@ class AccountEdit extends Component<AccountEditProps, any> {
                                 },
                             ]}
                         >
-                            <Input placeholder="请输入账号名"  />
+                            <Input disabled placeholder="请输入账号名"  />
                         </Form.Item>
 
                         <Form.Item

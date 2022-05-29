@@ -1,6 +1,6 @@
 import React, {RefObject} from "react";
 import {Button, Form, Input, message} from "antd";
-import AccountService from "../../services/account";
+import ProfileService from "../../services/profile";
 import {AccountInfoType} from "../../store/types/account";
 import {LayoutForm, LayoutFormButton} from "../../config/layout";
 
@@ -14,7 +14,7 @@ class ProfileInfo extends React.Component<any, any> {
     }
 
     onFinish(values: any) {
-        AccountService.accountUpdate(values).then(
+        ProfileService.profileUpdate(values).then(
             (res)  => {
                 message.success("保存成功", () => {
                     window.location.href = `${window.location.href}`
@@ -34,7 +34,7 @@ class ProfileInfo extends React.Component<any, any> {
 
     componentDidMount() {
         // 获取账号信息
-        AccountService.getAccountInfo().then(
+        ProfileService.getProfileInfo().then(
             (res: AccountInfoType) => {
                 this.formRef.current.setFieldsValue(res)
             }

@@ -1,6 +1,6 @@
 import React, {Component, RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
-import AccountService from "../../services/account";
+import ProfileService from "../../services/profile";
 import {LayoutForm, LayoutFormButton} from "../../config/layout";
 
 class ProfileRepass extends Component {
@@ -19,7 +19,7 @@ class ProfileRepass extends Component {
             message.error("确认密码与新密码不一致")
             return
         }
-        AccountService.accountUpdatePass(values).then(
+        ProfileService.profileRepass(values).then(
             (res)  => {
                 message.success("保存成功", () => {
                     window.location.href = `${window.location.href}`

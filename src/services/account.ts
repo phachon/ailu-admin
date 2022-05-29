@@ -5,7 +5,7 @@ import {AccountInfoType} from "../store/types/account";
 const accountUrl = {
     accountInfo: "/admin/account/info",
     accountUpdate: "/admin/account/update",
-    accountUpdatePass: "/admin/account/update_password",
+    accountUpdateStatus: "/admin/account/update_status",
     accountAdd: "/admin/account/add",
     accountList: "/admin/account/list",
 }
@@ -18,9 +18,11 @@ class Account {
     /**
      * getAccountInfo 获取账号信息
      */
-    getAccountInfo(): Promise<AccountInfoType> {
+    getAccountInfo(accountId :bigint): Promise<AccountInfoType> {
         let accountInfoUrl = getUrlConfig().proxyUrl + accountUrl.accountInfo
-        return httpRequest.get<AccountInfoType>(accountInfoUrl, {})
+        return httpRequest.get<AccountInfoType>(accountInfoUrl, {
+            account_id: accountId,
+        })
     }
 
     /**
@@ -29,14 +31,6 @@ class Account {
     accountUpdate(accountInfo :{name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
         let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdate
         return httpRequest.post<any>(accountUpdateUrl, {}, accountInfo)
-    }
-
-    /**
-     * accountUpdatePass 账号更新密码
-     */
-    accountUpdatePass(passInfo :{old_pwd :string, new_pwd: string, confirm_pwd: string}): Promise<any> {
-        let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdatePass
-        return httpRequest.post<any>(accountUpdateUrl, {}, passInfo)
     }
 
     /**
@@ -56,6 +50,17 @@ class Account {
             page_size: pageSize,
             page_num: pageNum,
             keywords: JSON.stringify(keywords),
+        })
+    }
+
+    /**
+     * accountUpdate 账号更新
+     */
+    accountUpdateStatus(accountId :bigint, status :number): Promise<any> {
+        let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdateStatus
+        return httpRequest.post<any>(accountUpdateUrl, {}, {
+            account_id: accountId,
+            status: status,
         })
     }
 }
