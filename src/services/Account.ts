@@ -65,5 +65,4 @@ class Account {
     }
 }
 
-const AccountService = new Account()
-export default AccountService
+export const AccountService = new Account()

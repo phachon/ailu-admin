@@ -1,6 +1,6 @@
 import React, {Component, RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
-import ProfileService from "../../services/profile";
+import {ProfileService} from "../../services/Profile";
 import {LayoutForm, LayoutFormButton} from "../../config/layout";
 
 class ProfileRepass extends Component {

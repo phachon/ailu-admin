@@ -10,7 +10,7 @@ import {
     Form, Button, TablePaginationConfig
 } from "antd";
 import {AccountInfoType, AccountListType} from "../../store/types/account";
-import AccountService from "../../services/account";
+import {AccountService} from "../../services/Account";
 import {
     FormOutlined, StopOutlined,
 } from '@ant-design/icons';

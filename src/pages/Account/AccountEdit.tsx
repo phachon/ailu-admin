@@ -1,6 +1,6 @@
 import React, {Component, RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
-import AccountService from "../../services/account";
+import {AccountService} from "../../services/Account";
 import {AccountInfoType} from "../../store/types/account";
 
 interface AccountEditProps {

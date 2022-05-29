@@ -1,8 +1,8 @@
 import React, {RefObject} from "react";
 import {Button, Form, Input, message} from "antd";
-import ProfileService from "../../services/profile";
-import {AccountInfoType} from "../../store/types/account";
+import {ProfileService} from "../../services/Profile";
 import {LayoutForm, LayoutFormButton} from "../../config/layout";
+import {ProfileInfoType} from "../../store/types/profile";
 
 class ProfileInfo extends React.Component<any, any> {
 
@@ -35,8 +35,8 @@ class ProfileInfo extends React.Component<any, any> {
     componentDidMount() {
         // 获取账号信息
         ProfileService.getProfileInfo().then(
-            (res: AccountInfoType) => {
-                this.formRef.current.setFieldsValue(res)
+            (res: ProfileInfoType) => {
+                this.formRef.current.setFieldsValue(res.account_info)
             }
         ).catch(e => {
             console.log(e)

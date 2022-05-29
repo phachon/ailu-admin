@@ -1,6 +1,7 @@
 import {getUrlConfig} from "../config/url";
 import httpRequest from "./http";
 import {AccountInfoType} from "../store/types/account";
+import {ProfileInfoType} from "../store/types/profile";
 
 const profileUrl = {
     profileInfo: "/admin/profile/info",
@@ -9,16 +10,16 @@ const profileUrl = {
 }
 
 /**
- * profile 个人中心服务
+ * Profile 个人中心服务
  */
-class profile {
+class Profile {
 
     /**
      * getProfileInfo 获取个人信息
      */
-    getProfileInfo(): Promise<AccountInfoType> {
+    getProfileInfo(): Promise<ProfileInfoType> {
         let profileInfoUrl = getUrlConfig().proxyUrl + profileUrl.profileInfo
-        return httpRequest.get<AccountInfoType>(profileInfoUrl, {})
+        return httpRequest.get<ProfileInfoType>(profileInfoUrl, {})
     }
 
     /**
@@ -38,5 +39,4 @@ class profile {
     }
 }
 
-const ProfileService = new profile()
-export default ProfileService
+export const ProfileService = new Profile()

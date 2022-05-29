@@ -1,6 +1,6 @@
 import React, {RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
-import AccountService from "../../services/account";
+import {AccountService} from "../../services/Account";
 
 class AccountAdd extends React.Component<any, any> {
 

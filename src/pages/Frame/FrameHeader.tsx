@@ -10,8 +10,14 @@ import {
 // @ts-ignore
 import logoImg from "../../assets/images/logo_2.png";
 import {LoginTokenStore} from "../../store";
+import {connect} from "react-redux";
+import {AdminState} from "../../store/states/AdminState";
 
 class FrameHeader extends React.Component<any, any> {
+
+    constructor(props: any) {
+        super(props);
+    }
 
     logout() {
         LoginTokenStore.removeToken() // 清除token
@@ -19,6 +25,7 @@ class FrameHeader extends React.Component<any, any> {
     }
 
     render () {
+        console.log(this.props)
         const menu = (
             <Menu mode="horizontal">
                 <Menu.Item icon={<EditOutlined />}>个人信息</Menu.Item>
@@ -49,7 +56,7 @@ class FrameHeader extends React.Component<any, any> {
                         </Menu>
                         <Dropdown overlay={menu} className="admin-header-dropdown">
                             <Menu theme="dark">
-                                <Menu.Item icon={<UserOutlined />}>phachon</Menu.Item>
+                                <Menu.Item icon={<UserOutlined />}>{this.props.accountInfo?.name}</Menu.Item>
                             </Menu>
                         </Dropdown>
                     </div>
@@ -59,4 +66,11 @@ class FrameHeader extends React.Component<any, any> {
     }
 }
 
-export default FrameHeader
+const mapStateToProps = (state: AdminState) => {
+    console.log("mapStateToProps:", state)
+    return {
+        ...state
+    }
+}
+
+export default connect(mapStateToProps, null)(FrameHeader)

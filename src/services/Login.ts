@@ -32,5 +32,4 @@ class Login {
 
 }
 
-const LoginService = new Login()
-export default LoginService
+export const LoginService = new Login()

@@ -5,10 +5,14 @@ import {ConfigProvider} from "antd";
 import RouterView from "./components/RouterView";
 import AdminRouters from "./router/index";
 import './assets/styles/style.css'
+import {Provider} from "react-redux";
+import {AdminStore} from "./store";
 
 ReactDOM.render(
-    <ConfigProvider locale={zh_CN}>
-        <RouterView routers={AdminRouters} />
-    </ConfigProvider>,
+    <Provider store={AdminStore}>
+        <ConfigProvider locale={zh_CN}>
+            <RouterView routers={AdminRouters} />
+        </ConfigProvider>
+    </Provider>,
     document.getElementById('root')
 )

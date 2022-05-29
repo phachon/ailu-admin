@@ -1,24 +1,42 @@
 import {Component} from "react";
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import LoginService from "../../services/login";
+import {LoginService} from "../../services/Login";
 import {LoginTokenStore} from "../../store";
 import {LoginResponseType} from "../../store/types/login";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
+import {LoginAction} from "../../store/actions/AdminAction";
+import {ProfileService} from "../../services/Profile";
+import {ProfileInfoType} from "../../store/types/profile";
+import {AdminState} from "../../store/states/AdminState";
+import { useNavigate } from 'react-router-dom'
 
 class LoginSystem extends Component<any, any> {
 
+    constructor(props: any) {
+        super(props);
+    }
+
     login(values: { account_name: string; password: string}) {
-        console.log(values)
+
         LoginService.systemLogin({
             account_name: values.account_name,
             password: values.password,
             verify_code: "mock",
         // 登录成功
-        }).then((res: LoginResponseType) => {
-            // redux =>
-            console.log(res.login_token)
-            LoginTokenStore.storageToken(res.login_token) // 设置 token
-            window.location.href = '/home'
+        }).then((loginInfo: LoginResponseType) => {
+            // 先 storage token
+            LoginTokenStore.storageToken(loginInfo.login_token)
+            // 获取账号 profile 信息
+            ProfileService.getProfileInfo().then((profileInfo: ProfileInfoType) => {
+                // redux dispatch
+                this.props.loginDispatch(profileInfo)
+                // window.location.href = '/'
+                // console.log(loginInfo.login_token)
+            }).catch(e => {
+                console.log("system login get profile catch: ", e)
+            })
         // 登录异常
         }).catch(e => {
             console.log("system login catch: ", e)
@@ -26,6 +44,7 @@ class LoginSystem extends Component<any, any> {
     }
 
     render() {
+        console.log("login props:", this.props)
         return (
             <Form
                 name="normal_login"
@@ -70,4 +89,22 @@ class LoginSystem extends Component<any, any> {
     }
 }
 
-export default LoginSystem
+const mapDispatchToProps = (dispatch :Dispatch) => {
+    return {
+        loginDispatch: (data: any) => {
+            LoginAction(dispatch, data)
+        }
+    }
+}
+//
+// const mapStateToProps = (state: AdminState) => {
+//     console.log("mapStateToProps:", state)
+//     return {
+//         ...state
+//     }
+//     // return {
+//     //     accountInfo: state.accountInfo
+//     // }
+// }
+
+export default connect(null, mapDispatchToProps)(LoginSystem)
