@@ -2,15 +2,14 @@ import {Component} from "react";
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {LoginService} from "../../services/Login";
-import {LoginTokenStore} from "../../store";
+import {LocalProfileInfoKey, LoginTokenStore, setLocalProfileInfo} from "../../store";
 import {LoginResponseType} from "../../store/types/login";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {LoginAction} from "../../store/actions/AdminAction";
 import {ProfileService} from "../../services/Profile";
 import {ProfileInfoType} from "../../store/types/profile";
-import {AdminState} from "../../store/states/AdminState";
-import { useNavigate } from 'react-router-dom'
+import LocalStore from "../../utils/LocalStore";
 
 class LoginSystem extends Component<any, any> {
 
@@ -32,7 +31,8 @@ class LoginSystem extends Component<any, any> {
             ProfileService.getProfileInfo().then((profileInfo: ProfileInfoType) => {
                 // redux dispatch
                 this.props.loginDispatch(profileInfo)
-                // window.location.href = '/'
+                window.location.href = '/'
+                // navigate("/")
                 // console.log(loginInfo.login_token)
             }).catch(e => {
                 console.log("system login get profile catch: ", e)
@@ -96,15 +96,5 @@ const mapDispatchToProps = (dispatch :Dispatch) => {
         }
     }
 }
-//
-// const mapStateToProps = (state: AdminState) => {
-//     console.log("mapStateToProps:", state)
-//     return {
-//         ...state
-//     }
-//     // return {
-//     //     accountInfo: state.accountInfo
-//     // }
-// }
 
 export default connect(null, mapDispatchToProps)(LoginSystem)
