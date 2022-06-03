@@ -1,6 +1,6 @@
 import {getUrlConfig} from "../config/url";
 import httpRequest from "./http";
-import {AccountInfoType} from "../store/types/account";
+import {AccountInfoType} from "../store/types/accountType";
 
 const accountUrl = {
     accountInfo: "/admin/account/info",

@@ -8,10 +8,11 @@ import {
     LoginOutlined,
 } from '@ant-design/icons';
 // @ts-ignore
-import logoImg from "../../assets/images/logo_2.png";
-import {LoginTokenStore} from "../../store";
+import logoImg from "../../../assets/images/logo_2.png";
+import {LoginTokenStore} from "../../../store";
 import {connect} from "react-redux";
-import {AdminState} from "../../store/states/AdminState";
+import {AdminState} from "../../../store/states/adminState";
+import {removeLocalProfileInfo} from "../../../store/local";
 
 class FrameHeader extends React.Component<any, any> {
 
@@ -21,6 +22,7 @@ class FrameHeader extends React.Component<any, any> {
 
     logout() {
         LoginTokenStore.removeToken() // 清除token
+        removeLocalProfileInfo() // 移除用户信息
         window.location.href = "/"
     }
 

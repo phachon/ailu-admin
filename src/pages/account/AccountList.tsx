@@ -9,12 +9,12 @@ import {
     Select,
     Form, Button, TablePaginationConfig
 } from "antd";
-import {AccountInfoType, AccountListType} from "../../store/types/account";
+import {AccountInfoType, AccountListType} from "../../store/types/accountType";
 import {AccountService} from "../../services/Account";
 import {
     FormOutlined, StopOutlined,
 } from '@ant-design/icons';
-import AccountEdit from "./AccountEdit";
+import AccountEdit from "./component/AccountEdit";
 
 interface AccountListState {
     tableLoading: boolean
@@ -128,8 +128,9 @@ class AccountList extends Component<any, AccountListState> {
                         <Form.Item
                             name="status"
                             label="状态"
+                            initialValue={""}
                         >
-                            <Select defaultValue="">
+                            <Select>
                                 <Select.Option value={""}>全部</Select.Option>
                                 <Select.Option value={"0"}>正常</Select.Option>
                                 <Select.Option value={"-1"}>禁用</Select.Option>
@@ -159,6 +160,7 @@ class AccountList extends Component<any, AccountListState> {
                 </div>
                 <div className="panel-body">
                     <Table
+                        rowKey={"account_id"}
                         bordered={true}
                         dataSource={accountList}
                         loading={tableLoading}
@@ -219,6 +221,7 @@ class AccountList extends Component<any, AccountListState> {
                             render={(accountInfo: AccountInfoType) => (
                                 <span>
                                     <a onClick={() => this.editClick(accountInfo)}><FormOutlined/> 修改 </a>
+                                    {accountInfo.status === 0 &&
                                     <Popconfirm
                                         title="确定要禁用吗?"
                                         onConfirm={() => {
@@ -229,6 +232,19 @@ class AccountList extends Component<any, AccountListState> {
                                     >
                                         <a><StopOutlined/> 禁用</a>
                                     </Popconfirm>
+                                    }
+                                    {accountInfo.status === -1 &&
+                                        <Popconfirm
+                                            title="确定要恢复吗?"
+                                            onConfirm={() => {
+                                                this.confirmForbid(accountInfo)
+                                            }}
+                                            okText="确定"
+                                            cancelText="取消"
+                                        >
+                                            <a><StopOutlined/> 恢复</a>
+                                        </Popconfirm>
+                                    }
                                 </span>
                             )}
                         />

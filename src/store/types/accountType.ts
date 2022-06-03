@@ -1,4 +1,4 @@
-import {PageInfoType} from "./response";
+import {PageInfoType} from "./baseType";
 
 /**
  * AccountInfoType 账号返回结构

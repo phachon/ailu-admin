@@ -2,7 +2,7 @@ import React, {RefObject} from "react";
 import {Button, Form, Input, message} from "antd";
 import {ProfileService} from "../../services/Profile";
 import {LayoutForm, LayoutFormButton} from "../../config/layout";
-import {ProfileInfoType} from "../../store/types/profile";
+import {ProfileInfoType} from "../../store/types/profileType";
 
 class ProfileInfo extends React.Component<any, any> {
 
@@ -54,6 +54,17 @@ class ProfileInfo extends React.Component<any, any> {
                         }}
                         // onFinishFailed={this.onFinishFailed}
                     >
+                        <Form.Item
+                            label="账号ID"
+                            name="account_id"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <Input disabled  />
+                        </Form.Item>
                         <Form.Item
                             label="账号名"
                             name="name"

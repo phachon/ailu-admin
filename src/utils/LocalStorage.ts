@@ -10,14 +10,14 @@ function parse<T>(value: string): T | null {
     }
 }
 
-interface ILocalStore {
-    setValue(key: string, data: unknown): ILocalStore;
+interface ILocalStorage {
+    setValue(key: string, data: unknown): ILocalStorage;
     getValue<T>(key: string, defaultValue?: T): T | null;
-    removeValue(key: string): ILocalStore;
+    removeValue(key: string): ILocalStorage;
 }
 
-const LocalStore: ILocalStore = {
-    setValue(key: string, data: unknown): ILocalStore {
+const LocalStorage: ILocalStorage = {
+    setValue(key: string, data: unknown): ILocalStorage {
         localStorage.setItem(key, stringify(data))
         return this
     },
@@ -28,10 +28,10 @@ const LocalStore: ILocalStore = {
         const data = parse<T>(value)
         return data
     },
-    removeValue(key: string): ILocalStore {
+    removeValue(key: string): ILocalStorage {
         localStorage.removeItem(key)
         return this
     }
 }
 
-export default LocalStore
+export default LocalStorage

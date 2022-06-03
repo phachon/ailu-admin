@@ -1,8 +1,8 @@
 import React from "react";
 import {Col, Row, Tabs} from "antd";
 import { GithubOutlined, LikeOutlined } from '@ant-design/icons';
-import LoginSystem from "./LoginSystem";
-import LoginDomain from "./LoginDomain";
+import LoginSystem from "./component/LoginSystem";
+import LoginDomain from "./component/LoginDomain";
 import "./login.css";
 // @ts-ignore
 import logoImg from '../../assets/images/logo_2.png';

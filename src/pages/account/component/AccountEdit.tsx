@@ -1,7 +1,7 @@
 import React, {Component, RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
-import {AccountService} from "../../services/Account";
-import {AccountInfoType} from "../../store/types/account";
+import {AccountService} from "../../../services/Account";
+import {AccountInfoType} from "../../../store/types/accountType";
 
 interface AccountEditProps {
     accountInfo?: AccountInfoType
@@ -32,11 +32,19 @@ class AccountEdit extends Component<AccountEditProps, any> {
         })
     }
 
-    render() {
+    componentDidMount() {
         this.formRef.current?.setFieldsValue(this.props.accountInfo)
+    }
+
+    componentDidUpdate(prevProps: Readonly<AccountEditProps>, prevState: Readonly<any>, snapshot?: any) {
+
+        this.formRef.current?.setFieldsValue(prevProps.accountInfo)
+    }
+
+    render() {
         return (
             <div className="panel">
-                <div className="panel-body ">
+                <div className="panel-body">
                     <Form
                         labelCol={{span:4}}
                         name="basic"
@@ -58,7 +66,7 @@ class AccountEdit extends Component<AccountEditProps, any> {
                                 },
                             ]}
                         >
-                            <Input disabled placeholder="请输入账号名"  />
+                            <Input disabled placeholder="请输入账号名" />
                         </Form.Item>
                         <Form.Item
                             label="账号名"

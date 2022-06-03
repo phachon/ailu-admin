@@ -1,7 +1,7 @@
 import {getUrlConfig} from "../config/url";
 import httpRequest from "./http";
-import {AccountInfoType} from "../store/types/account";
-import {ProfileInfoType} from "../store/types/profile";
+import {AccountInfoType} from "../store/types/accountType";
+import {ProfileInfoType} from "../store/types/profileType";
 
 const profileUrl = {
     profileInfo: "/admin/profile/info",

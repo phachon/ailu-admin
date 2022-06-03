@@ -32,7 +32,7 @@ class LoginDomain extends Component<any, any>{
                     <Form.Item name="remember" valuePropName="checked" noStyle>
                         <Checkbox>自动登录</Checkbox>
                     </Form.Item>
-                    <a className="login-form-forgot" href=""> 忘记密码？</a>
+                    <a className="login-form-forgot" href="src/pages/login/component/LoginDomain"> 忘记密码？</a>
                 </Form.Item>
                 <Form.Item>
                     <Button size="large" type="primary" htmlType="submit" className="login-form-button" block>

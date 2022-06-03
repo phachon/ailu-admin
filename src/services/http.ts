@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios'
 import qs from 'qs'
 import {LoginTokenStore} from "../store";
 import {getUUId} from "../utils/utils";
-import {BaseResponse} from "../store/types/response";
+import {BaseResponse} from "../store/types/baseType";
 
 const httpService = axios.create({
     timeout: 2 * 60 * 1000, // 默认请求超时时间

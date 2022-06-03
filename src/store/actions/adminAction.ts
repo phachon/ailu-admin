@@ -1,4 +1,4 @@
-import {AdminType} from "../types/admin";
+import {AdminType} from "../types/adminType";
 import {Dispatch} from "redux";
 
 export interface AdminAction {

@@ -1,9 +1,9 @@
 import React from "react";
 import {Layout, Spin} from "antd";
-import FrameFooter from "./FrameFooter";
-import FrameSidebar from "./FrameSidebar";
-import FrameHeader from "./FrameHeader";
-import FrameBreadcrumb from "./FrameBreadcrumb";
+import FrameFooter from "./component/FrameFooter";
+import FrameSidebar from "./component/FrameSidebar";
+import FrameHeader from "./component/FrameHeader";
+import FrameBreadcrumb from "./component/FrameBreadcrumb";
 import {Outlet} from "react-router-dom";
 import './home.css'
 

@@ -1,6 +1,6 @@
 import httpRequest from "./http";
 import {getUrlConfig} from "../config/url";
-import {LoginResponseType} from "../store/types/login";
+import {LoginResponseType} from "../store/types/loginType";
 
 const authUrl = {
     systemLogin: "/admin/auth/login",

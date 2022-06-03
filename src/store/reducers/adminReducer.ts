@@ -1,7 +1,7 @@
-import {AdminState} from "../states/AdminState";
-import {AdminAction} from "../actions/AdminAction";
-import {AdminType} from "../types/admin";
-import {getLocalProfileInfo, setLocalProfileInfo} from "../index";
+import {AdminState} from "../states/adminState";
+import {AdminAction} from "../actions/adminAction";
+import {AdminType} from "../types/adminType";
+import {getLocalProfileInfo, setLocalProfileInfo} from "../local";
 
 const profileInfo = getLocalProfileInfo()
 

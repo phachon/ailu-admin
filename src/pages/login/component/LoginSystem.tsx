@@ -1,15 +1,14 @@
 import {Component} from "react";
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import {LoginService} from "../../services/Login";
-import {LocalProfileInfoKey, LoginTokenStore, setLocalProfileInfo} from "../../store";
-import {LoginResponseType} from "../../store/types/login";
+import {LoginService} from "../../../services/Login";
+import {LoginResponseType} from "../../../store/types/loginType";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {LoginAction} from "../../store/actions/AdminAction";
-import {ProfileService} from "../../services/Profile";
-import {ProfileInfoType} from "../../store/types/profile";
-import LocalStore from "../../utils/LocalStore";
+import {LoginAction} from "../../../store/actions/adminAction";
+import {ProfileService} from "../../../services/Profile";
+import {ProfileInfoType} from "../../../store/types/profileType";
+import {LoginTokenStore} from "../../../store";
 
 class LoginSystem extends Component<any, any> {
 
@@ -77,7 +76,7 @@ class LoginSystem extends Component<any, any> {
                     <Form.Item name="remember" valuePropName="checked" noStyle>
                         <Checkbox>自动登录</Checkbox>
                     </Form.Item>
-                    <a className="login-form-forgot" href="/"> 忘记密码？</a>
+                    <a className="login-form-forgot" href="/src/pages"> 忘记密码？</a>
                 </Form.Item>
                 <Form.Item>
                     <Button size="large" type="primary" htmlType="submit" className="login-form-button" block>
