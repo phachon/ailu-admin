@@ -1,5 +1,3 @@
-export enum AdminType {
-    LOADING,
-    LOGIN,
-    LOGOUT,
+export const AdminType = {
+
 }

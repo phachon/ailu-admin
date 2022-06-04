@@ -1,14 +1,11 @@
 import {Component} from "react";
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import {LoginService} from "../../../services/Login";
-import {LoginResponseType} from "../../../store/types/loginType";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
+import {LoginService} from "../../../services/Login";
+import {LoginResponseType} from "../../../store/types/loginType";
 import {LoginAction} from "../../../store/actions/adminAction";
-import {ProfileService} from "../../../services/Profile";
-import {ProfileInfoType} from "../../../store/types/profileType";
-import {LoginTokenStore} from "../../../store";
 
 class LoginSystem extends Component<any, any> {
 
@@ -17,25 +14,14 @@ class LoginSystem extends Component<any, any> {
     }
 
     login(values: { account_name: string; password: string}) {
-
         LoginService.systemLogin({
             account_name: values.account_name,
             password: values.password,
             verify_code: "mock",
         // 登录成功
         }).then((loginInfo: LoginResponseType) => {
-            // 先 storage token
-            LoginTokenStore.storageToken(loginInfo.login_token)
-            // 获取账号 profile 信息
-            ProfileService.getProfileInfo().then((profileInfo: ProfileInfoType) => {
-                // redux dispatch
-                this.props.loginDispatch(profileInfo)
-                window.location.href = '/'
-                // navigate("/")
-                // console.log(loginInfo.login_token)
-            }).catch(e => {
-                console.log("system login get profile catch: ", e)
-            })
+            this.props.loginDispatch(loginInfo)  // redux dispatch
+            window.location.href = '/'
         // 登录异常
         }).catch(e => {
             console.log("system login catch: ", e)
@@ -88,7 +74,7 @@ class LoginSystem extends Component<any, any> {
     }
 }
 
-const mapDispatchToProps = (dispatch :Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
         loginDispatch: (data: any) => {
             LoginAction(dispatch, data)

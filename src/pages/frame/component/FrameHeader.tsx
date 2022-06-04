@@ -7,12 +7,12 @@ import {
     EditOutlined,
     LoginOutlined,
 } from '@ant-design/icons';
+import {connect} from "react-redux";
 // @ts-ignore
 import logoImg from "../../../assets/images/logo_2.png";
-import {LoginTokenStore} from "../../../store";
-import {connect} from "react-redux";
 import {AdminState} from "../../../store/states/adminState";
-import {removeLocalProfileInfo} from "../../../store/local";
+import {Dispatch} from "redux";
+import {LogoutAction} from "../../../store/actions/adminAction";
 
 class FrameHeader extends React.Component<any, any> {
 
@@ -21,19 +21,17 @@ class FrameHeader extends React.Component<any, any> {
     }
 
     logout() {
-        LoginTokenStore.removeToken() // 清除token
-        removeLocalProfileInfo() // 移除用户信息
+        this.props.logout() // dispatch redux
         window.location.href = "/"
     }
 
     render () {
-        console.log(this.props)
         const menu = (
             <Menu mode="horizontal">
                 <Menu.Item icon={<EditOutlined />}>个人信息</Menu.Item>
                 <Menu.Item icon={<EditOutlined />}>修改密码</Menu.Item>
                 <Menu.Divider />
-                <Menu.Item icon={<LoginOutlined />} onClick={this.logout}>退出登录</Menu.Item>
+                <Menu.Item icon={<LoginOutlined />} onClick={ ()=> this.logout()}>退出登录</Menu.Item>
             </Menu>
         )
 
@@ -69,10 +67,15 @@ class FrameHeader extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: AdminState) => {
-    console.log("mapStateToProps:", state)
     return {
-        ...state
+        ...state.profileState
     }
 }
 
-export default connect(mapStateToProps, null)(FrameHeader)
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        logout: () => LogoutAction(dispatch, null)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FrameHeader)

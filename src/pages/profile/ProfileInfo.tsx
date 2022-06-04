@@ -2,11 +2,14 @@ import React, {RefObject} from "react";
 import {Button, Form, Input, message} from "antd";
 import {ProfileService} from "../../services/Profile";
 import {LayoutForm, LayoutFormButton} from "../../config/layout";
-import {ProfileInfoType} from "../../store/types/profileType";
+import {connect} from "react-redux";
+import {AdminState} from "../../store/states/adminState";
+import {Dispatch} from "redux";
+import {ProfileAccountUpdateAction} from "../../store/actions/adminAction";
 
 class ProfileInfo extends React.Component<any, any> {
 
-    formRef :RefObject<any>
+    formRef: RefObject<any>
 
     constructor(props: any) {
         super(props);
@@ -14,33 +17,20 @@ class ProfileInfo extends React.Component<any, any> {
     }
 
     onFinish(values: any) {
-        ProfileService.profileUpdate(values).then(
-            (res)  => {
-                message.success("保存成功", () => {
-                    window.location.href = `${window.location.href}`
-                });
-            }
-        ).catch((e) => {
+        ProfileService.profileUpdate(values).then(() => {
+            this.props.profileAccountUpdate(values); // dispatch redux
+            message.success("保存成功", 1, () => {
+                window.location.href = `${window.location.href}`
+            })
+        }).catch((e) => {
             console.log(e)
             message.error("保存失败")
         })
         console.log(values)
     }
 
-    onFinishFailed() {
-        message.error("保存失败", 10).then()
-        console.log("err")
-    }
-
     componentDidMount() {
-        // 获取账号信息
-        ProfileService.getProfileInfo().then(
-            (res: ProfileInfoType) => {
-                this.formRef.current.setFieldsValue(res.account_info)
-            }
-        ).catch(e => {
-            console.log(e)
-        })
+        this.formRef.current.setFieldsValue(this.props.accountInfo)
     }
 
     render() {
@@ -130,4 +120,16 @@ class ProfileInfo extends React.Component<any, any> {
     }
 }
 
-export default ProfileInfo
+const mapStateToProps = (state: AdminState) => {
+    return {
+        ...state.profileState
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+      profileAccountUpdate: (data: any) => ProfileAccountUpdateAction(dispatch, data)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo)

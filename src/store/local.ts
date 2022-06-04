@@ -1,21 +1,30 @@
-import {ProfileInfoType} from "./types/profileType";
 import LocalStorage from "../utils/LocalStorage";
+import Token from "../utils/Token";
+import {AccountInfoType} from "./types/accountType";
 
-// LocalProfileInfoKey 本地存储的 key
-export const LocalProfileInfoKey = "AL_ADMIN_PROFILE_INFO"
+// LocalLoginTokenKey 登录 token 本地存储的 key
+const LocalLoginTokenKey = "AL_ADMIN_LOGIN_TOKEN"
+// LocalProfileAccountKey 本地存储的 key
+const LocalProfileAccountKey = "AL_ADMIN_PROFILE_ACCOUNT"
 
-// setLocalProfileInfo 存储 profile info
-export const setLocalProfileInfo = (profileInfo :ProfileInfoType) => {
-    LocalStorage.setValue(LocalProfileInfoKey, profileInfo)
+export const LoginTokenStore = new Token(LocalLoginTokenKey, 10 * 60 * 60 * 1000)
+
+// setProfileAccountInfo 存储 profile 账号信息
+export const setProfileAccountInfo = (accountInfo :AccountInfoType) => {
+    LocalStorage.setValue(LocalProfileAccountKey, accountInfo)
 }
 
-// getLocalProfileInfo 获取 profile info
-export const getLocalProfileInfo = (): ProfileInfoType|null => {
-    return LocalStorage.getValue<ProfileInfoType>(LocalProfileInfoKey)
+// getProfileAccountInfo 获取 profile 账号信息
+export const getProfileAccountInfo = (): AccountInfoType|undefined => {
+    const profileAccountInfo  = LocalStorage.getValue<AccountInfoType>(LocalProfileAccountKey)
+    if (profileAccountInfo == null) {
+        return undefined
+    }
+    return profileAccountInfo
 }
 
-// removeLocalProfileInfo 清除个人资料
-export const removeLocalProfileInfo = (): void => {
-    LocalStorage.removeValue(LocalProfileInfoKey)
+// removeProfileAccountInfo 清除 profile 账号信息
+export const removeProfileAccountInfo = (): void => {
+    LocalStorage.removeValue(LocalProfileAccountKey)
 }
 

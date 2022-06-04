@@ -6,7 +6,7 @@ import AccountAdd from "../pages/account/AccountAdd";
 import AccountList from "../pages/account/AccountList";
 import Error404 from "../pages/error/Error404";
 import FrameHome from "../pages/frame/FrameHome";
-import {LoginTokenStore} from "../store";
+import {LoginTokenStore} from "../store/local";
 
 function home() :ReactNode {
     if (LoginTokenStore.checkTokenExpire()) {

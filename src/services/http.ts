@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios'
 import qs from 'qs'
-import {LoginTokenStore} from "../store";
+import {LoginTokenStore} from "../store/local";
 import {getUUId} from "../utils/utils";
 import {BaseResponse} from "../store/types/baseType";
 
