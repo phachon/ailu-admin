@@ -54,14 +54,14 @@ html,body,#root{
 
 .admin-header-right {
     display: flex;
-    padding: 0 6px;
+    padding: 0 12px;
     transition: all .3s;
 }
 
 .admin-header-action {
     cursor: pointer;
     padding: 0 12px;
-    margin-right: 6px;
+    /*margin-right: 6px;*/
     color: #fff;
     transition: all .3s;
 }
