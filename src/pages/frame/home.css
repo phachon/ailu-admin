@@ -61,9 +61,13 @@ html,body,#root{
 .admin-header-action {
     cursor: pointer;
     padding: 0 12px;
-    margin: 0 6px;
+    margin-right: 6px;
     color: #fff;
     transition: all .3s;
+}
+
+.admin-header-action a {
+    color: #fff;
 }
 
 .admin-header-action:hover {

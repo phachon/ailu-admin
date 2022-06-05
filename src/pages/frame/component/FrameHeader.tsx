@@ -62,7 +62,7 @@ class FrameHeader extends React.Component<any, any> {
                     </div>
                     <div className="admin-header-right">
                         <span className="admin-header-action">
-                            <Space><GithubOutlined /></Space>
+                            <a target={"_blank"} href="https://github.com/phachon/ailu-admin" rel="noreferrer"><GithubOutlined /></a>
                         </span>
                         <Dropdown overlay={menu}>
                             <span className="admin-header-action">
