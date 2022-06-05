@@ -18,7 +18,7 @@ class FrameHome extends React.Component<any, any> {
     componentDidMount() {
         // 获取账号 profile 信息
         ProfileService.getProfileInfo().then((profileInfo: ProfileInfoType) => {
-            this.props.profileAccountInfo(profileInfo.account_info) // redux dispatch
+            this.props.accountUpdateDispatch(profileInfo.account_info) // redux dispatch
             console.log(profileInfo)
         }).catch(e => {
             console.log("get profile catch: ", e)
@@ -46,7 +46,7 @@ class FrameHome extends React.Component<any, any> {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        profileAccountInfo: (data: AccountInfoType) => ProfileAccountUpdateAction(dispatch, data)
+        accountUpdateDispatch: (data: AccountInfoType) => ProfileAccountUpdateAction(dispatch, data)
     }
 }
 

@@ -1,12 +1,19 @@
 import {Dispatch} from "redux";
-import {ProfileInfoType} from "../types/profileType";
-import {AccountInfoType} from "../types/accountType";
+import {AccountInfoType, AccountListType} from "../types/accountType";
 
 export enum ActionType {
     LOADING,
     LOGIN,
     LOGOUT,
     PROFILE_ACCOUNT_UPDATE,
+    ACCOUNT_LIST,
+    ACCOUNT_LIST_CHANGE,
+    ACCOUNT_SEARCH_CHANGE,
+    ACCOUNT_SEARCH_RESET,
+    ACCOUNT_EDIT_CLICK,
+    ACCOUNT_EDIT_CLOSE,
+    ACCOUNT_EDIT_FINISH,
+    ACCOUNT_EDIT_STATUS,
 }
 
 export interface AdminAction {
@@ -37,3 +44,4 @@ export const ProfileAccountUpdateAction = (dispatch: Dispatch, data: AccountInfo
         data: data
     })
 }
+

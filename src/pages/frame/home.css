@@ -54,31 +54,28 @@ html,body,#root{
 
 .admin-header-right {
     display: flex;
-    padding-right: 12px;
+    padding: 0 6px;
+    transition: all .3s;
 }
 
-.admin-header-right a:hover {
+.admin-header-action {
+    cursor: pointer;
+    padding: 0 12px;
+    margin: 0 6px;
     color: #fff;
+    transition: all .3s;
+}
+
+.admin-header-action:hover {
+    background: #192336;
 }
 
 .admin-header-left .ant-menu.ant-menu-dark .ant-menu-item-selected {
-    background-color: #000b17;
+    background-color: #192336;
 }
 
-.admin-header-right .ant-menu.ant-menu-dark .ant-menu-item-selected:hover {
-    background-color: #000b17;
-}
-
-.admin-header-right .ant-menu.ant-menu-dark .ant-menu-item-selected:active {
-    background-color: #000b17;
-}
-
-.admin-header-right .ant-menu.ant-menu-dark > .ant-menu-item {
-    padding: 0 12px;
-}
-
-.admin-header-right .ant-menu.ant-menu-dark .ant-menu-item {
-    background-color: #001529;
+.admin-header-left .ant-menu.ant-menu-dark .ant-menu-item-active {
+    background-color: #192336;
 }
 
 .admin-sidebar {

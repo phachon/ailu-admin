@@ -1,4 +1,4 @@
-import React, {Component, ReactNode} from 'react';
+import React, {Component} from 'react';
 import {
     Input,
     Table,
@@ -12,98 +12,60 @@ import {
 import {AccountInfoType, AccountListType} from "../../store/types/accountType";
 import {AccountService} from "../../services/Account";
 import {
-    FormOutlined, StopOutlined,
+    FormOutlined, CloseSquareOutlined, CheckSquareOutlined
 } from '@ant-design/icons';
 import AccountEdit from "./component/AccountEdit";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
+import {AccountState, AdminState} from "../../store/states/adminState";
+import {
+    AccountEditClickAction,
+    AccountEditCloseAction,
+    AccountEditStatusAction,
+    AccountListChangeAction
+} from "../../store/actions/accountAction";
+import AccountSearch from "./component/AccountSearch";
 
-interface AccountListState {
-    tableLoading: boolean
-    editModalVisible?: boolean
-    accountList? :AccountInfoType[]
-    pagination :TablePaginationConfig
-    searchKeyWords :{}
-    editAccountInfo? :AccountInfoType
-}
-
-class AccountList extends Component<any, AccountListState> {
+class AccountList extends Component<any, any> {
 
     constructor(props :any) {
         super(props);
-        this.state = {
-            tableLoading: true,
-            pagination: {
-                current: 1,
-                pageSize: 10,
-                total: 0,
-            },
-            searchKeyWords: {}
-        }
     }
 
-    onSearch(values :any) {
-        this.setState({
-            tableLoading: true,
-            searchKeyWords: values,
-        });
-        const { pagination, searchKeyWords } = this.state;
-        this.getAccountList(pagination.pageSize, pagination.current, searchKeyWords)
-    }
-
-    editClick(accountInfo :AccountInfoType) {
-        this.setState({
-            editModalVisible: true,
-            editAccountInfo: accountInfo
-        })
+    editClick(accountInfo: AccountInfoType) {
+        this.props.accountEditClickDispatch(accountInfo)
     }
 
     editHandleCancel = () => {
-        this.setState({
-            editModalVisible: false,
-        })
+        this.props.accountEditCloseDispatch(null)
     }
 
-    editCallback = () => {
-        this.setState({
-            editModalVisible: false,
-        })
-    }
-
-    confirmForbid(accountInfo :AccountInfoType) {
-        AccountService.accountUpdateStatus(accountInfo.account_id, -1).then(
-            () => {
-                message.success("禁用成功", 1).then(
-                    () => window.location.reload()
-                )
-            }
+    updateStatus(accountInfo :AccountInfoType, status: number) {
+        AccountService.accountUpdateStatus(accountInfo.account_id, status).then(() => {
+            message.success("操作成功", 2).then(
+                this.props.accountEditStatusDispatch({
+                    account_id: accountInfo.account_id,
+                    status: status,
+                })
+            )}
         )
     }
 
-    onChange = (pageConfig :any, filters :any, sorter :any) => {
-        this.setState({
-            tableLoading: true,
-        });
-        const { searchKeyWords } = this.state;
-        this.getAccountList(pageConfig.pageSize, pageConfig.current, searchKeyWords)
+    onChange = (pageConfig: TablePaginationConfig, filters: any, sorter: any) => {
+        const { searchKeyWords } = this.props;
+        this.getAccountList(pageConfig, searchKeyWords)
     }
 
     componentDidMount() {
-        this.setState({ tableLoading: true });
-        const { pagination, searchKeyWords } = this.state;
-        this.getAccountList(pagination.pageSize, pagination.current, searchKeyWords)
+        const { pagination, searchKeyWords} = this.props;
+        this.getAccountList(pagination, searchKeyWords)
     }
 
-    getAccountList(pageSize :number | undefined, current :number | undefined, keywords :{}) {
+    getAccountList(pageConfig :TablePaginationConfig, keywords: {}) {
+        const { pageSize, current } = pageConfig
         AccountService.accountList(pageSize, current, keywords).then(
             (res: AccountListType) => {
-                this.setState({
-                    accountList: res.list,
-                    tableLoading: false,
-                    pagination: {
-                        current: res.page_info?.page_num,
-                        pageSize: res.page_info?.page_size,
-                        total: res.page_info?.total_num,
-                    },
-                })
+                this.props.accountListChangeDispatch(res)
             }
         ).catch(e => {
             console.log(e)
@@ -111,60 +73,16 @@ class AccountList extends Component<any, AccountListState> {
     }
 
     render() {
-        const { accountList, tableLoading, pagination, editModalVisible, editAccountInfo} = this.state
-        pagination.showQuickJumper = true
-        pagination.showSizeChanger = true
-        pagination.showTotal = (total :number) => {return `总共 ${total} 条`}
         return (
             <div className="panel">
-                <div className="panel-body pdr0">
-                    <Form
-                        layout={"inline"}
-                        style={{justifyContent: "end"}}
-                        onFinish={values => {
-                            this.onSearch(values)
-                        }}
-                    >
-                        <Form.Item
-                            name="status"
-                            label="状态"
-                            initialValue={""}
-                        >
-                            <Select>
-                                <Select.Option value={""}>全部</Select.Option>
-                                <Select.Option value={"0"}>正常</Select.Option>
-                                <Select.Option value={"-1"}>禁用</Select.Option>
-                            </Select>
-                        </Form.Item>
-                        <Form.Item
-                            name="account_name"
-                            label="账号名"
-                            style={{width: 260}}
-                        >
-                            <Input placeholder="请输入账号名"/>
-                        </Form.Item>
-                        <Form.Item
-                            name="given_name"
-                            label="昵称"
-                            style={{width: 260}}
-                        >
-                            <Input placeholder="请输入昵称"/>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="default">重置</Button>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit">查询</Button>
-                        </Form.Item>
-                    </Form>
-                </div>
+                <AccountSearch/>
                 <div className="panel-body">
                     <Table
                         rowKey={"account_id"}
                         bordered={true}
-                        dataSource={accountList}
-                        loading={tableLoading}
-                        pagination={pagination}
+                        dataSource={this.props.accountList}
+                        loading={this.props.listLoading}
+                        pagination={this.props.pagination}
                         onChange={this.onChange}
                         footer={()=> ''}
                     >
@@ -210,7 +128,7 @@ class AccountList extends Component<any, AccountListState> {
                                 }else if(status === -1){
                                     return <Tag color="error">禁用</Tag>
                                 }else {
-                                    return <Tag color="error">未知</Tag>
+                                    return <Tag color="warning">未知</Tag>
                                 }
                             }}
                         />
@@ -225,24 +143,24 @@ class AccountList extends Component<any, AccountListState> {
                                     <Popconfirm
                                         title="确定要禁用吗?"
                                         onConfirm={() => {
-                                            this.confirmForbid(accountInfo)
+                                            this.updateStatus(accountInfo, -1)
                                         }}
                                         okText="确定"
                                         cancelText="取消"
                                     >
-                                        <a><StopOutlined/> 禁用</a>
+                                        <a><CloseSquareOutlined /> 禁用</a>
                                     </Popconfirm>
                                     }
                                     {accountInfo.status === -1 &&
                                         <Popconfirm
                                             title="确定要恢复吗?"
                                             onConfirm={() => {
-                                                this.confirmForbid(accountInfo)
+                                                this.updateStatus(accountInfo, 0)
                                             }}
                                             okText="确定"
                                             cancelText="取消"
                                         >
-                                            <a><StopOutlined/> 恢复</a>
+                                            <a><CheckSquareOutlined /> 恢复</a>
                                         </Popconfirm>
                                     }
                                 </span>
@@ -253,15 +171,30 @@ class AccountList extends Component<any, AccountListState> {
                 <Modal
                     title="账号修改"
                     width={570}
-                    visible={editModalVisible}
+                    visible={this.props.editModalVisible}
                     onCancel={this.editHandleCancel}
                     footer={null}
                 >
-                    <AccountEdit accountInfo={editAccountInfo} editCallback={this.editCallback} />
+                    <AccountEdit />
                 </Modal>
             </div>
         );
     }
 }
 
-export default AccountList;
+const mapStateToProps = (state: AdminState): AccountState => {
+    return {
+        ...state.accountState
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        accountListChangeDispatch: (data: AccountListType) => AccountListChangeAction(dispatch, data),
+        accountEditClickDispatch: (data: AccountInfoType) => AccountEditClickAction(dispatch, data),
+        accountEditCloseDispatch: (data: any) => AccountEditCloseAction(dispatch, data),
+        accountEditStatusDispatch: (data: any) => AccountEditStatusAction(dispatch, data)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountList);

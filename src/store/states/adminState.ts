@@ -16,11 +16,17 @@ export const initAdminState: AdminState = {
         accountInfo: accountInfo
     },
     accountState: {
-        listLoading: false,
+        listLoading: true,
         pagination: {
             current: 1,
             pageSize: 10,
             total: 0,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            showTotal: (total :number) => {return `总共 ${total} 条`}
+        },
+        searchKeyWords: {
+            status: "",
         }
     }
 }

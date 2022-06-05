@@ -1,47 +1,37 @@
 import React, {Component, RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
 import {AccountService} from "../../../services/Account";
-import {AccountInfoType} from "../../../store/types/accountType";
+import {connect} from "react-redux";
+import {AccountState, AdminState} from "../../../store/states/adminState";
+import {Dispatch} from "redux";
+import {AccountEditCloseAction, AccountEditFinishAction} from "../../../store/actions/accountAction";
 
-interface AccountEditProps {
-    accountInfo?: AccountInfoType
-    editCallback: () => void
-}
-
-class AccountEdit extends Component<AccountEditProps, any> {
+class AccountEdit extends Component<any, any> {
 
     formRef :RefObject<any>
 
-    constructor(props: AccountEditProps) {
+    constructor(props: any) {
         super(props);
         this.formRef = React.createRef()
     }
 
     onFinish(values: any) {
-        AccountService.accountUpdate(values).then(
-            (res)  => {
-                message.success("修改成功", 1).then(
-                    () => {
-                        this.props.editCallback()
-                        window.location.reload()
-                    }
-                );
-            }
-        ).catch((e) => {
+        AccountService.accountUpdate(values).then(() => {
+            message.success("修改成功", 2).then(() => {
+                this.props.accountEditFinishDispatch(values)
+            });
+        }).catch((e) => {
             console.log(e)
         })
     }
 
     componentDidMount() {
-        this.formRef.current?.setFieldsValue(this.props.accountInfo)
-    }
-
-    componentDidUpdate(prevProps: Readonly<AccountEditProps>, prevState: Readonly<any>, snapshot?: any) {
-
-        this.formRef.current?.setFieldsValue(prevProps.accountInfo)
+        console.log("props:", this.props.editAccountInfo)
+        this.formRef.current?.setFieldsValue(this.props.editAccountInfo)
     }
 
     render() {
+        this.formRef.current?.setFieldsValue(this.props.editAccountInfo)
         return (
             <div className="panel">
                 <div className="panel-body">
@@ -53,7 +43,7 @@ class AccountEdit extends Component<AccountEditProps, any> {
                             this.onFinish(values)
                         }}
                         initialValues={
-                            {...this.props.accountInfo}
+                            {...this.props.editAccountInfo}
                         }
                         // onFinishFailed={this.onFinishFailed}
                     >
@@ -65,6 +55,7 @@ class AccountEdit extends Component<AccountEditProps, any> {
                                     required: true,
                                 },
                             ]}
+                            shouldUpdate
                         >
                             <Input disabled placeholder="请输入账号名" />
                         </Form.Item>
@@ -77,6 +68,7 @@ class AccountEdit extends Component<AccountEditProps, any> {
                                     message: '请输入账号名!',
                                 },
                             ]}
+                            shouldUpdate
                         >
                             <Input disabled placeholder="请输入账号名"  />
                         </Form.Item>
@@ -90,24 +82,28 @@ class AccountEdit extends Component<AccountEditProps, any> {
                                     message: '请输入昵称!',
                                 },
                             ]}
+                            shouldUpdate
                         >
                             <Input placeholder="请输入昵称" />
                         </Form.Item>
                         <Form.Item
                             label="邮箱"
                             name="email"
+                            shouldUpdate
                         >
                             <Input placeholder="请输入邮箱地址：xxx@xxx.com" />
                         </Form.Item>
                         <Form.Item
                             label="电话号"
                             name="phone"
+                            shouldUpdate
                         >
                             <Input placeholder="请输入电话号码" />
                         </Form.Item>
                         <Form.Item
                             label="手机号"
                             name="mobile"
+                            shouldUpdate
                         >
                             <Input placeholder="请输入手机号码" />
                         </Form.Item>
@@ -121,4 +117,17 @@ class AccountEdit extends Component<AccountEditProps, any> {
     }
 }
 
-export default AccountEdit;
+
+const mapStateToProps = (state: AdminState): AccountState => {
+    return {
+        ...state.accountState
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        accountEditFinishDispatch: (data: any) => AccountEditFinishAction(dispatch, data)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountEdit);

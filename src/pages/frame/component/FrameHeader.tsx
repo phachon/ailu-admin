@@ -6,6 +6,8 @@ import {
     GithubOutlined,
     EditOutlined,
     LoginOutlined,
+    ProfileOutlined,
+    LockOutlined
 } from '@ant-design/icons';
 import {connect} from "react-redux";
 // @ts-ignore
@@ -13,6 +15,7 @@ import logoImg from "../../../assets/images/logo_2.png";
 import {AdminState} from "../../../store/states/adminState";
 import {Dispatch} from "redux";
 import {LogoutAction} from "../../../store/actions/adminAction";
+import {Link} from "react-router-dom";
 
 class FrameHeader extends React.Component<any, any> {
 
@@ -21,17 +24,24 @@ class FrameHeader extends React.Component<any, any> {
     }
 
     logout() {
-        this.props.logout() // dispatch redux
+        this.props.logoutDispatch() // dispatch redux
         window.location.href = "/"
     }
 
     render () {
         const menu = (
-            <Menu mode="horizontal">
-                <Menu.Item icon={<EditOutlined />}>个人信息</Menu.Item>
-                <Menu.Item icon={<EditOutlined />}>修改密码</Menu.Item>
+            <Menu>
+                <Menu.Item icon={<ProfileOutlined />} key={"profile_info"}>
+                    <Link to="/profile/info">个人信息</Link>
+                </Menu.Item>
+                <Menu.Item icon={<LockOutlined />} key={"profile_repass"}>
+                    <Link to="/profile/repass">修改密码</Link>
+                </Menu.Item>
                 <Menu.Divider />
-                <Menu.Item icon={<LoginOutlined />} onClick={ ()=> this.logout()}>退出登录</Menu.Item>
+                <Menu.Item
+                    icon={<LoginOutlined />}
+                    key={"profile_logout"}
+                    onClick={ ()=> this.logout()}>退出登录</Menu.Item>
             </Menu>
         )
 
@@ -51,13 +61,13 @@ class FrameHeader extends React.Component<any, any> {
                         </Menu>
                     </div>
                     <div className="admin-header-right">
-                        <Menu theme="dark" mode="horizontal">
-                            <Menu.Item><GithubOutlined /></Menu.Item>
-                        </Menu>
-                        <Dropdown overlay={menu} className="admin-header-dropdown">
-                            <Menu theme="dark">
-                                <Menu.Item icon={<UserOutlined />}>{this.props.accountInfo?.name}</Menu.Item>
-                            </Menu>
+                        <span className="admin-header-action">
+                            <Space><GithubOutlined /></Space>
+                        </span>
+                        <Dropdown overlay={menu}>
+                            <span className="admin-header-action">
+                                <Space><UserOutlined />{this.props.accountInfo?.name}</Space>
+                            </span>
                         </Dropdown>
                     </div>
                 </div>
@@ -74,7 +84,7 @@ const mapStateToProps = (state: AdminState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        logout: () => LogoutAction(dispatch, null)
+        logoutDispatch: () => LogoutAction(dispatch, null)
     }
 }
 
