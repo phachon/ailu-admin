@@ -28,6 +28,7 @@ class AccountSearch extends Component<any, any> {
     onSearch(values: any) {
         this.props.searchChangeDispatch(values)
         const { pagination } = this.props;
+        pagination.current = 1 // 搜索默认第一页
         this.getAccountList(pagination, values)
     }
 
@@ -43,53 +44,53 @@ class AccountSearch extends Component<any, any> {
     }
 
     componentDidMount() {
-        this.formRef.current?.setFieldsValue(this.props.searchKeyWords)
+        this.onReset()
     }
 
     render() {
         return (
             <div className="panel-body pdr0">
-                    <Form
-                        layout={"inline"}
-                        style={{justifyContent: "end"}}
-                        onFinish={values => {
-                            this.onSearch(values)
-                        }}
-                        ref={this.formRef}
+                <Form
+                    layout={"inline"}
+                    style={{justifyContent: "end"}}
+                    onFinish={values => {
+                        this.onSearch(values)
+                    }}
+                    ref={this.formRef}
+                >
+                    <Form.Item
+                        name="status"
+                        label="状态"
+                        initialValue={""}
                     >
-                        <Form.Item
-                            name="status"
-                            label="状态"
-                            initialValue={""}
-                        >
-                            <Select>
-                                <Select.Option value={""}>全部</Select.Option>
-                                <Select.Option value={"0"}>正常</Select.Option>
-                                <Select.Option value={"-1"}>禁用</Select.Option>
-                            </Select>
-                        </Form.Item>
-                        <Form.Item
-                            name="account_name"
-                            label="账号名"
-                            style={{width: 260}}
-                        >
-                            <Input placeholder="请输入账号名"/>
-                        </Form.Item>
-                        <Form.Item
-                            name="given_name"
-                            label="昵称"
-                            style={{width: 260}}
-                        >
-                            <Input placeholder="请输入昵称"/>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="default" htmlType={"button"} onClick={() => this.onReset()}>重置</Button>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit">查询</Button>
-                        </Form.Item>
-                    </Form>
-                </div>
+                        <Select>
+                            <Select.Option value={""}>全部</Select.Option>
+                            <Select.Option value={"0"}>正常</Select.Option>
+                            <Select.Option value={"-1"}>禁用</Select.Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="account_name"
+                        label="账号名"
+                        style={{width: 260}}
+                    >
+                        <Input placeholder="请输入账号名"/>
+                    </Form.Item>
+                    <Form.Item
+                        name="given_name"
+                        label="昵称"
+                        style={{width: 260}}
+                    >
+                        <Input placeholder="请输入昵称"/>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="default" htmlType={"button"} onClick={() => this.onReset()}>重置</Button>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">查询</Button>
+                    </Form.Item>
+                </Form>
+            </div>
         );
     }
 }

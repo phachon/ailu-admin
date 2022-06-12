@@ -1,6 +1,7 @@
 import React, {RefObject} from 'react';
 import {Button, Form, Input, message} from "antd";
 import {AccountService} from "../../services/Account";
+import {LayoutForm} from "../../config/layout";
 
 class AccountAdd extends React.Component<any, any> {
 
@@ -12,30 +13,20 @@ class AccountAdd extends React.Component<any, any> {
     }
 
     onFinish(values: any) {
-        AccountService.accountAdd(values).then(
-            (res)  => {
-                message.success("保存成功", () => {
-                    window.location.href = `/account/list`
-                });
-            }
-        ).catch((e) => {
+        AccountService.accountAdd(values).then(()  => {
+            message.success("保存成功", 2, () => {
+                window.location.href = `/account/list`
+            })
+        }).catch((e) => {
             console.log(e)
         })
-        console.log(values)
-    }
-
-    onFinishFailed() {
-        message.error("保存失败", 10).then()
-        console.log("err")
     }
 
     render() {
         return (
             <div className="panel">
-                <div className="panel-body" style={{marginTop: 18}}>
-                      <Form
-                          labelCol={{span:3}}
-                          wrapperCol={{span: 6}}
+                <div className="panel-body mgt18">
+                      <Form {...LayoutForm}
                           name="basic"
                           ref={this.formRef}
                           onFinish={values => {

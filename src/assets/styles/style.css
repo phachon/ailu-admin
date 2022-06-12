@@ -12,7 +12,7 @@
 }
 
 .panel-body {
-    padding: 18px 16px 0 16px
+    padding: 18px 16px 0 16px;
 }
 
 .hide {
@@ -55,6 +55,11 @@
 .mgr15{margin-right: 15px;}
 .mgr20{margin-right: 20px;}
 .mgr0{margin-right: 0;}
+
+/* margin-top */
+.mgt15{margin-top: 15px;}
+.mgt18{margin-top: 18px;}
+.mgt20{margin-top: 20px;}
 
 /* padding */
 .pdr0{padding-right: 0}

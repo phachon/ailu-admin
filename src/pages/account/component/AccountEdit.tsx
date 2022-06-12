@@ -29,7 +29,6 @@ class AccountEdit extends Component<any, any> {
         console.log("props:", this.props.editAccountInfo)
         this.formRef.current?.setFieldsValue(this.props.editAccountInfo)
     }
-
     render() {
         this.formRef.current?.setFieldsValue(this.props.editAccountInfo)
         return (

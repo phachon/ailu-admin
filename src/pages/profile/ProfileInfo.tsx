@@ -36,13 +36,14 @@ class ProfileInfo extends React.Component<any, any> {
     render() {
         return (
             <div className="panel">
-                <div className="panel-body"></div>
-                <div className="panel-body">
-                    <Form {...LayoutForm} name="basic" ref={this.formRef}
+                <div className="panel-body mgt18">
+                    <Form
+                        {...LayoutForm}
+                        name="basic"
+                        ref={this.formRef}
                         onFinish={values => {
                             this.onFinish(values)
                         }}
-                        // onFinishFailed={this.onFinishFailed}
                     >
                         <Form.Item
                             label="账号ID"

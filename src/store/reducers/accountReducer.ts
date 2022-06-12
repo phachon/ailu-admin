@@ -20,6 +20,7 @@ const accountSearchChange = (accountState: AccountState, action: AdminAction): A
     return {
         ...accountState,
         listLoading: false,
+        pagination: initAdminState.accountState.pagination, // 每次搜索的时候需要默认的页数
         searchKeyWords: action.data
     }
 }

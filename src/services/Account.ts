@@ -18,7 +18,7 @@ class Account {
     /**
      * getAccountInfo 获取账号信息
      */
-    getAccountInfo(accountId :bigint): Promise<AccountInfoType> {
+    getAccountInfo(accountId: bigint): Promise<AccountInfoType> {
         let accountInfoUrl = getUrlConfig().proxyUrl + accountUrl.accountInfo
         return httpRequest.get<AccountInfoType>(accountInfoUrl, {
             account_id: accountId,
@@ -28,7 +28,7 @@ class Account {
     /**
      * accountUpdate 账号更新
      */
-    accountUpdate(accountInfo :{name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
+    accountUpdate(accountInfo: {account_id: bigint, name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
         let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdate
         return httpRequest.post<any>(accountUpdateUrl, {}, accountInfo)
     }
@@ -36,7 +36,7 @@ class Account {
     /**
      * accountAddReq 添加账号
      */
-    accountAdd(accountInfo :{name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
+    accountAdd(accountInfo: {name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
         let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountAdd
         return httpRequest.post<any>(accountUpdateUrl, {}, accountInfo)
     }
@@ -44,7 +44,7 @@ class Account {
     /**
      * accountList 账号列表
      */
-    accountList(pageSize :number|undefined, pageNum :number|undefined, keywords :{}): Promise<any> {
+    accountList(pageSize: number|undefined, pageNum: number|undefined, keywords: {}): Promise<any> {
         let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountList
         return httpRequest.get<any>(accountUpdateUrl, {
             page_size: pageSize,
@@ -56,7 +56,7 @@ class Account {
     /**
      * accountUpdate 账号更新
      */
-    accountUpdateStatus(accountId :bigint, status :number): Promise<any> {
+    accountUpdateStatus(accountId: bigint, status: number): Promise<any> {
         let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdateStatus
         return httpRequest.post<any>(accountUpdateUrl, {}, {
             account_id: accountId,

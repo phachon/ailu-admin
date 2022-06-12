@@ -57,8 +57,8 @@ class AccountList extends Component<any, any> {
     }
 
     componentDidMount() {
-        const { pagination, searchKeyWords} = this.props;
-        this.getAccountList(pagination, searchKeyWords)
+        const { pagination} = this.props;
+        this.getAccountList(pagination, {})
     }
 
     getAccountList(pageConfig :TablePaginationConfig, keywords: {}) {
@@ -89,8 +89,9 @@ class AccountList extends Component<any, any> {
                         <Table.Column
                             title={"账号ID"}
                             dataIndex="account_id"
-                            width={30}
+                            width={80}
                             key={"account_id"}
+                            align={"center"}
                         />
                         <Table.Column
                             title={"账号名"}
@@ -120,11 +121,12 @@ class AccountList extends Component<any, any> {
                         <Table.Column
                             title={"状态"}
                             dataIndex="status"
-                            width={20}
+                            width={70}
                             key={"status"}
-                            render={(status :number) => {
+                            align={"center"}
+                            render={(status: number) => {
                                 if(status === 0){
-                                    return <Tag color="blue">正常</Tag>
+                                    return <span><Tag color="blue">正常</Tag></span>
                                 }else if(status === -1){
                                     return <Tag color="error">禁用</Tag>
                                 }else {
@@ -134,8 +136,9 @@ class AccountList extends Component<any, any> {
                         />
                         <Table.Column
                             title={"操作"}
-                            width={140}
+                            width={160}
                             key={"action"}
+                            align={"center"}
                             render={(accountInfo: AccountInfoType) => (
                                 <span>
                                     <a onClick={() => this.editClick(accountInfo)}><FormOutlined/> 修改 </a>

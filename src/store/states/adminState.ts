@@ -1,9 +1,19 @@
 import {getProfileAccountInfo, LoginTokenStore} from "../local";
 import {AccountInfoType} from "../types/accountType";
 import {TablePaginationConfig} from "antd";
+import {RoleInfoType} from "../types/roleType";
 
 const loginToken = LoginTokenStore.getToken()
 const accountInfo = getProfileAccountInfo()
+
+const defPagination = {
+    current: 1,
+    pageSize: 10,
+    total: 0,
+    showQuickJumper: true,
+    showSizeChanger: true,
+    showTotal: (total :number) => {return `总共 ${total} 条`}
+}
 
 export const initAdminState: AdminState = {
     loginState: {
@@ -17,17 +27,15 @@ export const initAdminState: AdminState = {
     },
     accountState: {
         listLoading: true,
-        pagination: {
-            current: 1,
-            pageSize: 10,
-            total: 0,
-            showQuickJumper: true,
-            showSizeChanger: true,
-            showTotal: (total :number) => {return `总共 ${total} 条`}
-        },
+        pagination: defPagination,
         searchKeyWords: {
             status: "",
         }
+    },
+    roleState: {
+        listLoading: true,
+        pagination: defPagination,
+        searchKeyWords: {}
     }
 }
 
@@ -37,6 +45,7 @@ export interface AdminState {
     frameState: FrameState // 整体框架 state
     profileState: ProfileState  // 个人资料 state
     accountState: AccountState  // 账号管理 state
+    roleState: RoleState // 角色管理 state
 }
 
 // LoginState 登录 state
@@ -62,4 +71,14 @@ export interface AccountState {
     searchKeyWords?: {}
     editModalVisible?: boolean
     editAccountInfo?: AccountInfoType
+}
+
+// RoleState 角色相关 state
+export interface RoleState {
+    listLoading: boolean
+    roleList?: RoleInfoType[]
+    pagination: TablePaginationConfig
+    searchKeyWords?: {}
+    editModalVisible?: boolean
+    editRoleInfo?: RoleInfoType
 }

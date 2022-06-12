@@ -5,10 +5,12 @@ import {combineReducers} from "redux";
 import {loginReducer} from "./loginReducer";
 import {AdminState} from "../states/adminState";
 import {AdminAction} from "../actions/adminAction";
+import {roleReducer} from "./roleReducer";
 
 export const adminReducer = combineReducers<AdminState, AdminAction>({
     loginState: loginReducer,
     frameState: frameReducer,
     profileState: profileReducer,
     accountState: accountReducer,
+    roleState:  roleReducer,
 })

@@ -7,6 +7,8 @@ import AccountList from "../pages/account/AccountList";
 import Error404 from "../pages/error/Error404";
 import FrameHome from "../pages/frame/FrameHome";
 import {LoginTokenStore} from "../store/local";
+import RoleAdd from "../pages/role/RoleAdd";
+import RoleList from "../pages/role/RoleList";
 
 function home() :ReactNode {
     if (LoginTokenStore.checkTokenExpire()) {
@@ -49,6 +51,12 @@ const AdminRouters :IRouter[] = [
             },
             {
                 path: "/account/list", key: "account_list", component: <AccountList />
+            },
+            {
+                path: "/role/add", key: "role_add", component: <RoleAdd />
+            },
+            {
+                path: "/role/list", key: "role_list", component: <RoleList />
             },
             {
                 path: "*", key: "error_404", component: <Error404 />
