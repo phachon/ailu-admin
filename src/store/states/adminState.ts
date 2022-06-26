@@ -69,8 +69,8 @@ export interface AccountState {
     accountList?: AccountInfoType[]
     pagination: TablePaginationConfig
     searchKeyWords?: {}
-    editModalVisible?: boolean
-    editAccountInfo?: AccountInfoType
+    // editModalVisible?: boolean
+    // editAccountInfo?: AccountInfoType
 }
 
 // RoleState 角色相关 state
@@ -79,6 +79,6 @@ export interface RoleState {
     roleList?: RoleInfoType[]
     pagination: TablePaginationConfig
     searchKeyWords?: {}
-    editModalVisible?: boolean
-    editRoleInfo?: RoleInfoType
+    // editModalVisible?: boolean
+    // editRoleInfo?: RoleInfoType
 }

@@ -35,21 +35,6 @@ const accountSearchReset = (accountState: AccountState, action: AdminAction): Ac
     }
 }
 
-const accountEditClick = (accountState: AccountState, action: AdminAction): AccountState => {
-    return  {
-        ...accountState,
-        editModalVisible: true,
-        editAccountInfo: action.data
-    }
-}
-
-const accountEditClose = (accountState: AccountState, action: AdminAction): AccountState => {
-    return  {
-        ...accountState,
-        editModalVisible: false,
-    }
-}
-
 const accountEditFinish = (accountState: AccountState, action: AdminAction): AccountState => {
     if (action.data === undefined || accountState.accountList === undefined) {
         return accountState
@@ -73,7 +58,6 @@ const accountEditFinish = (accountState: AccountState, action: AdminAction): Acc
     return {
         ...accountState,
         accountList: editAccountList,
-        editModalVisible: false,
     }
 }
 
@@ -97,7 +81,6 @@ const accountEditStatus = (accountState: AccountState, action: AdminAction): Acc
     return {
         ...accountState,
         accountList: editAccountList,
-        editModalVisible: false,
     }
 }
 
@@ -106,8 +89,6 @@ export const accountReducer = (accountState: AccountState = initAdminState.accou
         case ActionType.ACCOUNT_LIST_CHANGE: return accountListChange(accountState, action)
         case ActionType.ACCOUNT_SEARCH_CHANGE: return accountSearchChange(accountState, action)
         case ActionType.ACCOUNT_SEARCH_RESET: return accountSearchReset(accountState, action)
-        case ActionType.ACCOUNT_EDIT_CLICK: return accountEditClick(accountState, action)
-        case ActionType.ACCOUNT_EDIT_CLOSE: return accountEditClose(accountState, action)
         case ActionType.ACCOUNT_EDIT_FINISH: return accountEditFinish(accountState, action)
         case ActionType.ACCOUNT_EDIT_STATUS: return accountEditStatus(accountState, action)
         default: return accountState

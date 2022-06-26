@@ -53,7 +53,6 @@ const roleEditFinish = (roleState: RoleState, action: AdminAction): RoleState =>
     return {
         ...roleState,
         roleList: editRoleList,
-        editModalVisible: false,
     }
 }
 
@@ -72,7 +71,6 @@ const roleDelete = (roleState: RoleState, action: AdminAction): RoleState => {
     return {
         ...roleState,
         roleList: roleList,
-        editModalVisible: false,
     }
 }
 
@@ -82,7 +80,7 @@ export const roleReducer = (roleState: RoleState = initAdminState.roleState, act
         case ActionType.ROLE_SEARCH_CHANGE: return roleSearchChange(roleState, action)
         case ActionType.ROLE_SEARCH_RESET: return roleSearchReset(roleState, action)
         case ActionType.ROLE_EDIT_FINISH: return roleEditFinish(roleState, action)
-        case ActionType.ROLE_EDIT_DELETE: return roleDelete(roleState, action)
+        case ActionType.ROLE_DELETE: return roleDelete(roleState, action)
         default: return roleState
     }
 }

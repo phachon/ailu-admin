@@ -98,9 +98,6 @@ class RoleList extends Component<any, any> {
         RoleService.roleDelete(roleInfo.role_id).then(() => {
             message.success("删除成功", 2, () => {
                 this.props.deleteFinishDispatch(roleInfo)
-                this.setState({
-                    editModalVisible: false
-                })
             })
         }).catch(() => {
             message.error("修改失败", 2)

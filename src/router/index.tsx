@@ -2,8 +2,7 @@ import {ReactNode} from "react";
 import Login from "../pages/login/Login";
 import ProfileInfo from "../pages/profile/ProfileInfo";
 import ProfileRepass from "../pages/profile/ProfileRepass";
-import AccountAdd from "../pages/account/AccountAdd";
-import AccountList from "../pages/account/AccountList";
+import Account from "../pages/Account";
 import Error404 from "../pages/error/Error404";
 import FrameHome from "../pages/frame/FrameHome";
 import {LoginTokenStore} from "../store/local";
@@ -46,10 +45,10 @@ const AdminRouters :IRouter[] = [
                 path: "/profile/repass", key: "profile_repass", component: <ProfileRepass />
             },
             {
-                path: "/account/add", key: "account_add", component: <AccountAdd />
+                path: "/account/add", key: "account_add", component: <Account.AccountAdd />
             },
             {
-                path: "/account/list", key: "account_list", component: <AccountList />
+                path: "/account/list", key: "account_list", component: <Account.AccountList />
             },
             {
                 path: "/role/add", key: "role_add", component: <Role.RoleAdd />

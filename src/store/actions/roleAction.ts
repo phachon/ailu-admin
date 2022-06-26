@@ -37,7 +37,7 @@ export const RoleEditFinishAction = (dispatch: Dispatch, data: RoleInfoType) => 
 // RoleDeleteAction 角色删除
 export const RoleDeleteAction = (dispatch: Dispatch, data: {role_id: number, status: number}) => {
     dispatch({
-        type: ActionType.ROLE_EDIT_DELETE,
+        type: ActionType.ROLE_DELETE,
         data: data
     })
 }

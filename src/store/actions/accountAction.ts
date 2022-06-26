@@ -26,22 +26,6 @@ export const AccountSearchResetAction = (dispatch: Dispatch, data: AccountInfoTy
     })
 }
 
-// AccountEditClickAction 账号修改点击
-export const AccountEditClickAction = (dispatch: Dispatch, data: AccountInfoType) => {
-    dispatch({
-        type: ActionType.ACCOUNT_EDIT_CLICK,
-        data: data
-    })
-}
-
-// AccountEditCloseAction 账号修改取消
-export const AccountEditCloseAction = (dispatch: Dispatch, data: AccountInfoType) => {
-    dispatch({
-        type: ActionType.ACCOUNT_EDIT_CLOSE,
-        data: data
-    })
-}
-
 // AccountEditFinishAction 账号修改完成
 export const AccountEditFinishAction = (dispatch: Dispatch, data: AccountInfoType) => {
     dispatch({
