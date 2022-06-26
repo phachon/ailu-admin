@@ -1,5 +1,5 @@
 import {ReactNode} from "react";
-import Login from "../pages/login/Login";
+import Login from "../pages/Login";
 import ProfileInfo from "../pages/profile/ProfileInfo";
 import ProfileRepass from "../pages/profile/ProfileRepass";
 import Account from "../pages/Account";
