@@ -26,22 +26,6 @@ export const RoleSearchResetAction = (dispatch: Dispatch, data: RoleInfoType) =>
     })
 }
 
-// RoleEditClickAction 角色修改点击
-export const RoleEditClickAction = (dispatch: Dispatch, data: RoleInfoType) => {
-    dispatch({
-        type: ActionType.ROLE_EDIT_CLICK,
-        data: data
-    })
-}
-
-// RoleEditCloseAction 角色修改取消
-export const RoleEditCloseAction = (dispatch: Dispatch, data: RoleInfoType) => {
-    dispatch({
-        type: ActionType.ROLE_EDIT_CLOSE,
-        data: data
-    })
-}
-
 // RoleEditFinishAction 角色修改完成
 export const RoleEditFinishAction = (dispatch: Dispatch, data: RoleInfoType) => {
     dispatch({

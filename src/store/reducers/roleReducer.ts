@@ -33,21 +33,6 @@ const roleSearchReset = (roleState: RoleState, action: AdminAction): RoleState  
     }
 }
 
-const roleEditClick = (roleState: RoleState, action: AdminAction): RoleState => {
-    return  {
-        ...roleState,
-        editModalVisible: true,
-        editRoleInfo: action.data
-    }
-}
-
-const roleEditClose = (roleState: RoleState, action: AdminAction): RoleState => {
-    return  {
-        ...roleState,
-        editModalVisible: false,
-    }
-}
-
 const roleEditFinish = (roleState: RoleState, action: AdminAction): RoleState => {
     if (action.data === undefined || roleState.roleList === undefined) {
         return roleState
@@ -76,22 +61,17 @@ const roleDelete = (roleState: RoleState, action: AdminAction): RoleState => {
     if (action.data === undefined || roleState.roleList === undefined) {
         return roleState
     }
-    let editRoleId = action.data.role_id
-    let editRoleList: RoleInfoType[] = []
+    let deleteRoleId = action.data.role_id
+    let roleList: RoleInfoType[] = []
     for (let i = 0; i < roleState.roleList.length; i++) {
-        if (editRoleId !== roleState.roleList[i].role_id) {
-            editRoleList.push(roleState.roleList[i])
-            continue
+        if (deleteRoleId === roleState.roleList[i].role_id) {
+            continue;
         }
-        let editRoleInfo: RoleInfoType = {
-            ...roleState.roleList[i],
-            status: action.data.status,
-        }
-        editRoleList.push(editRoleInfo)
+        roleList.push(roleState.roleList[i])
     }
     return {
         ...roleState,
-        roleList: editRoleList,
+        roleList: roleList,
         editModalVisible: false,
     }
 }
@@ -101,8 +81,6 @@ export const roleReducer = (roleState: RoleState = initAdminState.roleState, act
         case ActionType.ROLE_LIST_CHANGE: return roleListChange(roleState, action)
         case ActionType.ROLE_SEARCH_CHANGE: return roleSearchChange(roleState, action)
         case ActionType.ROLE_SEARCH_RESET: return roleSearchReset(roleState, action)
-        case ActionType.ROLE_EDIT_CLICK: return roleEditClick(roleState, action)
-        case ActionType.ROLE_EDIT_CLOSE: return roleEditClose(roleState, action)
         case ActionType.ROLE_EDIT_FINISH: return roleEditFinish(roleState, action)
         case ActionType.ROLE_EDIT_DELETE: return roleDelete(roleState, action)
         default: return roleState

@@ -75,7 +75,7 @@ class AccountList extends Component<any, any> {
     render() {
         return (
             <div className="panel">
-                <AccountSearch/>
+                <AccountSearch />
                 <div className="panel-body">
                     <Table
                         rowKey={"account_id"}

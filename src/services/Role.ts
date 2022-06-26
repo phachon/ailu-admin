@@ -7,6 +7,7 @@ const roleUrl = {
     roleUpdate: "/admin/role/update",
     roleAdd: "/admin/role/add",
     roleList: "/admin/role/list",
+    roleDelete: "/admin/role/delete",
 }
 
 /**
@@ -52,6 +53,16 @@ class role {
             page_size: pageSize,
             page_num: pageNum,
             keywords: JSON.stringify(keywords),
+        })
+    }
+
+    /**
+     * roleDelete 角色删除
+     */
+    roleDelete(roleId: number): Promise<RoleListType> {
+        let roleDeleteUrl = getUrlConfig().proxyUrl + roleUrl.roleDelete
+        return httpRequest.post<any>(roleDeleteUrl, {
+            role_id: roleId,
         })
     }
 }
