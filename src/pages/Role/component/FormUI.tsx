@@ -4,7 +4,7 @@ import {LayoutForm} from "../../../config/layout";
 
 interface RoleFormUIProps {
     formRef: RefObject<any>
-    onFinish: (values: any) => void
+    onFinishCallback: (values: any) => void
     hiddenRoleIdInput?: boolean
     formLayout?: {
         labelCol: { span: number}
@@ -20,12 +20,16 @@ const RoleFormUI = (props: RoleFormUIProps) => {
                 name="basic"
                 {...layoutForm}
                 ref={props.formRef}
-                onFinish={props.onFinish}
+                onFinish={props.onFinishCallback}
             >
                 <Form.Item
                     label="角色ID"
                     name="role_id"
-                    rules={[]}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
                     hidden={props.hiddenRoleIdInput}
                 >
                     <Input disabled placeholder="请输入角色ID" />

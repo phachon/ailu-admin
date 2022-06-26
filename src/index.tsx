@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import zh_CN from "antd/es/locale/zh_CN";
-import {ConfigProvider} from "antd";
-import RouterView from "./components/RouterView";
-import AdminRouters from "./router/index";
 import './assets/styles/style.css'
+import zh_CN from "antd/es/locale/zh_CN";
+import RouterView from "./components/Router/View";
+import {ConfigProvider} from "antd";
+import AdminRouters from "./router/index";
 import {Provider} from "react-redux";
 import {AdminStore} from "./store";
 

@@ -1,14 +1,13 @@
 import {ReactNode} from "react";
 import Login from "../pages/Login";
-import ProfileInfo from "../pages/profile/ProfileInfo";
-import ProfileRepass from "../pages/profile/ProfileRepass";
+import Profile from "../pages/Profile";
 import Account from "../pages/Account";
-import Error404 from "../pages/error/Error404";
-import FrameHome from "../pages/frame/FrameHome";
+import Error404 from "../pages/Error/Error404";
+import FrameHome from "../pages/Frame";
 import {LoginTokenStore} from "../store/local";
 import Role from "../pages/Role";
 
-function home() :ReactNode {
+function home(): ReactNode {
     if (LoginTokenStore.checkTokenExpire()) {
         return <FrameHome />;
     }
@@ -39,10 +38,10 @@ const AdminRouters :IRouter[] = [
         component: home(),
         children: [
             {
-                path: "/profile/info", key: "profile_info", component: <ProfileInfo />
+                path: "/profile/info", key: "profile_info", component: <Profile.ProfileInfo />
             },
             {
-                path: "/profile/repass", key: "profile_repass", component: <ProfileRepass />
+                path: "/profile/repass", key: "profile_repass", component: <Profile.ProfileRepass />
             },
             {
                 path: "/account/add", key: "account_add", component: <Account.AccountAdd />

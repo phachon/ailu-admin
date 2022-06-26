@@ -74,10 +74,10 @@ class RoleList extends Component<any, any> {
     }
 
     /**
-     * 修改保存
+     * 修改保存操作
      * @param roleInfo
      */
-    editFinish = (roleInfo: RoleInfoType) => {
+    editFinishCallback = (roleInfo: RoleInfoType) => {
         RoleService.roleUpdate(roleInfo.role_id, roleInfo.name).then(() => {
             message.success("修改成功", 2, () => {
                 this.props.editFinishDispatch(roleInfo)
@@ -162,7 +162,7 @@ class RoleList extends Component<any, any> {
                     <RoleFormUI
                         formRef={this.editFormRef}
                         formLayout={EditLayoutForm}
-                        onFinish={this.editFinish}
+                        onFinishCallback={this.editFinishCallback}
                     />
                 </Modal>
             </div>

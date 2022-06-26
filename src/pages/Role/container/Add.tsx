@@ -12,7 +12,11 @@ class RoleAdd extends Component<any, any> {
         this.formRef = React.createRef()
     }
 
-    onFinish = (values: any) => {
+    /**
+     * 添加操作
+     * @param values
+     */
+    onFinishCallback = (values: any) => {
         RoleService.roleAdd(values).then( () => {
             message.success("添加成功", 2, () => {
                 window.location.href = `/role/list`
@@ -22,11 +26,13 @@ class RoleAdd extends Component<any, any> {
 
     render() {
         return (
-            <RoleFormUI
-                formRef={this.formRef}
-                onFinish={this.onFinish}
-                hiddenRoleIdInput={true}
-            />
+            <div className="panel">
+                <RoleFormUI
+                    formRef={this.formRef}
+                    onFinishCallback={this.onFinishCallback}
+                    hiddenRoleIdInput={true}
+                />
+            </div>
         );
     }
 }
