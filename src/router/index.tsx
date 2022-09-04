@@ -2,23 +2,18 @@ import {ReactNode} from "react";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
 import Account from "../pages/Account";
+import Privilege from "../pages/Privilege";
 import Error404 from "../pages/Error/Error404";
 import FrameHome from "../pages/Frame";
 import {LoginTokenStore} from "../store/local";
 import Role from "../pages/Role";
+import {IRouter} from "../components/Router/View";
 
 function home(): ReactNode {
     if (LoginTokenStore.checkTokenExpire()) {
         return <FrameHome />;
     }
     return <Login />
-}
-
-export interface IRouter {
-    path: string
-    key: string
-    component?: ReactNode
-    children?: IRouter[]
 }
 
 const AdminRouters :IRouter[] = [
@@ -54,6 +49,12 @@ const AdminRouters :IRouter[] = [
             },
             {
                 path: "/role/list", key: "role_list", component: <Role.RoleList />
+            },
+            {
+                path: "/privilege/add", key: "privilege_add", component: <Privilege.PrivilegeAdd />
+            },
+            {
+                path: "/privilege/list", key: "privilege_list", component: <Privilege.PrivilegeList />
             },
             {
                 path: "*", key: "error_404", component: <Error404 />

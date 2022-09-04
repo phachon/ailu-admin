@@ -37,7 +37,7 @@ class ProfileRepass extends Component {
 
     render() {
         return (
-            <div className="panel">
+            <div className="pdt24">
                 <ProfileRepassUI
                     formRef={this.formRef}
                     onFinishCallback={this.onFinishCallback}

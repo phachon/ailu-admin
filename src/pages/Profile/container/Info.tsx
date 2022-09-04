@@ -42,7 +42,7 @@ class ProfileInfo extends React.Component<any, any> {
 
     render() {
         return (
-            <div className="panel">
+            <div className="pdt24">
                 <ProfileInfoUI
                     formRef={this.formRef}
                     onFinishCallback={this.onFinishCallback}

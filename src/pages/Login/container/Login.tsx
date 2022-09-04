@@ -5,6 +5,7 @@ import {LoginResponseType} from "../../../store/types/loginType";
 import {Dispatch} from "redux";
 import {LoginAction} from "../../../store/actions/adminAction";
 import {connect} from "react-redux";
+import {message} from "antd";
 
 class Login extends Component<any, any> {
 
@@ -33,6 +34,7 @@ class Login extends Component<any, any> {
             // 登录异常
         }).catch(e => {
             console.log("system login catch: ", e)
+            message.error("登录失败："+e, 2)
         })
     }
 

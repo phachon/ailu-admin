@@ -26,7 +26,7 @@ class RoleAdd extends Component<any, any> {
 
     render() {
         return (
-            <div className="panel">
+            <div className="pdt24">
                 <RoleFormUI
                     formRef={this.formRef}
                     onFinishCallback={this.onFinishCallback}

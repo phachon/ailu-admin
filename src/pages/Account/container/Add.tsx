@@ -30,11 +30,11 @@ class AccountAdd extends React.Component<any, any> {
 
     render() {
         return (
-            <div className="panel">
+            <div className="pdt24">
                <AccountFormUI
                    formRef={this.formRef}
                    onFinishCallback={this.addonFinishCallback}
-                   formLayout={LayoutForm}
+                   // formLayout={LayoutForm}
                    hiddenRoleIdInput={true}
                />
             </div>

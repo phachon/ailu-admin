@@ -5,11 +5,11 @@
 @import '~antd/dist/antd.css';
 
 .panel {
-    padding-top: 12px;
+    padding-top: 8px;
 }
 
 .panel-body {
-    padding: 12px 16px 12px 16px;
+    padding: 8px 16px 8px 16px;
 }
 
 .hide {
@@ -64,6 +64,14 @@
 .pdr20{padding-right: 20px}
 .pdr30{padding-right: 30px}
 .pdr40{padding-right: 40px}
+
+/* padding */
+.pdt0{padding-top: 0}
+.pdt10{padding-top: 10px}
+.pdt20{padding-top: 20px}
+.pdt24{padding-top: 24px}
+.pdt30{padding-top: 30px}
+.pdt40{padding-top: 40px}
 
 /* width 按百分比 */
 .w5p{width:5%;}

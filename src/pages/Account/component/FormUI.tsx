@@ -16,7 +16,7 @@ const AccountFormUI = (props: AccountFormUIProps) => {
     const layoutForm = props.formLayout ? props.formLayout: LayoutForm
     return (
         <div className="panel-body">
-            <Form {...props.formLayout}
+            <Form {...layoutForm}
                   name="basic"
                   ref={props.formRef}
                   onFinish={props.onFinishCallback}

@@ -1,6 +1,12 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {IRouter} from "../../router";
+
+export interface IRouter {
+    path: string
+    key: string
+    component?: ReactNode
+    children?: IRouter[]
+}
 
 interface RouterViewProps {
     routers: IRouter[]
