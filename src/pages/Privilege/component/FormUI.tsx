@@ -1,9 +1,10 @@
 import React, { RefObject } from "react";
-import { Button, Form, FormInstance, Input, Select, Radio, InputNumber, Tooltip, Typography, Space, RadioChangeEvent } from "antd";
+import { Button, Form, FormInstance, Input, Select, Radio, InputNumber, Tooltip, Typography, Space, RadioChangeEvent, Switch } from "antd";
 import { LayoutForm } from "../../../config/layout";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import * as icons from '@ant-design/icons'
 import Icon from '@ant-design/icons'
+import { PrivilegeListItemType } from "../../../store/types/privilegeType";
 
 interface PrivilegeFormUIProps {
   formRef: RefObject<FormInstance>
@@ -13,6 +14,7 @@ interface PrivilegeFormUIProps {
     labelCol: { span: number }
     wrapperCol: { span: number },
   }
+  privilegeList?: PrivilegeListItemType[]
 }
 
 // icon 列表
@@ -27,8 +29,6 @@ const iconList = Object.keys(icons).filter(
 
 const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
   const layoutForm = props.formLayout ? props.formLayout : LayoutForm
-  const navSelect = true
-  const menuSeelct = true
   return (
     <div className="panel-body">
       <Form {...layoutForm}
@@ -57,10 +57,10 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
               required: true,
             },
           ]}
+          initialValue={"nav"}
         >
           <Radio.Group
             name="privilege_type"
-            defaultValue={"nav"}
           >
             <Radio value={"nav"}>导航</Radio>
             <Radio value={"menu"}>菜单</Radio>
@@ -75,6 +75,7 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
             </Radio>
           </Radio.Group>
         </Form.Item>
+
         <Form.Item
           noStyle
           shouldUpdate={(prevValues, currentValues) => prevValues.privilege_type !== currentValues.privilege_type}
@@ -83,17 +84,22 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
             getFieldValue('privilege_type') === 'menu' || getFieldValue('privilege_type') === 'controller' ? (
               <Form.Item
                 label="所属导航"
-                name="given_name"
+                name="parent_nav_id"
                 rules={[
                   {
                     required: true,
                     message: '请选择所属导航!',
                   },
                 ]}
-                initialValue={"system"}
               >
                 <Select>
-                  <Select.Option value={"system"}>系统</Select.Option>
+                  {
+                    props.privilegeList?.map((privilegeListItem) => (
+                      <Select.Option value={privilegeListItem.privilege_info.privilege_id}>
+                        {privilegeListItem.privilege_info.name}
+                      </Select.Option>
+                    ))
+                  }
                 </Select>
               </Form.Item>
             ) : null
@@ -102,23 +108,39 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
 
         <Form.Item
           noStyle
-          shouldUpdate={(prevValues, currentValues) => prevValues.privilege_type !== currentValues.privilege_type}
+          shouldUpdate={
+            (prevValues, currentValues) =>
+              prevValues.privilege_type !== currentValues.privilege_type ||
+              prevValues.parent_nav_id !== currentValues.parent_nav_id
+          }
         >
           {({ getFieldValue }) =>
             getFieldValue('privilege_type') === 'controller' ? (
               <Form.Item
                 label="上级菜单"
-                name="given_name"
+                name="parent_menu_id"
                 rules={[
                   {
                     required: true,
                     message: '请选择上级菜单!',
                   },
                 ]}
-                initialValue={"system"}
+              // initialValue={3}
               >
                 <Select>
-                  <Select.Option value={"system"}>用户管理</Select.Option>
+                  {
+                    props.privilegeList?.map((privilegeListItem) => {
+                      if (getFieldValue('parent_nav_id') == privilegeListItem.privilege_info.privilege_id) {
+                        return (
+                          privilegeListItem.child_privileges?.map((menuPrivilege) => (
+                            <Select.Option value={menuPrivilege.privilege_info?.privilege_id}>
+                              {menuPrivilege.privilege_info?.name}
+                            </Select.Option>
+                          ))
+                        )
+                      }
+                    })
+                  }
                 </Select>
               </Form.Item>
             ) : null
@@ -126,15 +148,17 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
         </Form.Item>
 
         <Form.Item
-          label="路由Path"
-          name="router_path"
+          label="页面路由"
+          name="page_router"
+          initialValue={""}
         >
           <Input placeholder="页面跳转路由：/user/info" />
         </Form.Item>
 
         <Form.Item
-          label="接口Path"
+          label="控制接口"
           name="api_path"
+          initialValue={""}
         >
           <Input placeholder="对应后端接口：/user/info" />
         </Form.Item>
@@ -142,6 +166,7 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
         <Form.Item
           label="Icon图标"
           name="icon"
+          initialValue={""}
         >
           <Select
             placeholder="选择icon图标"
@@ -160,13 +185,22 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
         </Form.Item>
 
         <Form.Item
+          label="是否外显"
+          name="display_switch"
+          valuePropName="checked"
+          initialValue={true}
+        >
+          <Switch checkedChildren="是" unCheckedChildren="否" defaultChecked />
+        </Form.Item>
+
+        <Form.Item
           label="排序数字"
-          name="weight"
-          initialValue="1"
+          name="sequence"
+          initialValue={1}
         >
           <Space>
-            <InputNumber min={1} max={1000} width="200" />
-            <Tooltip title="数字越小，显示越靠前">
+            <InputNumber min={1} max={1000} width="200" defaultValue={1} />
+            <Tooltip title="1 ~ 1000，数字越小，显示越靠前">
               <Typography.Link>
                 <QuestionCircleOutlined />
               </Typography.Link>

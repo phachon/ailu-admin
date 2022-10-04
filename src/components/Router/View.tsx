@@ -1,5 +1,5 @@
-import React, {ReactNode} from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import React, { ReactNode } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export interface IRouter {
     path: string
@@ -18,7 +18,7 @@ const RouterView = (props: RouterViewProps) => {
             <Routes>
                 {
                     props.routers.map((router) => {
-                        if( router.children) {
+                        if (router.children) {
                             return (
                                 <Route path={router.path} key={router.key} element={router.component} >
                                     {
