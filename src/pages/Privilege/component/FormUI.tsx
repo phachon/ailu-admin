@@ -8,12 +8,11 @@ import { PrivilegeListItemType } from "../../../store/types/privilegeType";
 
 interface PrivilegeFormUIProps {
   formRef: RefObject<FormInstance>
-  onFinishCallback: (values: any) => void
-  hiddenRoleIdInput?: boolean
   formLayout?: {
     labelCol: { span: number }
     wrapperCol: { span: number },
   }
+  onFinishCallback: (values: any) => void
   privilegeList?: PrivilegeListItemType[]
 }
 
@@ -36,6 +35,12 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
         ref={props.formRef}
         onFinish={props.onFinishCallback}
       >
+        <Form.Item noStyle
+          label="角色ID"
+          name="privilege_id"
+        >
+        </Form.Item>
+
         <Form.Item
           label="权限名称"
           name="name"
@@ -57,14 +62,12 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
               required: true,
             },
           ]}
-          initialValue={"nav"}
+          initialValue={1}
         >
-          <Radio.Group
-            name="privilege_type"
-          >
-            <Radio value={"nav"}>导航</Radio>
-            <Radio value={"menu"}>菜单</Radio>
-            <Radio value={"controller"}>
+          <Radio.Group name="privilege_type">
+            <Radio value={1}>导航</Radio>
+            <Radio value={2}>菜单</Radio>
+            <Radio value={3}>
               <Space> 控制器
                 <Tooltip title="有操作行为的权限统称为控制器">
                   <Typography.Link>
@@ -80,66 +83,40 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
           noStyle
           shouldUpdate={(prevValues, currentValues) => prevValues.privilege_type !== currentValues.privilege_type}
         >
-          {({ getFieldValue }) =>
-            getFieldValue('privilege_type') === 'menu' || getFieldValue('privilege_type') === 'controller' ? (
+          {
+            ({ getFieldValue }) => getFieldValue('privilege_type') === 2 || getFieldValue('privilege_type') === 3 ? (
               <Form.Item
-                label="所属导航"
-                name="parent_nav_id"
+                label="所属上级"
+                name="parent_id"
                 rules={[
                   {
                     required: true,
-                    message: '请选择所属导航!',
+                    message: '请选择上级权限!',
                   },
                 ]}
               >
                 <Select>
                   {
                     props.privilegeList?.map((privilegeListItem) => (
-                      <Select.Option value={privilegeListItem.privilege_info.privilege_id}>
-                        {privilegeListItem.privilege_info.name}
-                      </Select.Option>
+                      <>
+                        <Select.Option
+                          value={privilegeListItem.privilege_info?.privilege_id}
+                          disabled={(getFieldValue('privilege_type') == 3) ? true : false}
+                        >
+                          {privilegeListItem.privilege_info?.name}
+                        </Select.Option>
+                        {
+                          (getFieldValue('privilege_type') == 3) ? (
+                            privilegeListItem.child_privileges?.map((menuPrivilege) => (
+                              <Select.Option
+                                value={menuPrivilege.privilege_info?.privilege_id}>
+                                &nbsp;&nbsp;&nbsp;&nbsp;{menuPrivilege.privilege_info?.name}
+                              </Select.Option>
+                            ))
+                          ) : null
+                        }
+                      </>
                     ))
-                  }
-                </Select>
-              </Form.Item>
-            ) : null
-          }
-        </Form.Item>
-
-        <Form.Item
-          noStyle
-          shouldUpdate={
-            (prevValues, currentValues) =>
-              prevValues.privilege_type !== currentValues.privilege_type ||
-              prevValues.parent_nav_id !== currentValues.parent_nav_id
-          }
-        >
-          {({ getFieldValue }) =>
-            getFieldValue('privilege_type') === 'controller' ? (
-              <Form.Item
-                label="上级菜单"
-                name="parent_menu_id"
-                rules={[
-                  {
-                    required: true,
-                    message: '请选择上级菜单!',
-                  },
-                ]}
-              // initialValue={3}
-              >
-                <Select>
-                  {
-                    props.privilegeList?.map((privilegeListItem) => {
-                      if (getFieldValue('parent_nav_id') == privilegeListItem.privilege_info.privilege_id) {
-                        return (
-                          privilegeListItem.child_privileges?.map((menuPrivilege) => (
-                            <Select.Option value={menuPrivilege.privilege_info?.privilege_id}>
-                              {menuPrivilege.privilege_info?.name}
-                            </Select.Option>
-                          ))
-                        )
-                      }
-                    })
                   }
                 </Select>
               </Form.Item>
@@ -186,11 +163,15 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
 
         <Form.Item
           label="是否外显"
-          name="display_switch"
+          name="is_display"
           valuePropName="checked"
           initialValue={true}
         >
-          <Switch checkedChildren="是" unCheckedChildren="否" defaultChecked />
+          <Switch
+            checkedChildren="是"
+            unCheckedChildren="否"
+            defaultChecked
+          />
         </Form.Item>
 
         <Form.Item
@@ -215,7 +196,7 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
         </Form.Item>
 
       </Form>
-    </div>
+    </div >
   )
 }
 

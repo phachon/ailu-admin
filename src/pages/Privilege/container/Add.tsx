@@ -37,14 +37,6 @@ class PrivilegeAdd extends Component<any, any> {
      * 保存权限
      */
     onFinishCallback = (values: any) => {
-        values.parent_id = 0
-        if (values.privilege_type == "controller") {
-            values.parent_id = values.parent_menu_id
-        }
-        if (values.privilege_type == "menu") {
-            values.parent_id = values.parent_nav_id
-        }
-        values.is_display = 1
         if (!values.display_switch) {
             values.is_display = 0
         }
@@ -66,7 +58,6 @@ class PrivilegeAdd extends Component<any, any> {
             <div className="pdt24">
                 <PrivilegeFormUI
                     formRef={this.formRef}
-                    hiddenRoleIdInput={true}
                     onFinishCallback={this.onFinishCallback}
                     privilegeList={privilegeList}
                 />

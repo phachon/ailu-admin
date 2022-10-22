@@ -5,6 +5,7 @@ import DynamicIcon from "../../../components/DynamicIcon/DynamicIcon";
 
 interface PrivilegeListUIProps {
   privilegeList: PrivilegeListItemType[]
+  editClickCallback: (privilegeInfo: PrivilegeInfoType) => void
 }
 
 const menuGrid = {
@@ -17,62 +18,6 @@ const menuGrid = {
   xxl: 4,
 }
 
-// 控制器权限的 UI：List
-const PrivilegeItemUI = (itemUIProps: { itemInfos: PrivilegeListItemType[] }) => {
-  if (itemUIProps.itemInfos == null) {
-    return <Empty></Empty>
-  }
-  return (
-    <List
-      size="small"
-      dataSource={itemUIProps.itemInfos}
-      renderItem={privilegeInfoItem =>
-        <List.Item key={privilegeInfoItem.privilege_info.privilege_id.toString()}
-          extra={
-            <span>
-              <a href="#"><EditOutlined style={{ marginLeft: 6, marginRight: 0 }} /></a>
-              <a href="#"><DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} /></a>
-            </span>
-          }>{privilegeInfoItem.privilege_info.name}
-        </List.Item>
-      }
-    />
-  )
-}
-
-// 菜单权限的 UI：Card + List
-const PrivilegeMenuUI = (menuUIProps: { menuItem: PrivilegeListItemType }) => {
-  if (menuUIProps.menuItem == null) {
-    return <Empty></Empty>
-  }
-  const privilegeInfo = menuUIProps.menuItem.privilege_info
-  const controllerInfos = menuUIProps.menuItem.child_privileges
-  return (
-    <List.Item key={privilegeInfo.privilege_id.toString()}>
-      <Card
-        size={"small"}
-        title={
-          <span>
-            <DynamicIcon name={privilegeInfo.icon} style={{ marginRight: '6px' }} />
-            {privilegeInfo.name}
-          </span>
-        }
-        type="inner"
-        bodyStyle={{ padding: 0 }}
-        extra={
-          <span>
-            <a href="#"><EditOutlined style={{ marginLeft: 6, marginRight: 0 }} /></a>
-            <a href="#"><DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} /></a>
-          </span>
-        }
-      >
-        <PrivilegeItemUI itemInfos={controllerInfos} />
-      </Card>
-    </List.Item>
-  )
-}
-
-// 整体权限列表 UI
 const PrivilegeListUI = (props: PrivilegeListUIProps) => {
   if (props.privilegeList.length == 0) {
     return <Empty></Empty>
@@ -87,20 +32,58 @@ const PrivilegeListUI = (props: PrivilegeListUIProps) => {
               <span>
                 <DynamicIcon name={privilegeListItem.privilege_info.icon} style={{ marginRight: '6px' }} />
                 {privilegeListItem.privilege_info.name}
-                <a><EditOutlined style={{ marginLeft: 6, marginRight: 0 }} /></a>
+                <a onClick={() => props.editClickCallback(privilegeListItem.privilege_info)}>
+                  <EditOutlined style={{ marginLeft: 6, marginRight: 0 }} />
+                </a>
               </span>
             } >
               <List
                 grid={menuGrid}
                 dataSource={privilegeListItem.child_privileges}
-                renderItem={menuInfo => (
-                  <PrivilegeMenuUI menuItem={menuInfo} />
+                renderItem={menuPrivilegeItem => (
+                  <List.Item key={menuPrivilegeItem.privilege_info?.privilege_id.toString()}>
+                    <Card
+                      size={"small"}
+                      title={
+                        <span>
+                          <DynamicIcon name={menuPrivilegeItem.privilege_info?.icon} style={{ marginRight: '6px' }} />
+                          {menuPrivilegeItem.privilege_info?.name}
+                        </span>
+                      }
+                      type="inner"
+                      bodyStyle={{ padding: 0 }}
+                      extra={
+                        <span>
+                          <a onClick={() => props.editClickCallback(menuPrivilegeItem.privilege_info)}>
+                            <EditOutlined style={{ marginLeft: 6, marginRight: 0 }} />
+                          </a>
+                          <a href="#"><DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} /></a>
+                        </span>
+                      }
+                    >
+                      <List
+                        size="small"
+                        dataSource={menuPrivilegeItem.child_privileges}
+                        renderItem={privilegeInfoItem =>
+                          <List.Item key={privilegeInfoItem.privilege_info.privilege_id.toString()}
+                            extra={
+                              <span>
+                                <a onClick={() => props.editClickCallback(privilegeInfoItem.privilege_info)}>
+                                  <EditOutlined style={{ marginLeft: 6, marginRight: 0 }} />
+                                </a>
+                                <a href="#"><DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} /></a>
+                              </span>
+                            }>{privilegeInfoItem.privilege_info.name}
+                          </List.Item>
+                        }
+                      />
+                    </Card>
+                  </List.Item>
                 )}
               />
             </Tabs.TabPane>
           ))
         }
-
       </Tabs>
     </div >
   )
