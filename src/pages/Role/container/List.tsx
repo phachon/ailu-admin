@@ -1,45 +1,26 @@
-import React, {Component, RefObject} from 'react';
-import {Dispatch} from "redux";
-import {connect} from "react-redux";
-import {AdminState, RoleState} from "../../../store/states/adminState";
-import {
-    RoleDeleteAction,
-    RoleEditFinishAction,
-    RoleListChangeAction,
-    RoleSearchChangeAction,
-    RoleSearchResetAction
-} from "../../../store/actions/roleAction";
+import React, {useEffect, useState} from 'react';
+import {initPagination} from "../../../store/states/adminState";
 import {RoleInfoType, RoleListType} from "../../../store/types/roleType";
 import {RoleService} from "../../../services/Role";
-import {message, Modal, TablePaginationConfig} from "antd";
+import {Form, message, Modal, TablePaginationConfig} from "antd";
 import RoleListUI from "../component/ListUI";
 import RoleSearchUI from "../component/SearchUI";
 import RoleFormUI from "../component/FormUI";
-import {EditLayoutForm} from "../../../config/layout";
 
-class RoleList extends Component<any, any> {
+const RoleList: React.FC = () => {
 
-    searchFormRef: RefObject<any>
-    editFormRef: RefObject<any>
+    const [searchForm] = Form.useForm()
+    const [editForm] = Form.useForm()
 
-    constructor(props: any) {
-        super(props);
-        this.searchFormRef = React.createRef()
-        this.editFormRef = React.createRef()
-        this.state = {
-            listLoading: false,
-            editModalVisible: false,
-        }
-    }
+    let searchKeyWords = {}
 
-    /**
-     * 列表数据初始化
-     */
-    componentDidMount() {
-        const {pagination} = this.props
-        this.searchReset()
-        this.getRoleList(pagination, {})
-    }
+    const [roleList, setRoleList] = useState<RoleInfoType[]>([])
+    const [pagination, setPagination] = useState(initPagination)
+    const [editModalVisible, setEditModalVisible] = useState<boolean>(false)
+    
+    useEffect(() => {
+        getRoleList(initPagination, {})
+    }, [])
 
     /**
      * 列表分页处理
@@ -47,43 +28,35 @@ class RoleList extends Component<any, any> {
      * @param filters
      * @param sorter
      */
-    listChange = (pageConfig: TablePaginationConfig, filters: any, sorter: any) => {
-        const { searchKeyWords } = this.props;
-        this.getRoleList(pageConfig, searchKeyWords)
+    const listChangeCallback = (pageConfig: TablePaginationConfig, filters: any, sorter: any) => {
+        getRoleList(pageConfig, searchKeyWords)
     }
 
     /**
-     * 修改点击
+     * 修改点击操作
      * @param roleInfo
      */
-    editClick = (roleInfo: RoleInfoType) => {
-        this.setState({
-            editModalVisible: true
-        }, () => {
-            this.editFormRef.current.setFieldsValue(roleInfo)
-        })
+    const editClickCallback = (roleInfo: RoleInfoType) => {
+        editForm.setFieldsValue(roleInfo)
+        setEditModalVisible(true)
     }
 
     /**
      * 修改弹框取消
      */
-    editModalCancel = () => {
-        this.setState({
-            editModalVisible: false
-        })
+    const editModalCancel = () => {
+        setEditModalVisible(false)
     }
 
     /**
      * 修改保存操作
      * @param roleInfo
      */
-    editFinishCallback = (roleInfo: RoleInfoType) => {
+    const editFinishCallback = (roleInfo: RoleInfoType) => {
         RoleService.roleUpdate(roleInfo.role_id, roleInfo.name).then(() => {
             message.success("修改成功", 2, () => {
-                this.props.editFinishDispatch(roleInfo)
-                this.setState({
-                    editModalVisible: false
-                })
+                updateRoleListInfo(roleInfo.role_id, roleInfo)
+                setEditModalVisible(false)
             })
         }).catch(() => {
             message.error("修改失败", 2)
@@ -91,13 +64,13 @@ class RoleList extends Component<any, any> {
     }
 
     /**
-     * 确认删除
+     * 确认删除操作
      * @param roleInfo
      */
-    deleteConfirm = (roleInfo: RoleInfoType) => {
+    const deleteConfirmCallback = (roleInfo: RoleInfoType) => {
         RoleService.roleDelete(roleInfo.role_id).then(() => {
             message.success("删除成功", 2, () => {
-                this.props.deleteFinishDispatch(roleInfo)
+                updateRoleListInfo(roleInfo.role_id, roleInfo)
             })
         }).catch(() => {
             message.error("修改失败", 2)
@@ -105,22 +78,21 @@ class RoleList extends Component<any, any> {
     }
 
     /**
-     * 搜索查询
+     * 搜索查询操作
      * @param values
      */
-    searchChange = (values: any) => {
-        this.props.searchChangeDispatch(values)
-        const { pagination } = this.props;
-        pagination.current = 1
-        this.getRoleList(pagination, values)
+    const searchChangeCallback = (values: any) => {
+        searchKeyWords = values
+        getRoleList(initPagination, searchKeyWords)
     }
 
     /**
-     * 搜索重置
+     * 搜索重置操作
      */
-    searchReset = () => {
-        this.props.searchResetDispatch({})
-        this.searchFormRef.current?.resetFields()
+    const searchResetCallback = () => {
+        searchKeyWords = {}
+        searchForm.resetFields()
+        getRoleList(initPagination, searchKeyWords)
     }
 
     /**
@@ -128,62 +100,74 @@ class RoleList extends Component<any, any> {
      * @param pagination
      * @param searchKeyWords
      */
-    getRoleList(pagination: TablePaginationConfig, searchKeyWords: {}) {
+    const getRoleList = (pagination: TablePaginationConfig, searchKeyWords: {}) => {
         const pageSize = pagination.pageSize
         const current = pagination.current
         RoleService.roleList(pageSize, current, searchKeyWords).then((roleList: RoleListType) => {
-            this.props.listChangeDispatch(roleList)
+            setRoleList(roleList.list)
+            setPagination({
+                ...initPagination,
+                current: roleList.page_info?.page_num,
+                pageSize: roleList.page_info?.page_size,
+                total: roleList.page_info?.total_num,
+            })
         })
     }
 
-    render() {
-        return (
-            <div className="panel">
-                <RoleSearchUI
-                    searchForm={this.searchFormRef}
-                    searchChangeCallback={this.searchChange}
-                    searchResetCallback={this.searchReset}
+    /**
+     * 更新角色列表信息
+     * @param roleId 角色ID
+     * @param roleInfo 角色信息
+     */
+     const updateRoleListInfo = (roleId: number, roleInfo: RoleInfoType) => {
+        let editRoleList: RoleInfoType[] = []
+        for (let i = 0; i < roleList.length; i++) {
+            if (roleId !== roleList[i].role_id) {
+                editRoleList.push(roleList[i])
+                continue
+            }
+            let editRoleInfo: RoleInfoType = {
+                ...roleList[i],
+                name: roleInfo.name,
+            }
+            if (roleInfo.status) {
+                editRoleInfo.status = roleInfo.status
+            }
+            editRoleList.push(editRoleInfo)
+        }
+        setRoleList(editRoleList)
+    }
+
+    return (
+        <div className="panel">
+            <RoleSearchUI
+                formInstance={searchForm}
+                searchChangeCallback={searchChangeCallback}
+                searchResetCallback={searchResetCallback}
+            />
+            <RoleListUI
+                listLoading={false}
+                pagination={pagination}
+                roleList={roleList}
+                listChangeCallback={listChangeCallback}
+                editClickCallback={editClickCallback}
+                deleteCallback={deleteConfirmCallback}
+            />
+            <Modal
+                title="角色修改"
+                width={570}
+                visible={editModalVisible}
+                onCancel={editModalCancel}
+                footer={null}
+            >
+                <RoleFormUI
+                    isEdit={true}
+                    formInstance={editForm}
+                    onFinishCallback={editFinishCallback}
                 />
-                <RoleListUI
-                    listLoading={false}
-                    pagination={this.props.pagination}
-                    roleList={this.props.roleList}
-                    listChangeCallback={this.listChange}
-                    editClickCallback={this.editClick}
-                    deleteCallback={this.deleteConfirm}
-                />
-                <Modal
-                    title="角色修改"
-                    width={570}
-                    visible={this.state.editModalVisible}
-                    onCancel={this.editModalCancel}
-                    footer={null}
-                >
-                    <RoleFormUI
-                        formRef={this.editFormRef}
-                        formLayout={EditLayoutForm}
-                        onFinishCallback={this.editFinishCallback}
-                    />
-                </Modal>
-            </div>
-        );
-    }
+            </Modal>
+        </div>
+    );
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-    return {
-        listChangeDispatch: (data: RoleListType) => RoleListChangeAction(dispatch, data),
-        searchResetDispatch: (data: any) => RoleSearchResetAction(dispatch, data),
-        searchChangeDispatch: (data: any) => RoleSearchChangeAction(dispatch, data),
-        editFinishDispatch: (data: RoleInfoType) => RoleEditFinishAction(dispatch, data),
-        deleteFinishDispatch: (data: RoleInfoType) => RoleDeleteAction(dispatch, data),
-    }
-}
-
-const mapStateToProps = (state: AdminState): RoleState => {
-    return {
-        ...state.roleState
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(RoleList);
+export default RoleList;

@@ -5,25 +5,16 @@ import {AccountService} from "../../../services/Account";
 import {Form, message, Modal, TablePaginationConfig} from "antd";
 import AccountSearchUI from "../component/SearchUI";
 import AccountFormUI from "../component/FormUI";
+import { initPagination } from '../../../store/states/adminState';
 
 const AccountList: React.FC = () => {
 
     const [searchForm] = Form.useForm();
     const [editForm] = Form.useForm();
-
-    const initPagination: TablePaginationConfig = {
-        current: 1,
-        pageSize: 10,
-        total: 0,
-        showQuickJumper: true,
-        showSizeChanger: true,
-        showTotal: (total :number) => {return `总共 ${total} 条`}
-    }
-
+    
     const [accountList, setAccountList] = useState<AccountInfoType[]>([])
     const [pagination, setPagination] = useState(initPagination)
     const [editModalVisible, setEditModalVisible] = useState<boolean>(false)
-    const [editAccountInfo, setEditAccountInfo] = useState<AccountInfoType>()
 
     let searchKeyWords = {}
 
@@ -83,7 +74,6 @@ const AccountList: React.FC = () => {
      */
     const editClickCallback = (accountInfo: AccountInfoType) => {
         console.log("editClickCallback:", accountInfo)
-        setEditAccountInfo(accountInfo)
         editForm.setFieldsValue(accountInfo)
         setEditModalVisible(true)
     }

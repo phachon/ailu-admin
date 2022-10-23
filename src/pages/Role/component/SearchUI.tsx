@@ -1,8 +1,9 @@
 import React from 'react';
 import {Button, Form, Input} from "antd";
+import { FormInstance } from 'antd/es/form/Form';
 
 interface RoleSearchUIProps {
-    searchForm: React.RefObject<any>
+    formInstance: FormInstance<any>
     searchChangeCallback: (values: any) => void
     searchResetCallback: () => void
 }
@@ -14,7 +15,7 @@ const RoleSearchUI = (props: RoleSearchUIProps) => {
                 layout={"inline"}
                 style={{justifyContent: "end"}}
                 onFinish={props.searchChangeCallback}
-                ref={props.searchForm}
+                form={props.formInstance}
             >
                 <Form.Item
                     name="role_name"
