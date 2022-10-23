@@ -1,17 +1,15 @@
-import {Col, Row, Tabs} from "antd";
-import {GithubOutlined, LikeOutlined} from "@ant-design/icons";
-import React, {RefObject} from "react";
-import LoginSystemFormUI from "./SystemFormUI";
-import LoginDomainFormUI from "./DomainFormUI";
+import {Button, Checkbox, Col, Form, Input, Row, Tabs} from "antd";
+import { GithubOutlined, LikeOutlined, UserOutlined, LockOutlined} from "@ant-design/icons";
 // @ts-ignore
 import logoImg from "../../../assets/images/logo_2.png";
 import './login.css'
+import { FormInstance } from "antd/es/form/Form";
 const { TabPane } = Tabs;
 
 interface LoginUIProps {
-    systemLoginFormRef: RefObject<any>
+    systemLoginForm: FormInstance<any>
     systemLoginFinishCallback: (values: any) => void
-    domainLoginFormRef: RefObject<any>
+    domainLoginForm: FormInstance<any>
     domainLoginFinishCallback: (values: any) => void
 }
 
@@ -30,16 +28,92 @@ const LoginUI = (props: LoginUIProps) => {
                   <Col span={6}>
                       <Tabs defaultActiveKey="1" centered>
                           <TabPane tab="系统账号登录" key="1">
-                              <LoginSystemFormUI
-                                formRef={props.systemLoginFormRef}
-                                onFinishCallback={props.systemLoginFinishCallback}
-                              />
+                          <Form
+                            name="normal_login"
+                            className="login-form"
+                            initialValues={{ remember: true }}
+                            form={props.systemLoginForm}
+                            onFinish={props.systemLoginFinishCallback}
+                        >
+                            <Form.Item
+                                name="account_name"
+                                rules={[{ required: true, message: '请输入系统登录账号!' }]}
+                            >
+                                <Input size="large" prefix={<UserOutlined className="site-form-item-icon" />} placeholder="请输入系统登录账号" />
+                            </Form.Item>
+                            <Form.Item
+                                name="password"
+                                rules={[{ required: true, message: '请输入系统登录密码!' }]}
+                            >
+                                <Input
+                                    size="large"
+                                    prefix={<LockOutlined className="site-form-item-icon" />}
+                                    type="password"
+                                    placeholder="请输入系统登录密码"
+                                />
+                            </Form.Item>
+                            <Form.Item>
+                                <Form.Item name="remember" valuePropName="checked" noStyle>
+                                    <Checkbox>自动登录</Checkbox>
+                                </Form.Item>
+                                <a className="login-form-forgot" href="/src/pages"> 忘记密码？</a>
+                            </Form.Item>
+                            <Form.Item>
+                                <Button size="large" type="primary" htmlType="submit" className="login-form-button" block>
+                                    系统登录
+                                </Button>
+                            </Form.Item>
+                        </Form>
                           </TabPane>
                           <TabPane tab="域账号登录" key="2">
-                              <LoginDomainFormUI
-                                  formRef={props.domainLoginFormRef}
-                                  onFinishCallback={props.domainLoginFinishCallback}
-                              />
+                              <Form
+                                  name="normal_login"
+                                className="login-form"
+                                form={props.domainLoginForm}
+                                initialValues={{ remember: true }}
+                                onFinish={props.domainLoginFinishCallback}
+                              >
+                                <Form.Item
+                                    name="username"
+                                    rules={[{ required: true, message: '请输入域账号名!' }]}
+                                >
+                                    <Input
+                                        size="large"
+                                        prefix={<UserOutlined className="site-form-item-icon" />}
+                                        placeholder="请输入域账号名"
+                                        disabled
+                                    />
+                                </Form.Item>
+                                <Form.Item
+                                    name="password"
+                                    rules={[{ required: true, message: '请输入域账号密码!' }]}
+                                >
+                                    <Input
+                                        size="large"
+                                        prefix={<LockOutlined className="site-form-item-icon" />}
+                                        type="password"
+                                        placeholder="请输入域账号密码"
+                                        disabled
+                                    />
+                                </Form.Item>
+                                <Form.Item>
+                                    <Form.Item name="remember" valuePropName="checked" noStyle>
+                                        <Checkbox>自动登录</Checkbox>
+                                    </Form.Item>
+                                    <a className="login-form-forgot" href="src/pages/login/component/LoginDomain"> 忘记密码？</a>
+                                </Form.Item>
+                                <Form.Item>
+                                    <Button
+                                        size="large"
+                                        type="primary"
+                                        htmlType="submit"
+                                        className="login-form-button"
+                                        block
+                                    >
+                                        暂不支持域账号登录
+                                    </Button>
+                                </Form.Item>
+                            </Form>
                           </TabPane>
                       </Tabs>
                   </Col>
