@@ -9,7 +9,7 @@ import {Form, message} from "antd";
 
 const Login: React.FC = () => {
 
-    let dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const [systemLoginForm] = Form.useForm()
     const [domainLoginForm] = Form.useForm()

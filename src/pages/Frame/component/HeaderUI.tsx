@@ -14,7 +14,7 @@ import {Link} from "react-router-dom";
 import {AccountInfoType} from "../../../store/types/accountType";
 
 interface FrameHeaderUIProps {
-    loginAccountInfo: AccountInfoType
+    loginAccountInfo: AccountInfoType | undefined
     logoutCallback: () => void
 }
 
