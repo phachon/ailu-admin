@@ -25,13 +25,6 @@ export const initAdminState: AdminState = {
     profileState: {
         accountInfo: accountInfo
     },
-    accountState: {
-        listLoading: true,
-        pagination: defPagination,
-        searchKeyWords: {
-            status: "",
-        }
-    },
     roleState: {
         listLoading: true,
         pagination: defPagination,
@@ -44,7 +37,6 @@ export interface AdminState {
     loginState: LoginState // 登录相关 state
     frameState: FrameState // 整体框架 state
     profileState: ProfileState  // 个人资料 state
-    accountState: AccountState  // 账号管理 state
     roleState: RoleState // 角色管理 state
 }
 

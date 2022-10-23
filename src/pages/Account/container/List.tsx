@@ -1,41 +1,71 @@
-import React, {Component, RefObject} from 'react';
+import React, {useEffect, useState} from 'react';
 import AccountListUI from "../component/ListUI";
 import {AccountInfoType, AccountListType} from "../../../store/types/accountType";
 import {AccountService} from "../../../services/Account";
-import {message, Modal, TablePaginationConfig} from "antd";
-import {AccountState, AdminState} from "../../../store/states/adminState";
-import {Dispatch} from "redux";
-import {
-    AccountEditFinishAction, AccountEditStatusAction,
-    AccountListChangeAction, AccountSearchChangeAction, AccountSearchResetAction
-} from "../../../store/actions/accountAction";
-import {connect} from "react-redux";
+import {Form, message, Modal, TablePaginationConfig} from "antd";
 import AccountSearchUI from "../component/SearchUI";
-import {EditLayoutForm} from "../../../config/layout";
 import AccountFormUI from "../component/FormUI";
 
-class AccountList extends Component<any, any> {
+const AccountList: React.FC = () => {
 
-    searchFormRef: RefObject<any>
-    editFormRef: RefObject<any>
+    const [searchForm] = Form.useForm();
+    const [editForm] = Form.useForm();
 
-    constructor(props :any) {
-        super(props);
-        this.searchFormRef = React.createRef()
-        this.editFormRef = React.createRef()
-        this.state = {
-            listLoading: false,
-            editModalVisible: false,
-        }
+    const initPagination: TablePaginationConfig = {
+        current: 1,
+        pageSize: 10,
+        total: 0,
+        showQuickJumper: true,
+        showSizeChanger: true,
+        showTotal: (total :number) => {return `总共 ${total} 条`}
+    }
+
+    const [accountList, setAccountList] = useState<AccountInfoType[]>([])
+    const [pagination, setPagination] = useState(initPagination)
+    const [editModalVisible, setEditModalVisible] = useState<boolean>(false)
+    const [editAccountInfo, setEditAccountInfo] = useState<AccountInfoType>()
+
+    let searchKeyWords = {}
+
+    useEffect(() => {
+        getAccountList(initPagination, {}) // 拉取账号信息
+    }, []);
+
+    /**
+     * 请求账号列表
+     * @param pageConfig 翻页信息
+     * @param keywords 搜索信息
+     */
+    const getAccountList = (pageConfig: TablePaginationConfig, keywords: {}) => {
+        AccountService.accountList(pageConfig.pageSize, pageConfig.current, keywords).then((res: AccountListType) => {
+            setAccountList(res.list)
+            setPagination({
+                ...initPagination,
+                current: res.page_info?.page_num,
+                pageSize: res.page_info?.page_size,
+                total: res.page_info?.total_num,
+            })
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     /**
-     * 列表数据初始化
+     * 搜索查询操作
+     * @param values 搜索表单数据
      */
-    componentDidMount() {
-        const { pagination} = this.props;
-        this.searchResetCallback()
-        this.getAccountList(pagination, {})
+    const searchChangeCallback = (values: any) => {
+        searchKeyWords = values
+        getAccountList(initPagination, values)
+    }
+
+    /**
+     * 搜索重置操作
+     */
+    const searchResetCallback = () => {
+        searchForm.resetFields()
+        searchKeyWords = {}
+        getAccountList(initPagination, searchKeyWords)
     }
 
     /**
@@ -44,43 +74,52 @@ class AccountList extends Component<any, any> {
      * @param filters
      * @param sorter
      */
-    listChangeCallback = (pageConfig: TablePaginationConfig, filters: any, sorter: any) => {
-        const { searchKeyWords } = this.props;
-        this.getAccountList(pageConfig, searchKeyWords)
+    const listChangeCallback = (pageConfig: TablePaginationConfig, filters: any, sorter: any) => {
+        getAccountList(pageConfig, searchKeyWords)
+    }
+    
+    /**
+     * 修改点击操作
+     */
+    const editClickCallback = (accountInfo: AccountInfoType) => {
+        console.log("editClickCallback:", accountInfo)
+        setEditAccountInfo(accountInfo)
+        editForm.setFieldsValue(accountInfo)
+        setEditModalVisible(true)
     }
 
     /**
-     * 点击修改操作
+     * 更新账号状态操作
      * @param accountInfo
+     * @param status
      */
-    editClickCallback = (accountInfo: AccountInfoType) => {
-        this.setState({
-            editModalVisible: true
-        }, () => {
-            this.editFormRef.current.setFieldsValue(accountInfo)
+    const updateStatusCallback = (accountInfo: AccountInfoType, status: number) => {
+        AccountService.accountUpdateStatus(accountInfo.account_id, status).then(() => {
+            message.success("操作成功", 2, () => {
+                accountInfo.status = status
+                updateAccountListInfo(accountInfo.account_id, accountInfo)
+            })
+        }).catch(() => {
+            message.error("操作失败", 2)
         })
     }
 
     /**
      * 修改弹框取消操作
      */
-    editModalCancelCallback = () => {
-        this.setState({
-            editModalVisible: false
-        })
+    const editModalCancelCallback = () => {
+        setEditModalVisible(false)
     }
 
     /**
      * 修改完成操作
      * @param accountInfo AccountInfoType
      */
-    editOnFinishCallback = (accountInfo: AccountInfoType) => {
+    const editOnFinishCallback = (accountInfo: AccountInfoType) => {
         AccountService.accountUpdate(accountInfo).then(() => {
             message.success("修改成功", 2, () => {
-                this.props.accountEditFinishDispatch(accountInfo)
-                this.setState({
-                    editModalVisible: false
-                })
+                updateAccountListInfo(accountInfo.account_id, accountInfo)
+                setEditModalVisible(false)
             })
         }).catch((e) => {
             console.log(e)
@@ -89,99 +128,62 @@ class AccountList extends Component<any, any> {
     }
 
     /**
-     * 更新账号状态操作
-     * @param accountInfo
-     * @param status
+     * 更新账号列表信息
+     * @param accountId 账号ID
+     * @param accountInfo 账号信息
      */
-    updateStatusCallback = (accountInfo :AccountInfoType, status: number) => {
-        AccountService.accountUpdateStatus(accountInfo.account_id, status).then(() => {
-            message.success("操作成功", 2, () => {
-                this.props.accountEditStatusDispatch({
-                    account_id: accountInfo.account_id,
-                    status: status,
-                })
-            })
-        }).catch(() => {
-            message.error("操作失败", 2)
-        })
+    const updateAccountListInfo = (accountId: bigint, accountInfo: AccountInfoType) => {
+        let editAccountList: AccountInfoType[] = []
+        for (let i = 0; i < accountList.length; i++) {
+            if (accountId !== accountList[i].account_id) {
+                editAccountList.push(accountList[i])
+                continue
+            }
+            let editAccountInfo: AccountInfoType = {
+                ...accountList[i],
+                email: accountInfo.email,
+                given_name: accountInfo.given_name,
+                mobile: accountInfo.mobile,
+                phone: accountInfo.phone,
+            }
+            if (accountInfo.status) {
+                editAccountInfo.status = accountInfo.status
+            }
+            editAccountList.push(editAccountInfo)
+        }
+        setAccountList(editAccountList)
     }
 
-    /**
-     * 搜索查询操作
-     * @param values
-     */
-    searchChangeCallback = (values: any) => {
-        this.props.searchChangeDispatch(values)
-        const { pagination } = this.props;
-        pagination.current = 1 // 搜索默认第一页
-        this.getAccountList(pagination, values)
-    }
-
-    /**
-     * 搜索重置操作
-     */
-    searchResetCallback = () => {
-        this.props.searchResetDispatch({})
-        this.searchFormRef.current?.resetFields()
-    }
-
-    getAccountList(pageConfig: TablePaginationConfig, keywords: {}) {
-        const { pageSize, current } = pageConfig
-        AccountService.accountList(pageSize, current, keywords).then((res: AccountListType) => {
-            this.props.accountListChangeDispatch(res)
-        }).catch(e => {
-            console.log(e)
-        })
-    }
-
-    render() {
-        return (
-            <div className="panel">
-                <AccountSearchUI
-                    searchForm={this.searchFormRef}
-                    searchChangeCallback={this.searchChangeCallback}
-                    searchResetCallback={this.searchResetCallback}
+    return (
+        <div className="panel">
+            <AccountSearchUI
+                searchForm={searchForm}
+                searchChangeCallback={searchChangeCallback}
+                searchResetCallback={searchResetCallback}
+            />
+            <AccountListUI
+                listLoading={false}
+                accountList={accountList}
+                pagination={pagination}
+                listChangeCallback={listChangeCallback}
+                editClickCallback={editClickCallback}
+                updateStatusCallback={updateStatusCallback}
+            />
+            <Modal
+                title="账号修改"
+                width={570}
+                visible={editModalVisible}
+                onCancel={editModalCancelCallback}
+                footer={null}
+            >
+                <AccountFormUI
+                    formInstance={editForm}
+                    isEdit={true}
+                    onFinishCallback={editOnFinishCallback}
                 />
-                <AccountListUI
-                    listLoading={false}
-                    accountList={this.props.accountList}
-                    pagination={this.props.pagination}
-                    listChangeCallback={this.listChangeCallback}
-                    editClickCallback={this.editClickCallback}
-                    updateStatusCallback={this.updateStatusCallback}
-                />
-                <Modal
-                    title="账号修改"
-                    width={570}
-                    visible={this.state.editModalVisible}
-                    onCancel={this.editModalCancelCallback}
-                    footer={null}
-                >
-                    <AccountFormUI
-                        formRef={this.editFormRef}
-                        formLayout={EditLayoutForm}
-                        onFinishCallback={this.editOnFinishCallback}
-                    />
-                </Modal>
-            </div>
-        );
-    }
+            </Modal>
+        </div>
+    ); 
 }
 
-const mapStateToProps = (state: AdminState): AccountState => {
-    return {
-        ...state.accountState
-    }
-}
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-    return {
-        searchChangeDispatch: (data: any) => AccountSearchChangeAction(dispatch, data),
-        accountListChangeDispatch: (data: AccountListType) => AccountListChangeAction(dispatch, data),
-        accountEditStatusDispatch: (data: any) => AccountEditStatusAction(dispatch, data),
-        searchResetDispatch: (data: any) => AccountSearchResetAction(dispatch, data),
-        accountEditFinishDispatch: (data: any) => AccountEditFinishAction(dispatch, data)
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AccountList);
+export default AccountList

@@ -104,7 +104,7 @@ const AccountListUI = (props: AccountListUIProps) => {
                                     <a><CheckSquareOutlined /> 恢复</a>
                                 </Popconfirm>
                             }
-                                </span>
+                        </span>
                     )}
                 />
             </Table>

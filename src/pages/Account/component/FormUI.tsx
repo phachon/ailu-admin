@@ -1,11 +1,13 @@
-import React, {Component, RefObject} from 'react';
+import React, {Component, RefObject, useEffect} from 'react';
 import {Button, Form, FormInstance, Input} from "antd";
-import {LayoutForm} from "../../../config/layout";
+import {EditLayoutForm, LayoutForm} from "../../../config/layout";
+import { AccountInfoType } from '../../../store/types/accountType';
+import { access } from 'fs';
 
 interface AccountFormUIProps {
-    formRef :RefObject<FormInstance>
+    formInstance: FormInstance<any>
     onFinishCallback: (values: any) => void
-    hiddenRoleIdInput?: boolean
+    isEdit?: boolean
     formLayout?: {
         labelCol: { span: number}
         wrapperCol: { span: number},
@@ -13,15 +15,22 @@ interface AccountFormUIProps {
 }
 
 const AccountFormUI = (props: AccountFormUIProps) => {
-    const layoutForm = props.formLayout ? props.formLayout: LayoutForm
+
+    const isEdit = props.isEdit
+    let layoutForm = isEdit ? EditLayoutForm: LayoutForm
+    if (props.formLayout) {
+        layoutForm = props.formLayout
+    }
+
     return (
         <div className="panel-body">
             <Form {...layoutForm}
                   name="basic"
-                  ref={props.formRef}
                   onFinish={props.onFinishCallback}
+                  form={props.formInstance}
             >
-                <Form.Item
+                {isEdit &&
+                    <Form.Item
                     label="账号id"
                     name="account_id"
                     rules={[
@@ -29,10 +38,10 @@ const AccountFormUI = (props: AccountFormUIProps) => {
                             required: true,
                         },
                     ]}
-                    hidden={props.hiddenRoleIdInput}
                 >
                     <Input disabled placeholder="请输入账号ID" />
                 </Form.Item>
+                }
                 <Form.Item
                     label="账号名"
                     name="name"
@@ -58,24 +67,28 @@ const AccountFormUI = (props: AccountFormUIProps) => {
                 >
                     <Input placeholder="请输入昵称" />
                 </Form.Item>
+
                 <Form.Item
                     label="邮箱"
                     name="email"
                 >
                     <Input placeholder="请输入邮箱地址：xxx@xxx.com" />
                 </Form.Item>
+
                 <Form.Item
                     label="电话号"
                     name="phone"
                 >
                     <Input placeholder="请输入电话号码" />
                 </Form.Item>
+
                 <Form.Item
                     label="手机号"
                     name="mobile"
                 >
                     <Input placeholder="请输入手机号码" />
                 </Form.Item>
+
                 <Form.Item
                     wrapperCol={{offset: layoutForm.labelCol.span}}
                 >

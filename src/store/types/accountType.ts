@@ -19,7 +19,7 @@ export type AccountInfoType = {
  * AccountListType 账号列表返回
  */
 export type AccountListType = {
-    list: Array<AccountInfoType>
+    list: AccountInfoType[]
     page_info: PageInfoType
 }
 

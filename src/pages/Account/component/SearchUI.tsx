@@ -1,20 +1,21 @@
-import {Button, Form, Input, Select} from "antd";
+import {Button, Form, FormInstance, Input, Select} from "antd";
 import React from "react";
 
 interface AccountSearchUIProps {
-    searchForm: React.RefObject<any>
+    searchForm: FormInstance<any>
     searchChangeCallback: (values: any) => void
     searchResetCallback: () => void
 }
 
 const AccountSearchUI = (props: AccountSearchUIProps) => {
+
     return (
         <div className="panel-body pdr0">
             <Form
                 layout={"inline"}
                 style={{justifyContent: "end"}}
                 onFinish={props.searchChangeCallback}
-                ref={props.searchForm}
+                form={props.searchForm}
             >
                 <Form.Item
                     name="status"
