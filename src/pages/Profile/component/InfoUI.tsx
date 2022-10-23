@@ -1,9 +1,9 @@
 import {Button, Form, Input} from "antd";
 import {LayoutForm, LayoutFormButton} from "../../../config/layout";
-import React, {RefObject} from "react";
+import { FormInstance } from "antd/es/form/Form";
 
 interface ProfileInfoUIProps {
-    formRef: RefObject<any>
+    formInstance: FormInstance<any>
     onFinishCallback: (values: any) => void
 }
 
@@ -13,7 +13,7 @@ const ProfileInfoUI = (props: ProfileInfoUIProps) => {
               <Form
                   {...LayoutForm}
                   name="basic"
-                  ref={props.formRef}
+                  form={props.formInstance}
                   onFinish={props.onFinishCallback}
               >
                   <Form.Item

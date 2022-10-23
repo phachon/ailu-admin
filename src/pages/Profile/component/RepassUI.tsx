@@ -1,9 +1,10 @@
 import React, {RefObject} from "react";
 import {Button, Form, Input} from "antd";
 import {LayoutForm, LayoutFormButton} from "../../../config/layout";
+import { FormInstance } from "antd/es/form/Form";
 
 interface ProfileRepassUIProps {
-    formRef: RefObject<any>
+    formInstance: FormInstance<any>
     onFinishCallback: (values: any) => void
 }
 
@@ -13,7 +14,7 @@ const ProfileRepassUI = (props: ProfileRepassUIProps) => {
             <Form
                 {...LayoutForm}
                 name="basic"
-                ref={props.formRef}
+                form={props.formInstance}
                 onFinish={props.onFinishCallback}
             >
                 <Form.Item

@@ -1,10 +1,8 @@
-import {getProfileAccountInfo, LoginTokenStore} from "../local";
+import {LoginTokenStore} from "../local";
 import {AccountInfoType} from "../types/accountType";
 import {TablePaginationConfig} from "antd";
-import {RoleInfoType} from "../types/roleType";
 
 const loginToken = LoginTokenStore.getToken()
-const accountInfo = getProfileAccountInfo()
 
 export const initAdminState: AdminState = {
     loginState: {
@@ -13,16 +11,12 @@ export const initAdminState: AdminState = {
     frameState: {
 
     },
-    profileState: {
-        accountInfo: accountInfo
-    },
 }
 
 // AdminState 全局的根 state
 export interface AdminState {
     loginState: LoginState // 登录相关 state
     frameState: FrameState // 整体框架 state
-    profileState: ProfileState  // 个人资料 state
 }
 
 // LoginState 登录 state

@@ -1,67 +1,45 @@
-import React, {RefObject} from "react";
-import {message} from "antd";
+import React, {useEffect} from "react";
+import {Form, message} from "antd";
 import {ProfileService} from "../../../services/Profile";
 import {connect} from "react-redux";
 import {AdminState} from "../../../store/states/adminState";
 import {Dispatch} from "redux";
 import {ProfileAccountUpdateAction} from "../../../store/actions/adminAction";
 import ProfileInfoUI from "../component/InfoUI";
+import { getProfileAccountInfo, setProfileAccountInfo } from "../../../store/local";
 
-class ProfileInfo extends React.Component<any, any> {
+const ProfileInfo: React.FC = () => {
 
-    formRef: RefObject<any>
+    const [infoForm] = Form.useForm()
 
-    constructor(props: any) {
-        super(props);
-        this.formRef = React.createRef()
-    }
-
-    /**
-     * 初始化表单数据
-     */
-    componentDidMount() {
-        this.formRef.current.setFieldsValue(this.props.accountInfo)
-    }
+    useEffect(() => {
+        let profileInfo = getProfileAccountInfo()
+        infoForm.setFieldsValue(profileInfo)
+    }, [])
 
     /**
-     * 修改操作
+     * 修改个人资料操作
      * @param values
      */
-    onFinishCallback = (values: any) => {
+    const onFinishCallback = (values: any) => {
         ProfileService.profileUpdate(values).then(() => {
-            this.props.profileAccountUpdate(values); // dispatch redux
-            message.success("保存成功", 1, () => {
-                window.location.href = `${window.location.href}`
-            })
+            // 更新 local
+            setProfileAccountInfo(values)
+            message.success("保存成功", 1)
         }).catch((e) => {
             console.log(e)
             message.error("保存失败")
         })
-        console.log(values)
     }
 
-    render() {
-        return (
-            <div className="pdt24">
-                <ProfileInfoUI
-                    formRef={this.formRef}
-                    onFinishCallback={this.onFinishCallback}
-                />
-            </div>
-        );
-    }
+    return (
+        <div className="pdt24">
+            <ProfileInfoUI
+                formInstance={infoForm}
+                onFinishCallback={onFinishCallback}
+            />
+        </div>
+    );
 }
 
-const mapStateToProps = (state: AdminState) => {
-    return {
-        ...state.profileState
-    }
-}
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-      profileAccountUpdate: (data: any) => ProfileAccountUpdateAction(dispatch, data)
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileInfo)
+export default ProfileInfo

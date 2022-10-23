@@ -1,50 +1,39 @@
 import React, {Component, RefObject} from 'react';
-import {message} from "antd";
+import {Form, message} from "antd";
 import {ProfileService} from "../../../services/Profile";
 import ProfileRepassUI from "../component/RepassUI";
 
-class ProfileRepass extends Component {
+const ProfileRepass: React.FC = () => {
 
-    formRef: RefObject<any>
-
-    constructor(props: any) {
-        super(props);
-        this.formRef = React.createRef()
-    }
+    const [repassForm] = Form.useForm()
 
     /**
-     * 修改操作
+     * 修改密码操作
      * @param values
      */
-    onFinishCallback(values :{old_pwd :string, new_pwd: string, confirm_pwd: string}) {
-
+    const onFinishCallback = (values: {old_pwd: string, new_pwd: string, confirm_pwd: string}) => {
         // 判断两次密码是否一致
         if (values.confirm_pwd !== values.new_pwd) {
             message.error("确认密码与新密码不一致")
             return
         }
-        ProfileService.profileRepass(values).then(
-            (res)  => {
-                message.success("保存成功", () => {
-                    window.location.href = `${window.location.href}`
-                });
-            }
-        ).catch((e) => {
-            console.log(e)
+        // 修改密码请求
+        ProfileService.profileRepass(values).then((res)  => {
+            message.success("保存成功", 1);
+        }).catch((e) => {
+            console.log("修改密码失败:", e)
+            message.error("保存失败")
         })
-        console.log(values)
     }
 
-    render() {
-        return (
-            <div className="pdt24">
-                <ProfileRepassUI
-                    formRef={this.formRef}
-                    onFinishCallback={this.onFinishCallback}
-                />
-            </div>
-        );
-    }
+    return (
+        <div className="pdt24">
+            <ProfileRepassUI
+                formInstance={repassForm}
+                onFinishCallback={onFinishCallback}
+            />
+        </div>
+    );
 }
 
 export default ProfileRepass;
