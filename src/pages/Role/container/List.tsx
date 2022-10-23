@@ -70,6 +70,7 @@ const RoleList: React.FC = () => {
     const deleteConfirmCallback = (roleInfo: RoleInfoType) => {
         RoleService.roleDelete(roleInfo.role_id).then(() => {
             message.success("删除成功", 2, () => {
+                roleInfo.status = -1
                 updateRoleListInfo(roleInfo.role_id, roleInfo)
             })
         }).catch(() => {
@@ -126,12 +127,12 @@ const RoleList: React.FC = () => {
                 editRoleList.push(roleList[i])
                 continue
             }
+            if (roleInfo.status == -1) {
+                continue
+            }
             let editRoleInfo: RoleInfoType = {
                 ...roleList[i],
                 name: roleInfo.name,
-            }
-            if (roleInfo.status) {
-                editRoleInfo.status = roleInfo.status
             }
             editRoleList.push(editRoleInfo)
         }
