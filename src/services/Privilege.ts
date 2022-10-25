@@ -25,6 +25,7 @@ class Privilege {
      * privilegeAdd 添加权限
      */
     privilegeAdd(privilegeInfo: PrivilegeInfoType): Promise<any> {
+        privilegeInfo.is_display = privilegeInfo.display_switch ? 1 : 0
         let privilegeUpdateUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeAdd
         return httpRequest.post<any>(privilegeUpdateUrl, {}, privilegeInfo)
     }

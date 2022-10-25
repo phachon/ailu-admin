@@ -1,18 +1,23 @@
-import React, { RefObject } from "react";
-import { Button, Form, FormInstance, Input, Select, Radio, InputNumber, Tooltip, Typography, Space, RadioChangeEvent, Switch } from "antd";
-import { LayoutForm } from "../../../config/layout";
+import React from "react";
+import {
+  Button, Form, FormInstance, Input,
+  Select, Radio, InputNumber, Tooltip,
+  Typography, Space, Switch
+} from "antd";
+import { EditLayoutForm, LayoutForm } from "../../../config/layout";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import * as icons from '@ant-design/icons'
 import Icon from '@ant-design/icons'
 import { PrivilegeListItemType } from "../../../store/types/privilegeType";
 
 interface PrivilegeFormUIProps {
-  formRef: RefObject<FormInstance>
+  formInstance: FormInstance<any>
+  onFinishCallback: (values: any) => void
   formLayout?: {
     labelCol: { span: number }
     wrapperCol: { span: number },
   }
-  onFinishCallback: (values: any) => void
+  isEdit?: boolean
   privilegeList?: PrivilegeListItemType[]
 }
 
@@ -27,16 +32,19 @@ const iconList = Object.keys(icons).filter(
 )
 
 const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
-  const layoutForm = props.formLayout ? props.formLayout : LayoutForm
+  let layoutForm = props.isEdit ? EditLayoutForm : LayoutForm
+  if (props.formLayout) {
+    layoutForm = props.formLayout
+  }
   return (
     <div className="panel-body">
       <Form {...layoutForm}
         name="basic"
-        ref={props.formRef}
+        form={props.formInstance}
         onFinish={props.onFinishCallback}
       >
         <Form.Item noStyle
-          label="角色ID"
+          label="权限ID"
           name="privilege_id"
         >
         </Form.Item>
@@ -163,7 +171,7 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
 
         <Form.Item
           label="是否外显"
-          name="is_display"
+          name="display_switch"
           valuePropName="checked"
           initialValue={true}
         >

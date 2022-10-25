@@ -12,6 +12,7 @@ export type PrivilegeInfoType = {
     api_path: string, // 接口path
     icon: string, // icon 图标
     is_display: number, // 是否显示
+    display_switch: boolean, // 是否显示开关
     sequence: number, // 排序数字
     create_time: string, // 创建时间
     update_time: string, // 修改时间

@@ -1,69 +1,51 @@
-import { message } from 'antd';
-import React, { Component, RefObject } from 'react';
+import { Form, message } from 'antd';
+import React, { Component, RefObject, useEffect, useState } from 'react';
 import { PrivilegeService } from '../../../services/Privilege';
+import { PrivilegeInfoType, PrivilegeListItemType } from '../../../store/types/privilegeType';
 import PrivilegeFormUI from "../component/FormUI";
 
-class PrivilegeAdd extends Component<any, any> {
+const PrivilegeAdd: React.FC = () => {
 
-    formRef: RefObject<any>
+    const [form] = Form.useForm()
 
-    constructor(props: any) {
-        super(props);
-        this.formRef = React.createRef()
-        this.state = {
-            privilegeList: []
-        }
-    }
+    const [privilegeList, setPrivilegeList] = useState<PrivilegeListItemType[]>([])
 
-    /**
-     * 初始化表单
-     */
-    componentDidMount() {
-        this.getPrivilegeList()
-    }
+    useEffect(() => {
+        getPrivilegeList()
+    }, [])
 
     /**
      * 获取权限列表
      */
-    getPrivilegeList() {
+    const getPrivilegeList = () => {
         PrivilegeService.privilegeList().then((privilegeList) => {
-            this.setState({
-                privilegeList: privilegeList.list
-            })
+            setPrivilegeList(privilegeList.list)
         })
     }
 
     /**
      * 保存权限
      */
-    onFinishCallback = (values: any) => {
-        if (!values.display_switch) {
-            values.is_display = 0
-        }
-        console.log(values)
-        // return
+    const onFinishCallback = (values: PrivilegeInfoType) => {
+        console.log("onFinishCallback", values)
         PrivilegeService.privilegeAdd(values).then(() => {
             message.success("保存成功", 2, () => {
-                window.location.href = `/privilege/list`
+                // window.location.href = `/privilege/list`
             })
         }).catch(e => {
             console.log(e)
         })
     }
 
-    render() {
-        const privilegeList = this.state.privilegeList
-        console.log(privilegeList)
-        return (
-            <div className="pdt24">
-                <PrivilegeFormUI
-                    formRef={this.formRef}
-                    onFinishCallback={this.onFinishCallback}
-                    privilegeList={privilegeList}
-                />
-            </div>
-        );
-    }
+    return (
+        <div className="pdt24">
+            <PrivilegeFormUI
+                formInstance={form}
+                onFinishCallback={onFinishCallback}
+                privilegeList={privilegeList}
+            />
+        </div>
+    );
 }
 
 export default PrivilegeAdd;

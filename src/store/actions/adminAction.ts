@@ -23,16 +23,16 @@ export interface AdminAction {
     data: any
 }
 
-// LoginAction 登录
-export const LoginAction = (dispatch: Dispatch, data: any) => {
+// DispatchLoginAction 登录动作
+export const DispatchLoginAction = (dispatch: Dispatch, data: any) => {
     dispatch({
         type: ActionType.LOGIN,
         data: data
     })
 }
 
-// LogoutAction 退出
-export const LogoutAction = (dispatch: Dispatch, data: any) => {
+// DispatchLogoutAction 退出动作
+export const DispatchLogoutAction = (dispatch: Dispatch, data: any) => {
     dispatch({
         type: ActionType.LOGOUT,
         data: data

@@ -3,9 +3,8 @@ import {Layout, MenuProps, Spin} from "antd";
 import {Link, Outlet} from "react-router-dom";
 import {ProfileService} from "../../../services/Profile";
 import {ProfileInfoType} from "../../../store/types/profileType";
-import {connect, useDispatch} from "react-redux";
-import {Dispatch} from "redux";
-import {LogoutAction, ProfileAccountUpdateAction} from "../../../store/actions/adminAction";
+import {useDispatch} from "react-redux";
+import {DispatchLogoutAction, ProfileAccountUpdateAction} from "../../../store/actions/adminAction";
 import {AccountInfoType} from "../../../store/types/accountType";
 import '../component/home.css'
 import FrameHeaderUI from "../component/HeaderUI";
@@ -68,7 +67,7 @@ const FrameHome: React.FC = () => {
      * 登录退出操作
      */
     const logoutCallback = () => {
-        LogoutAction(dispatch, null) // dispatch redux
+        DispatchLogoutAction(dispatch, null) // dispatch redux
         window.location.href = "/"
     }
 
@@ -103,11 +102,4 @@ const FrameHome: React.FC = () => {
     );
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-    return {
-        accountUpdateDispatch: (data: AccountInfoType) => ProfileAccountUpdateAction(dispatch, data),
-        logoutDispatch: () => LogoutAction(dispatch, null)
-    }
-}
-
-export default connect(null, mapDispatchToProps)(FrameHome)
+export default FrameHome

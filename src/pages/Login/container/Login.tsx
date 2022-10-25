@@ -1,10 +1,9 @@
-import React, {Component, RefObject} from 'react';
+import React from 'react';
 import LoginUI from "../component/LoginUI";
 import {LoginService} from "../../../services/Login";
 import {LoginResponseType} from "../../../store/types/loginType";
-import {Dispatch} from "redux";
-import {ActionType, LoginAction} from "../../../store/actions/adminAction";
-import {connect, useDispatch, useSelector} from "react-redux";
+import {DispatchLoginAction} from "../../../store/actions/adminAction";
+import {useDispatch, useSelector} from "react-redux";
 import {Form, message} from "antd";
 
 const Login: React.FC = () => {
@@ -25,10 +24,7 @@ const Login: React.FC = () => {
             verify_code: "mock",
             // 登录成功
         }).then((loginInfo: LoginResponseType) => {
-            dispatch({
-                type: ActionType.LOGIN,
-                data: loginInfo
-            })
+            DispatchLoginAction(dispatch, loginInfo)
             window.location.href = '/'
             // 登录异常
         }).catch(e => {
@@ -68,13 +64,4 @@ const Login: React.FC = () => {
     );
 }
 
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-    return {
-        loginDispatch: (data: any) => {
-            LoginAction(dispatch, data)
-        }
-    }
-}
-
-export default connect(null, mapDispatchToProps)(Login)
+export default Login
