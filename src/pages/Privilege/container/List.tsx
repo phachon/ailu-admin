@@ -68,6 +68,7 @@ const PrivilegeList: React.FC = () => {
                     formInstance={editForm}
                     isEdit={true}
                     onFinishCallback={editFinishCallback}
+                    privilegeList={privilegeList}
                 />
             </Modal>
         </>

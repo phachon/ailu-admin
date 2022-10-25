@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button, Form, FormInstance, Input,
   Select, Radio, InputNumber, Tooltip,
@@ -18,7 +18,7 @@ interface PrivilegeFormUIProps {
     wrapperCol: { span: number },
   }
   isEdit?: boolean
-  privilegeList?: PrivilegeListItemType[]
+  privilegeList: PrivilegeListItemType[]
 }
 
 // icon 列表
@@ -36,6 +36,49 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
   if (props.formLayout) {
     layoutForm = props.formLayout
   }
+
+  const privilegeType = Form.useWatch('privilege_type', props.formInstance)
+  const privilegeList = props.privilegeList
+
+  const [parentPrivileges, setParentPrivileges] = useState<PrivilegeListItemType[]>([])
+  const [selectPrivilegeId, setSelectPrivilegeId] = useState<bigint>()
+
+  useEffect(() => {
+    updateParentPrivileges(privilegeType)
+  }, [privilegeType])
+
+  /**
+   * 更新上级权限
+   * @param privilegeType 权限类型
+   * @returns 
+   */
+  const updateParentPrivileges = (privilegeType: number) => {
+    let parentPrivilegeList: PrivilegeListItemType[] = []
+    if (privilegeType == 1) {
+      setParentPrivileges(parentPrivilegeList)
+    }
+    if (privilegeType == 2) {
+      privilegeList.map((privilege) => {
+        if (privilege.privilege_info.privilege_type == 1) {
+          parentPrivilegeList.push(privilege)
+        }
+      })
+      setParentPrivileges(parentPrivilegeList)
+    }
+    if (privilegeType == 3) {
+      // privilegeList.map((privilege) => {
+      //   if (privilege.privilege_info.privilege_type == "menu") {
+      //     parentPrivilegeList.push(privilege)
+      //   }
+      // })
+      setParentPrivileges(privilegeList)
+    }
+    if (privilegeList.length > 0) { 
+      setSelectPrivilegeId(privilegeList[0].privilege_info.privilege_id)
+    }
+    console.log("parentPrivileges:", parentPrivileges);
+  }
+
   return (
     <div className="panel-body">
       <Form {...layoutForm}
@@ -87,50 +130,47 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item
-          noStyle
-          shouldUpdate={(prevValues, currentValues) => prevValues.privilege_type !== currentValues.privilege_type}
-        >
-          {
-            ({ getFieldValue }) => getFieldValue('privilege_type') === 2 || getFieldValue('privilege_type') === 3 ? (
-              <Form.Item
-                label="所属上级"
-                name="parent_id"
-                rules={[
-                  {
-                    required: true,
-                    message: '请选择上级权限!',
-                  },
-                ]}
+        {
+          privilegeType === 2 || privilegeType === 3 ? (
+            <Form.Item
+              label="所属上级"
+              name="parent_id"
+              rules={[
+                {
+                  required: true,
+                  message: '请选择上级权限!',
+                },
+              ]}
+            >
+              <Select
+                value={selectPrivilegeId}
               >
-                <Select>
-                  {
-                    props.privilegeList?.map((privilegeListItem) => (
-                      <>
-                        <Select.Option
-                          value={privilegeListItem.privilege_info?.privilege_id}
-                          disabled={(getFieldValue('privilege_type') == 3) ? true : false}
-                        >
-                          {privilegeListItem.privilege_info?.name}
-                        </Select.Option>
-                        {
-                          (getFieldValue('privilege_type') == 3) ? (
-                            privilegeListItem.child_privileges?.map((menuPrivilege) => (
-                              <Select.Option
-                                value={menuPrivilege.privilege_info?.privilege_id}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;{menuPrivilege.privilege_info?.name}
-                              </Select.Option>
-                            ))
-                          ) : null
-                        }
-                      </>
-                    ))
-                  }
-                </Select>
-              </Form.Item>
-            ) : null
-          }
-        </Form.Item>
+                {
+                  parentPrivileges?.map((privilegeListItem) => (
+                    <>
+                      <Select.Option
+                        value={privilegeListItem.privilege_info?.privilege_id}
+                        disabled={(privilegeType == 3) ? true : false}
+                      >
+                        {privilegeListItem.privilege_info?.name}
+                      </Select.Option>
+                      {
+                        (privilegeType == 3) ? (
+                          privilegeListItem.child_privileges?.map((menuPrivilege) => (
+                            <Select.Option
+                              value={menuPrivilege.privilege_info?.privilege_id}>
+                              &nbsp;&nbsp;&nbsp;&nbsp;{menuPrivilege.privilege_info?.name}
+                            </Select.Option>
+                          ))
+                        ) : null
+                      }
+                    </>
+                  ))
+                }
+              </Select>
+            </Form.Item>
+          ) : null
+        }
 
         <Form.Item
           label="页面路由"
