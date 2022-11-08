@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Button, Form, FormInstance, Input,
   Select, Radio, InputNumber, Tooltip,
@@ -9,6 +9,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import * as icons from '@ant-design/icons'
 import Icon from '@ant-design/icons'
 import { PrivilegeListItemType } from "../../../store/types/privilegeType";
+import { DefaultOptionType } from "antd/lib/select";
 
 interface PrivilegeFormUIProps {
   formInstance: FormInstance<any>
@@ -36,47 +37,116 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
   if (props.formLayout) {
     layoutForm = props.formLayout
   }
-
-  const privilegeType = Form.useWatch('privilege_type', props.formInstance)
   const privilegeList = props.privilegeList
 
-  const [parentPrivileges, setParentPrivileges] = useState<PrivilegeListItemType[]>([])
-  const [selectPrivilegeId, setSelectPrivilegeId] = useState<bigint>()
+  const privilegeType = Form.useWatch('privilege_type', props.formInstance)
+  const [options, setOptions] = useState<DefaultOptionType[]>([])
 
   useEffect(() => {
-    updateParentPrivileges(privilegeType)
+    updateParentOptions(privilegeType)
   }, [privilegeType])
+
+
+  /**
+   * 过滤控制器类型的权限
+   * @param privilegeList 权限列表
+   * @return 返回需要的权限列表
+   */
+  const filterControllerType = (privilegeList: PrivilegeListItemType[]): PrivilegeListItemType[] => {
+    if (!privilegeList || privilegeList.length == 0) return privilegeList;
+    let realPrivilegeList = privilegeList.filter(filterItem => {
+      if (filterItem.privilege_info.privilege_type !== 3) {
+        return true;
+      }
+    }).map(privilegeListItem => {
+      let privilegeItem = {
+        ...privilegeListItem,
+        child_privileges: filterControllerType(privilegeListItem.child_privileges)
+      }
+      return privilegeItem;
+    })
+    return realPrivilegeList;
+  }
+
+  /**
+   * 根据菜单权限下拉框 Options
+   * @param privilegeList 权限列表
+   * @return Option 下拉数据
+   */
+  const getMenuTypeOptions = (privilegeList: PrivilegeListItemType[], parentOptions: DefaultOptionType[], level: number): DefaultOptionType[] => {
+    privilegeList.forEach((privilege) => {
+      let sep = "-".repeat(level);
+      parentOptions.push({
+        label: <span>{ sep}{privilege.privilege_info.name}</span>,
+        value: Number(privilege.privilege_info.privilege_id),
+      })
+      if (privilege.child_privileges) {
+        getMenuTypeOptions(privilege.child_privileges, parentOptions, level)
+      }
+    })
+    return parentOptions
+  }
+
+  /**
+   * 根据菜单权限下拉框 Options
+   * @param privilegeList 权限列表
+   * @return Option 下拉数据
+   */
+   const getControllerTypeOptions = (privilegeList: PrivilegeListItemType[], parentOptions: DefaultOptionType[], level: number): DefaultOptionType[] => {
+    privilegeList.forEach((privilege) => {
+      let sep = "-".repeat(level)
+      parentOptions.push({
+        label: <span>{sep}{ privilege.privilege_info.name}</span>,
+        value: Number(privilege.privilege_info.privilege_id),
+        disabled: privilege.privilege_info.privilege_type === 1 ? true : false,
+      })
+      if (privilege.child_privileges) {
+        getControllerTypeOptions(privilege.child_privileges, parentOptions, level)
+      }
+    })
+    return parentOptions
+  }
 
   /**
    * 更新上级权限
    * @param privilegeType 权限类型
    * @returns 
    */
-  const updateParentPrivileges = (privilegeType: number) => {
-    let parentPrivilegeList: PrivilegeListItemType[] = []
-    if (privilegeType == 1) {
-      setParentPrivileges(parentPrivilegeList)
-    }
+  const updateParentOptions = (privilegeType: number) => {
+    let parentOptions: DefaultOptionType[] = []
+    let defParentId: number = 0
+    // 菜单的权限的父级只能是导航或菜单
     if (privilegeType == 2) {
-      privilegeList.map((privilege) => {
-        if (privilege.privilege_info.privilege_type == 1) {
-          parentPrivilegeList.push(privilege)
-        }
-      })
-      setParentPrivileges(parentPrivilegeList)
+      const parentPrivileges = filterControllerType(privilegeList)
+      parentOptions = getMenuTypeOptions(parentPrivileges, parentOptions, 0)
     }
+    // 控制器的父级权限只能是菜单
     if (privilegeType == 3) {
-      // privilegeList.map((privilege) => {
-      //   if (privilege.privilege_info.privilege_type == "menu") {
-      //     parentPrivilegeList.push(privilege)
+      // privilegeList.map(privilege => {
+      //   if (privilege.privilege_info.privilege_type == 1) {
+      //     parentOptions.push({
+      //       label: privilege.privilege_info.name,
+      //       value: Number(privilege.privilege_info.privilege_id),
+      //       disabled: true
+      //     })
+      //     privilege.child_privileges?.map(menuPrivilege => {
+      //       parentOptions.push({
+      //         label: <span>&nbsp;&nbsp;&nbsp;&nbsp;{ menuPrivilege.privilege_info.name}</span>,
+      //         value: Number(menuPrivilege.privilege_info.privilege_id)
+      //       })
+      //       defParentId = defParentId != 0 ? defParentId : Number(menuPrivilege.privilege_info.privilege_id)
+      //     })
       //   }
       // })
-      setParentPrivileges(privilegeList)
+      const parentPrivileges = filterControllerType(privilegeList)
+      parentOptions = getControllerTypeOptions(parentPrivileges, parentOptions, 0)
     }
-    if (privilegeList.length > 0) { 
-      setSelectPrivilegeId(privilegeList[0].privilege_info.privilege_id)
-    }
-    console.log("parentPrivileges:", parentPrivileges);
+    setOptions(parentOptions)
+    defParentId = parentOptions.length > 0 ? Number(parentOptions[0].value) : Number(0);
+    // 需要重置下拉框的默认值
+    props.formInstance.setFieldsValue({
+      parent_id: defParentId
+    })
   }
 
   return (
@@ -133,41 +203,16 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
         {
           privilegeType === 2 || privilegeType === 3 ? (
             <Form.Item
-              label="所属上级"
-              name="parent_id"
-              rules={[
-                {
-                  required: true,
-                  message: '请选择上级权限!',
-                },
-              ]}
+            label="父级权限"
+            name="parent_id"
+            rules={[
+              {
+                required: true,
+                message: '请选择上级权限!',
+              },
+            ]}
             >
-              <Select
-                value={selectPrivilegeId}
-              >
-                {
-                  parentPrivileges?.map((privilegeListItem) => (
-                    <>
-                      <Select.Option
-                        value={privilegeListItem.privilege_info?.privilege_id}
-                        disabled={(privilegeType == 3) ? true : false}
-                      >
-                        {privilegeListItem.privilege_info?.name}
-                      </Select.Option>
-                      {
-                        (privilegeType == 3) ? (
-                          privilegeListItem.child_privileges?.map((menuPrivilege) => (
-                            <Select.Option
-                              value={menuPrivilege.privilege_info?.privilege_id}>
-                              &nbsp;&nbsp;&nbsp;&nbsp;{menuPrivilege.privilege_info?.name}
-                            </Select.Option>
-                          ))
-                        ) : null
-                      }
-                    </>
-                  ))
-                }
-              </Select>
+              <Select options={options}></Select>
             </Form.Item>
           ) : null
         }

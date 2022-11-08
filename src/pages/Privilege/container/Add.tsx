@@ -30,7 +30,7 @@ const PrivilegeAdd: React.FC = () => {
         console.log("onFinishCallback", values)
         PrivilegeService.privilegeAdd(values).then(() => {
             message.success("保存成功", 2, () => {
-                // window.location.href = `/privilege/list`
+                window.location.href = `/privilege/list`
             })
         }).catch(e => {
             console.log(e)

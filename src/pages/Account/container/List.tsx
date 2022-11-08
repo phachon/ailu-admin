@@ -123,24 +123,19 @@ const AccountList: React.FC = () => {
      * @param accountInfo 账号信息
      */
     const updateAccountListInfo = (accountId: bigint, accountInfo: AccountInfoType) => {
-        let editAccountList: AccountInfoType[] = []
-        for (let i = 0; i < accountList.length; i++) {
-            if (accountId !== accountList[i].account_id) {
-                editAccountList.push(accountList[i])
-                continue
+        let editAccountList = accountList.map(accountInfoItem => {
+            if (accountInfoItem.account_id == accountId) {
+                return {
+                    ...accountInfoItem,
+                    email: accountInfo.email,
+                    given_name: accountInfo.given_name,
+                    mobile: accountInfo.mobile,
+                    phone: accountInfo.phone,
+                    status: accountInfo.status ? accountInfo.status : accountInfoItem.status
+                }
             }
-            let editAccountInfo: AccountInfoType = {
-                ...accountList[i],
-                email: accountInfo.email,
-                given_name: accountInfo.given_name,
-                mobile: accountInfo.mobile,
-                phone: accountInfo.phone,
-            }
-            if (accountInfo.status) {
-                editAccountInfo.status = accountInfo.status
-            }
-            editAccountList.push(editAccountInfo)
-        }
+            return accountInfoItem
+        })
         setAccountList(editAccountList)
     }
 

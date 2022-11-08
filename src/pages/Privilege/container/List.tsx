@@ -1,9 +1,9 @@
-import { Form, Modal } from 'antd';
-import React, { Component, RefObject, useEffect, useState } from 'react';
-import { EditLayoutForm } from '../../../config/layout';
+import { Form, message, Modal } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { PrivilegeService } from '../../../services/Privilege';
 import { PrivilegeInfoType, PrivilegeListItemType } from '../../../store/types/privilegeType';
 import PrivilegeFormUI from '../component/FormUI';
+import PrivilegeListTreeUI from '../component/ListTreeUI';
 import PrivilegeListUI from '../component/ListUI';
 
 const PrivilegeList: React.FC = () => {
@@ -32,7 +32,7 @@ const PrivilegeList: React.FC = () => {
      */
     const editClickCallback = (privilegeInfo: PrivilegeInfoType) => {
         setEditModalVisible(true)
-        privilegeInfo.display_switch = (privilegeInfo.is_display == 1)? true : false
+        privilegeInfo.display_switch = (privilegeInfo.is_display === 1)? true : false
         editForm.setFieldsValue(privilegeInfo)
     }
 
@@ -41,7 +41,15 @@ const PrivilegeList: React.FC = () => {
      * @param privilegeInfo 权限信息
      */
     const editFinishCallback = (privilegeInfo: PrivilegeInfoType) => {
-        console.log("editFinishCallback", privilegeInfo)
+        PrivilegeService.privilegeUpdate(privilegeInfo).then(() => {
+            message.success("修改成功", 2, () => {
+                setEditModalVisible(false)
+                getPrivilegeList()
+            })
+        }).catch((e) => {
+            console.log(e)
+            message.error("修改失败", 2)
+        }) 
     }
 
     /**
@@ -53,7 +61,7 @@ const PrivilegeList: React.FC = () => {
 
     return (
         <>
-            <PrivilegeListUI
+            <PrivilegeListTreeUI
                 privilegeList={privilegeList}
                 editClickCallback={editClickCallback}
             />

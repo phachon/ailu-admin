@@ -15,14 +15,19 @@ class Privilege {
 
     /**
      * privilegeUpdate 权限更新
+     * @param privilegeInfo 权限信息
+     * @returns 
      */
-    // privilegeUpdate(privilegeInfo: {privilege_id: bigint, name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
-    //     let privilegeUpdateUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeUpdate
-    //     return httpRequest.post<any>(privilegeUpdateUrl, {}, privilegeInfo)
-    // }
+    privilegeUpdate(privilegeInfo: PrivilegeInfoType): Promise<any> {
+        privilegeInfo.is_display = privilegeInfo.display_switch ? 1 : 0
+        let privilegeUpdateUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeUpdate
+        return httpRequest.post<any>(privilegeUpdateUrl, {}, privilegeInfo)
+    }
 
     /**
      * privilegeAdd 添加权限
+     * @param privilegeInfo 权限信息
+     * @returns 
      */
     privilegeAdd(privilegeInfo: PrivilegeInfoType): Promise<any> {
         privilegeInfo.is_display = privilegeInfo.display_switch ? 1 : 0
