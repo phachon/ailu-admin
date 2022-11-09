@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import {
   Button, Form, FormInstance, Input,
   Select, Radio, InputNumber, Tooltip,
-  Typography, Space, Switch
+  Typography, Space, Switch, Cascader
 } from "antd";
 import { EditLayoutForm, LayoutForm } from "../../../config/layout";
 import { QuestionCircleOutlined } from "@ant-design/icons";
@@ -10,6 +10,7 @@ import * as icons from '@ant-design/icons'
 import Icon from '@ant-design/icons'
 import { PrivilegeListItemType } from "../../../store/types/privilegeType";
 import { DefaultOptionType } from "antd/lib/select";
+const { Option, OptGroup } = Select;
 
 interface PrivilegeFormUIProps {
   formInstance: FormInstance<any>
@@ -73,16 +74,17 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
    * @param privilegeList 权限列表
    * @return Option 下拉数据
    */
-  const getMenuTypeOptions = (privilegeList: PrivilegeListItemType[], parentOptions: DefaultOptionType[], level: number): DefaultOptionType[] => {
+  const getParentTypeOptions = (privilegeList: PrivilegeListItemType[], parentOptions: DefaultOptionType[], privilegeType: number): DefaultOptionType[] => {
     privilegeList.forEach((privilege) => {
-      let sep = "-".repeat(level);
-      parentOptions.push({
-        label: <span>{ sep}{privilege.privilege_info.name}</span>,
+      let parentOption: DefaultOptionType = {
+        label: <span>{privilege.privilege_info.name}</span>,
         value: Number(privilege.privilege_info.privilege_id),
-      })
-      if (privilege.child_privileges) {
-        getMenuTypeOptions(privilege.child_privileges, parentOptions, level)
+        children: getParentTypeOptions(privilege.child_privileges, [], privilegeType),
       }
+      if (privilegeType == 3) {
+        parentOption.disabled = (privilege.privilege_info.privilege_type === 1) ? true : false;
+      }
+      parentOptions.push(parentOption)
     })
     return parentOptions
   }
@@ -92,17 +94,14 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
    * @param privilegeList 权限列表
    * @return Option 下拉数据
    */
-   const getControllerTypeOptions = (privilegeList: PrivilegeListItemType[], parentOptions: DefaultOptionType[], level: number): DefaultOptionType[] => {
+   const getControllerTypeOptions = (privilegeList: PrivilegeListItemType[], parentOptions: DefaultOptionType[]): DefaultOptionType[] => {
     privilegeList.forEach((privilege) => {
-      let sep = "-".repeat(level)
       parentOptions.push({
-        label: <span>{sep}{ privilege.privilege_info.name}</span>,
+        label: <span>{privilege.privilege_info.name}</span>,
         value: Number(privilege.privilege_info.privilege_id),
+        children: getControllerTypeOptions(privilege.child_privileges, []),
         disabled: privilege.privilege_info.privilege_type === 1 ? true : false,
       })
-      if (privilege.child_privileges) {
-        getControllerTypeOptions(privilege.child_privileges, parentOptions, level)
-      }
     })
     return parentOptions
   }
@@ -118,28 +117,12 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
     // 菜单的权限的父级只能是导航或菜单
     if (privilegeType == 2) {
       const parentPrivileges = filterControllerType(privilegeList)
-      parentOptions = getMenuTypeOptions(parentPrivileges, parentOptions, 0)
+      parentOptions = getParentTypeOptions(parentPrivileges, parentOptions, privilegeType)
     }
     // 控制器的父级权限只能是菜单
     if (privilegeType == 3) {
-      // privilegeList.map(privilege => {
-      //   if (privilege.privilege_info.privilege_type == 1) {
-      //     parentOptions.push({
-      //       label: privilege.privilege_info.name,
-      //       value: Number(privilege.privilege_info.privilege_id),
-      //       disabled: true
-      //     })
-      //     privilege.child_privileges?.map(menuPrivilege => {
-      //       parentOptions.push({
-      //         label: <span>&nbsp;&nbsp;&nbsp;&nbsp;{ menuPrivilege.privilege_info.name}</span>,
-      //         value: Number(menuPrivilege.privilege_info.privilege_id)
-      //       })
-      //       defParentId = defParentId != 0 ? defParentId : Number(menuPrivilege.privilege_info.privilege_id)
-      //     })
-      //   }
-      // })
       const parentPrivileges = filterControllerType(privilegeList)
-      parentOptions = getControllerTypeOptions(parentPrivileges, parentOptions, 0)
+      parentOptions = getParentTypeOptions(parentPrivileges, parentOptions, privilegeType)
     }
     setOptions(parentOptions)
     defParentId = parentOptions.length > 0 ? Number(parentOptions[0].value) : Number(0);
@@ -212,7 +195,7 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
               },
             ]}
             >
-              <Select options={options}></Select>
+              <Cascader options={options} changeOnSelect={true} />
             </Form.Item>
           ) : null
         }
