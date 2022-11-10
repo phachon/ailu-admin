@@ -18,8 +18,10 @@ class Privilege {
      * @param privilegeInfo 权限信息
      * @returns 
      */
-    privilegeUpdate(privilegeInfo: PrivilegeInfoType): Promise<any> {
-        privilegeInfo.is_display = privilegeInfo.display_switch ? 1 : 0
+    public privilegeUpdate(privilegeInfo: PrivilegeInfoType): Promise<any> {
+        const parentIds: bigint[] = privilegeInfo.parent_ids ? privilegeInfo.parent_ids : [];
+        privilegeInfo.is_display = privilegeInfo.display_switch ? 1 : 0;
+        privilegeInfo.parent_id = (parentIds.length > 0) ? parentIds[parentIds.length - 1] : BigInt(0)
         let privilegeUpdateUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeUpdate
         return httpRequest.post<any>(privilegeUpdateUrl, {}, privilegeInfo)
     }
@@ -29,8 +31,10 @@ class Privilege {
      * @param privilegeInfo 权限信息
      * @returns 
      */
-    privilegeAdd(privilegeInfo: PrivilegeInfoType): Promise<any> {
-        privilegeInfo.is_display = privilegeInfo.display_switch ? 1 : 0
+    public privilegeAdd(privilegeInfo: PrivilegeInfoType): Promise<any> {
+        const parentIds: bigint[] = privilegeInfo.parent_ids ? privilegeInfo.parent_ids : [];
+        privilegeInfo.is_display = privilegeInfo.display_switch ? 1 : 0;
+        privilegeInfo.parent_id = (parentIds.length > 0) ? parentIds[parentIds.length - 1] : BigInt(0)
         let privilegeUpdateUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeAdd
         return httpRequest.post<any>(privilegeUpdateUrl, {}, privilegeInfo)
     }
@@ -38,7 +42,7 @@ class Privilege {
     /**
      * privilegeList 权限列表
      */
-    privilegeList(): Promise<PrivilegeListType> {
+    public privilegeList(): Promise<PrivilegeListType> {
         let privilegeListUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeList
         return httpRequest.get<any>(privilegeListUrl, {})
     }

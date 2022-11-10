@@ -7,6 +7,7 @@ export type PrivilegeInfoType = {
     privilege_id: bigint, // 权限ID
     name: string, // 权限名
     parent_id: bigint, // 上级权限ID
+    parent_ids: bigint[], // 上级权限ID列表
     privilege_type: number, // 权限类型
     page_router: string, // 页面路由 path
     api_path: string, // 接口path

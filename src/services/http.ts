@@ -92,7 +92,6 @@ const httpRequest = {
             data: qs.stringify(data),
             responseType: 'json'
         }
-
         return new Promise((resolve, reject) => {
             httpService(options)
                 .then((res: AxiosResponse<BaseResponse<T>>) => {
