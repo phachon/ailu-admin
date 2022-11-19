@@ -17,8 +17,9 @@ import { EditLayoutForm, LayoutForm } from '../../../config/layout';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import * as icons from '@ant-design/icons';
 import Icon from '@ant-design/icons';
-import { PrivilegeListItemType } from '../../../store/types/privilegeType';
+import { PrivilegeListItemType, PrivilegeInfoType } from '../../../store/types/privilegeType';
 import { DefaultOptionType } from 'antd/lib/select';
+import { useForm } from 'antd/lib/form/Form';
 
 // icon 列表
 const iconList = Object.keys(icons).filter(iconItem => {
@@ -90,19 +91,10 @@ const getParentOptions = (
   return parentOptions;
 };
 
-/**
- * 下拉框选择后回调
- * @param value 选择的值
- * @param selectedOptions
- */
-const selectOnChange = (value: any, selectedOptions: any) => {
-  // return value[value.length - 1];
-  console.log(value);
-};
-
 // PrivilegeFormUIProps 权限表单UI组件依赖
 interface PrivilegeFormUIProps {
   formInstance: FormInstance<any>;
+  privilegeInfo?: PrivilegeInfoType;
   onFinishCallback: (values: any) => void;
   formLayout?: {
     labelCol: { span: number };
@@ -123,6 +115,17 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
     layoutForm = props.formLayout;
   }
   const privilegeList = props.privilegeList;
+
+  /**
+   * 权限类型点击操作
+   * @param privilegeType 权限类型
+   */
+  const privilegeTypeOnChange = (privilegeType: number) => {
+    props.formInstance.setFieldsValue({
+      parent_ids: '',
+    });
+  };
+
   return (
     <div className="panel-body">
       <Form
@@ -147,10 +150,14 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
           rules={[{ required: true }]}
           initialValue={1}
         >
-          <Radio.Group name="privilege_type">
-            <Radio value={1}>导航</Radio>
-            <Radio value={2}>菜单</Radio>
-            <Radio value={3}>
+          <Radio.Group>
+            <Radio value={1} onChange={() => privilegeTypeOnChange(1)}>
+              导航
+            </Radio>
+            <Radio value={2} onChange={() => privilegeTypeOnChange(2)}>
+              菜单
+            </Radio>
+            <Radio value={3} onChange={() => privilegeTypeOnChange(3)}>
               <Space>
                 控制器
                 <Tooltip title="有接口操作行为的权限统称为控制器">
@@ -165,13 +172,10 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
 
         <Form.Item dependencies={['privilege_type']} noStyle>
           {({ getFieldValue }) => {
-            console.log('dependencies');
             const privilegeType = getFieldValue('privilege_type');
             if (privilegeType === 1) {
               return null;
             }
-            const options = getParentOptions(privilegeList, privilegeType);
-            const optionChangeSelect = privilegeType === 2 ? true : false;
             return (
               <Form.Item
                 label="上级权限"
@@ -184,12 +188,12 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
                 getValueFromEvent={(values: string[]) => {
                   return values.length > 0 ? values.toString() : '';
                 }}
-                initialValue={''}
+                initialValue=""
               >
                 <Cascader
                   key={'Cascader' + privilegeType}
-                  options={options}
-                  changeOnSelect={optionChangeSelect}
+                  options={getParentOptions(privilegeList, privilegeType)}
+                  changeOnSelect={privilegeType === 2 ? true : false}
                   allowClear={true}
                   placeholder="请选择上级权限"
                 />
