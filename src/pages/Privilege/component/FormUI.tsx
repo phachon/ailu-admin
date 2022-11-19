@@ -58,18 +58,15 @@ const filterControllerType = (privilegeList: PrivilegeListItemType[]): Privilege
  */
 const getParentTypeOptions = (
   privilegeList: PrivilegeListItemType[],
-  parentOptions: DefaultOptionType[],
   privilegeType: number
 ): DefaultOptionType[] => {
+  const parentOptions: DefaultOptionType[] = [];
   privilegeList.forEach(privilege => {
     let parentOption: DefaultOptionType = {
       label: privilege.privilege_info.name,
-      value: Number(privilege.privilege_info.privilege_id),
-      children: getParentTypeOptions(privilege.child_privileges, [], privilegeType),
+      value: String(privilege.privilege_info.privilege_id),
+      children: getParentTypeOptions(privilege.child_privileges, privilegeType),
     };
-    if (privilegeType == 3) {
-      // parentOption.disabled = privilege.privilege_info.privilege_type === 1 ? true : false;
-    }
     parentOptions.push(parentOption);
   });
   return parentOptions;
@@ -88,7 +85,7 @@ const getParentOptions = (
   // 菜单的权限的上级只能是导航或菜单
   if (privilegeType == 2 || privilegeType == 3) {
     const parentPrivileges = filterControllerType(privilegeList);
-    parentOptions = getParentTypeOptions(parentPrivileges, parentOptions, privilegeType);
+    parentOptions = getParentTypeOptions(parentPrivileges, privilegeType);
   }
   return parentOptions;
 };
@@ -125,27 +122,7 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
   if (props.formLayout) {
     layoutForm = props.formLayout;
   }
-
   const privilegeList = props.privilegeList;
-  const privilegeType = Form.useWatch('privilege_type', props.formInstance);
-  const [options, setOptions] = useState<DefaultOptionType[]>([]);
-  const [optionChangeSelect, setOptionChangeSelect] = useState<boolean>(false);
-
-  useEffect(() => {
-    const parentOptions = getParentOptions(privilegeList, privilegeType);
-    setOptions(parentOptions);
-    if (privilegeType === 2) {
-      setOptionChangeSelect(true); // 菜单的上级可以选择导航和菜单
-    } else {
-      setOptionChangeSelect(false); // 控制器的上级只能选择菜单
-    }
-    // 需要重置下拉框的默认值
-    props.formInstance.setFieldsValue({
-      parent_ids: [],
-    });
-    console.log('useEffect:', privilegeType, parentOptions);
-  }, [privilegeType]);
-
   return (
     <div className="panel-body">
       <Form
@@ -159,12 +136,7 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
         <Form.Item
           label="权限名称"
           name="name"
-          rules={[
-            {
-              required: true,
-              message: '请输入权限名称!',
-            },
-          ]}
+          rules={[{ required: true, message: '请输入权限名称!' }]}
         >
           <Input placeholder="请输入权限名称" />
         </Form.Item>
@@ -172,11 +144,7 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
         <Form.Item
           label="权限类型"
           name="privilege_type"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
+          rules={[{ required: true }]}
           initialValue={1}
         >
           <Radio.Group name="privilege_type">
@@ -195,26 +163,40 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
           </Radio.Group>
         </Form.Item>
 
-        {privilegeType === 2 || privilegeType === 3 ? (
-          <Form.Item
-            label="上级权限"
-            name="parent_ids"
-            rules={[
-              {
-                required: true,
-                message: '请选择上级权限!',
-              },
-            ]}
-          >
-            <Cascader
-              options={options}
-              changeOnSelect={optionChangeSelect}
-              onChange={selectOnChange}
-              allowClear={true}
-              placeholder="请选择上级权限"
-            />
-          </Form.Item>
-        ) : null}
+        <Form.Item dependencies={['privilege_type']} noStyle>
+          {({ getFieldValue }) => {
+            console.log('dependencies');
+            const privilegeType = getFieldValue('privilege_type');
+            if (privilegeType === 1) {
+              return null;
+            }
+            const options = getParentOptions(privilegeList, privilegeType);
+            const optionChangeSelect = privilegeType === 2 ? true : false;
+            return (
+              <Form.Item
+                label="上级权限"
+                name="parent_ids"
+                rules={[{ required: true, message: '请选择上级权限!' }]}
+                getValueProps={val => {
+                  let value = val ? val.split(',') : [];
+                  return { value: value };
+                }}
+                getValueFromEvent={(values: string[]) => {
+                  return values.length > 0 ? values.toString() : '';
+                }}
+                initialValue={''}
+              >
+                <Cascader
+                  key={'Cascader' + privilegeType}
+                  options={options}
+                  changeOnSelect={optionChangeSelect}
+                  allowClear={true}
+                  placeholder="请选择上级权限"
+                />
+              </Form.Item>
+            );
+          }}
+        </Form.Item>
 
         <Form.Item label="页面路由" name="page_router" initialValue={''}>
           <Input placeholder="页面跳转路由：/user/info" />
@@ -243,9 +225,13 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
 
         <Form.Item
           label="是否外显"
-          name="display_switch"
+          name="is_display"
           valuePropName="checked"
-          initialValue={true}
+          initialValue={1}
+          getValueProps={value => ({ checked: value === 1 ? true : false })}
+          getValueFromEvent={value => {
+            return value ? 1 : 0;
+          }}
         >
           <Switch checkedChildren="是" unCheckedChildren="否" defaultChecked />
         </Form.Item>

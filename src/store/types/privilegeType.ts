@@ -7,13 +7,12 @@ export type PrivilegeInfoType = {
     privilege_id: bigint, // 权限ID
     name: string, // 权限名
     parent_id: bigint, // 上级权限ID
-    parent_ids: bigint[], // 上级权限ID列表
+    parent_ids: string, // 全部的上级权限ID逗号隔开
     privilege_type: number, // 权限类型
     page_router: string, // 页面路由 path
     api_path: string, // 接口path
     icon: string, // icon 图标
     is_display: number, // 是否显示
-    display_switch: boolean, // 是否显示开关
     sequence: number, // 排序数字
     create_time: string, // 创建时间
     update_time: string, // 修改时间

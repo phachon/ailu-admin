@@ -30,7 +30,7 @@ const PrivilegeList: React.FC = () => {
    */
   const editClickCallback = (privilegeInfo: PrivilegeInfoType) => {
     setEditModalVisible(true);
-    privilegeInfo.display_switch = privilegeInfo.is_display === 1 ? true : false;
+    console.log('editClickCallback:', privilegeInfo);
     editForm.setFieldsValue(privilegeInfo);
   };
 

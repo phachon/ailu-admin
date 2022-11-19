@@ -19,9 +19,6 @@ class Privilege {
      * @returns 
      */
     public privilegeUpdate(privilegeInfo: PrivilegeInfoType): Promise<any> {
-        const parentIds: bigint[] = privilegeInfo.parent_ids ? privilegeInfo.parent_ids : [];
-        privilegeInfo.is_display = privilegeInfo.display_switch ? 1 : 0;
-        privilegeInfo.parent_id = (parentIds.length > 0) ? parentIds[parentIds.length - 1] : BigInt(0)
         let privilegeUpdateUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeUpdate
         return httpRequest.post<any>(privilegeUpdateUrl, {}, privilegeInfo)
     }
@@ -32,9 +29,6 @@ class Privilege {
      * @returns 
      */
     public privilegeAdd(privilegeInfo: PrivilegeInfoType): Promise<any> {
-        const parentIds: bigint[] = privilegeInfo.parent_ids ? privilegeInfo.parent_ids : [];
-        privilegeInfo.is_display = privilegeInfo.display_switch ? 1 : 0;
-        privilegeInfo.parent_id = (parentIds.length > 0) ? parentIds[parentIds.length - 1] : BigInt(0)
         let privilegeUpdateUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeAdd
         return httpRequest.post<any>(privilegeUpdateUrl, {}, privilegeInfo)
     }

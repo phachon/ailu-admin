@@ -1,16 +1,8 @@
 import { Card, Empty, List, Tabs, Tree } from 'antd';
 import DynamicIcon from '../../../components/DynamicIcon/DynamicIcon';
 import { PrivilegeInfoType, PrivilegeListItemType } from '../../../store/types/privilegeType';
-import {
-  EditOutlined,
-  DeleteOutlined,
-  UnorderedListOutlined,
-  DownOutlined,
-  LockOutlined,
-  CaretDownOutlined,
-} from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, CaretDownOutlined } from '@ant-design/icons';
 import { DataNode } from 'antd/lib/tree';
-import { useEffect, useState } from 'react';
 
 const menuGrid = {
   gutter: 16,
@@ -22,57 +14,52 @@ const menuGrid = {
   xxl: 4,
 };
 
-// const treeData: DataNode[] = [
-//     {
-//         title: '个人信息',
-//         key: '0-0',
-//         icon: <UnorderedListOutlined />,
-//         children: [
-//             {
-//                 title: '个人信息保存',
-//                 key: '0-0-0',
-//                 switcherIcon: <LockOutlined />
-//             }
-//       ],
-//     },
-//     {
-//       title: '修改密码',
-//       key: '0-1',
-//       icon: <UnorderedListOutlined />,
-//       children: [
-//         { title: '修改密码保存', key: '0-1-0-0', switcherIcon: '' }
-//       ],
-//     }
-//   ];
-
 // PrivilegeListTreeUIProps 树形UI
 interface PrivilegeListTreeUIProps {
   privilegeList: PrivilegeListItemType[];
   editClickCallback: (privilegeInfo: PrivilegeInfoType) => void;
 }
 
+/**
+ * 权限列表 tree UI 组件
+ * @param props
+ * @returns 组件
+ */
 const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
   const privilegeList = props.privilegeList;
-  const [treeData, setTreeData] = useState<DataNode[]>([]);
+  if (privilegeList.length == 0) {
+    return <Empty></Empty>;
+  }
 
-  useEffect(() => {
-    const listTreeData = getListTreeData(privilegeList, []);
-    console.log(listTreeData);
-    setTreeData(listTreeData);
-  }, []);
-
+  /**
+   * 获取 treeData 数据
+   * @param privilegeList 权限列表
+   * @param listTreeData 菜单树数据
+   * @returns treeData 数据
+   */
   const getListTreeData = (
     privilegeList: PrivilegeListItemType[],
     listTreeData: DataNode[]
   ): DataNode[] => {
     privilegeList.forEach(privilegeItem => {
       let treeData: DataNode = {
-        title: privilegeItem.privilege_info.name,
+        title: (
+          <span>
+            {privilegeItem.privilege_info.name}
+            <a onClick={() => props.editClickCallback(privilegeItem.privilege_info)}>
+              <EditOutlined style={{ marginLeft: 6 }} />
+            </a>
+            <a onClick={() => {}}>
+              <DeleteOutlined style={{ marginLeft: 6 }} />
+            </a>
+          </span>
+        ),
         key:
           String(privilegeItem.privilege_info.parent_id) +
           '-' +
           String(privilegeItem.privilege_info.privilege_id),
         icon: <DynamicIcon name={privilegeItem.privilege_info.icon} />,
+        selectable: false,
         children: getListTreeData(privilegeItem.child_privileges, []),
       };
       listTreeData.push(treeData);
@@ -80,9 +67,6 @@ const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
     return listTreeData;
   };
 
-  if (privilegeList.length == 0) {
-    return <Empty></Empty>;
-  }
   return (
     <div className="panel-body">
       <Tabs type="card" style={{ marginTop: 10 }}>
@@ -141,13 +125,6 @@ const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
                       rootStyle={{ padding: 8 }}
                       checkStrictly={true}
                       defaultExpandAll={true}
-                      // onExpand={onExpand}
-                      // expandedKeys={expandedKeys}
-                      // autoExpandParent={autoExpandParent}
-                      // onCheck={onCheck}
-                      // checkedKeys={checkedKeys}
-                      // onSelect={onSelect}
-                      // selectedKeys={selectedKeys}
                       treeData={getListTreeData(menuPrivilegeItem.child_privileges, [])}
                     />
                   </Card>
