@@ -12,7 +12,8 @@ const RoleList: React.FC = () => {
   const [pagination, setPagination] = useState(initPagination);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
   const [editRoleInfo, setEditRoleInfo] = useState<RoleInfoType>();
-  const [searchKeyWords, setSearchKeywords] = useState({});
+  //   const [searchKeyWords, setSearchKeywords] = useState({});
+  let searchKeyWords = {};
 
   useEffect(() => {
     getRoleList(initPagination, {});
@@ -95,14 +96,15 @@ const RoleList: React.FC = () => {
   /**
    * 获取角色列表
    * @param pagination
-   * @param searchKeyWords
+   * @param searchValues
    */
-  const getRoleList = (pagination: TablePaginationConfig, searchKeyWords: {}) => {
+  const getRoleList = (pagination: TablePaginationConfig, searchValues: {}) => {
     const pageSize = pagination.pageSize;
     const current = pagination.current;
-    RoleService.roleList(pageSize, current, searchKeyWords).then((roleList: RoleListType) => {
+    RoleService.roleList(pageSize, current, searchValues).then((roleList: RoleListType) => {
       setRoleList(roleList.list);
-      setSearchKeywords(searchKeyWords);
+      //   setSearchKeywords(searchKeyWords);
+      searchKeyWords = searchValues;
       setPagination({
         ...initPagination,
         current: roleList.page_info?.page_num,
