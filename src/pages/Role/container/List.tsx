@@ -7,13 +7,13 @@ import RoleListUI from '../component/ListUI';
 import RoleSearchUI from '../component/SearchUI';
 import RoleFormUI from '../component/FormUI';
 
+let searchKeyWords = {};
+
 const RoleList: React.FC = () => {
   const [roleList, setRoleList] = useState<RoleInfoType[]>([]);
   const [pagination, setPagination] = useState(initPagination);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
   const [editRoleInfo, setEditRoleInfo] = useState<RoleInfoType>();
-  //   const [searchKeyWords, setSearchKeywords] = useState({});
-  let searchKeyWords = {};
 
   useEffect(() => {
     getRoleList(initPagination, {});
@@ -101,17 +101,20 @@ const RoleList: React.FC = () => {
   const getRoleList = (pagination: TablePaginationConfig, searchValues: {}) => {
     const pageSize = pagination.pageSize;
     const current = pagination.current;
-    RoleService.roleList(pageSize, current, searchValues).then((roleList: RoleListType) => {
-      setRoleList(roleList.list);
-      //   setSearchKeywords(searchKeyWords);
-      searchKeyWords = searchValues;
-      setPagination({
-        ...initPagination,
-        current: roleList.page_info?.page_num,
-        pageSize: roleList.page_info?.page_size,
-        total: roleList.page_info?.total_num,
+    searchKeyWords = searchValues;
+    RoleService.roleList(pageSize, current, searchValues)
+      .then((roleList: RoleListType) => {
+        setRoleList(roleList.list);
+        setPagination({
+          ...initPagination,
+          current: roleList.page_info?.page_num,
+          pageSize: roleList.page_info?.page_size,
+          total: roleList.page_info?.total_num,
+        });
+      })
+      .catch(e => {
+        console.log(e);
       });
-    });
   };
 
   return (

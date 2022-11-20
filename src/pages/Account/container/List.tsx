@@ -7,12 +7,13 @@ import AccountSearchUI from '../component/SearchUI';
 import AccountFormUI from '../component/FormUI';
 import { initPagination } from '../../../store/states/adminState';
 
+let searchValues = {};
+
 const AccountList: React.FC = () => {
   const [accountList, setAccountList] = useState<AccountInfoType[]>([]);
   const [pagination, setPagination] = useState(initPagination);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
   const [editAccountInfo, setEditAccountInfo] = useState<AccountInfoType>();
-  const [searchValues, setSearchValues] = useState({});
 
   useEffect(() => {
     getAccountList(initPagination, {});
@@ -23,11 +24,11 @@ const AccountList: React.FC = () => {
    * @param pageConfig 翻页信息
    * @param keywords 搜索信息
    */
-  const getAccountList = (pageConfig: TablePaginationConfig, searchValues: {}) => {
-    AccountService.accountList(pageConfig.pageSize, pageConfig.current, searchValues)
+  const getAccountList = (pageConfig: TablePaginationConfig, searchKeywords: {}) => {
+    searchValues = searchKeywords;
+    AccountService.accountList(pageConfig.pageSize, pageConfig.current, searchKeywords)
       .then((res: AccountListType) => {
         setAccountList(res.list);
-        setSearchValues(searchValues);
         setPagination({
           ...initPagination,
           current: res.page_info?.page_num,
