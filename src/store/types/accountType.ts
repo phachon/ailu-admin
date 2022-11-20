@@ -23,3 +23,11 @@ export type AccountListType = {
     page_info: PageInfoType
 }
 
+/**
+ * AccountSearchType 账号搜索结构定义
+ */
+export type AccountSearchType = {
+    status: string, // 状态 0 正常 -1 禁用
+    account_name: string, // 账号名
+    given_name: string, // 昵称
+}
