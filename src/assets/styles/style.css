@@ -408,3 +408,12 @@
 .text-font-21 {
     font-size: 21px
 }
+
+.button-link {
+    height: 0px;
+    padding: 0px 2px;
+}
+
+.button-text {
+    margin-left: 4px !important;
+}

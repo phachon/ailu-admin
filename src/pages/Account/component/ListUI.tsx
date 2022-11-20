@@ -59,13 +59,13 @@ const AccountListUI = (props: AccountListUIProps) => {
           render={(accountInfo: AccountInfoType) => (
             <span>
               <Button
+                className="button-link"
                 icon={<FormOutlined />}
                 type="link"
                 size="small"
-                style={{ padding: '0px 2px' }}
                 onClick={() => props.editClickCallback(accountInfo)}
               >
-                <span style={{ marginLeft: 4 }}>修改</span>
+                <span className="button-text">修改</span>
               </Button>
               {accountInfo.status === 0 && (
                 <Popconfirm
@@ -77,12 +77,12 @@ const AccountListUI = (props: AccountListUIProps) => {
                   cancelText="取消"
                 >
                   <Button
+                    className="button-link"
                     icon={<CloseSquareOutlined />}
                     type="link"
                     size="small"
-                    style={{ padding: '0px 2px' }}
                   >
-                    <span style={{ marginLeft: 4 }}>禁用</span>
+                    <span className="button-text">禁用</span>
                   </Button>
                 </Popconfirm>
               )}
@@ -96,12 +96,12 @@ const AccountListUI = (props: AccountListUIProps) => {
                   cancelText="取消"
                 >
                   <Button
+                    className="button-link"
                     icon={<CheckSquareOutlined />}
                     type="link"
                     size="small"
-                    style={{ padding: '0px 2px' }}
                   >
-                    <span style={{ marginLeft: 4 }}>恢复</span>
+                    <span className="button-text">恢复</span>
                   </Button>
                 </Popconfirm>
               )}

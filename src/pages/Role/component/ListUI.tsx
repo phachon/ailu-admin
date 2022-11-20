@@ -51,12 +51,12 @@ const RoleListUI = (props: RoleListUIProps) => {
           render={(roleInfo: RoleInfoType) => (
             <div>
               <Button
+                className="button-link"
                 type="link"
                 icon={<FormOutlined />}
                 onClick={() => props.editClickCallback(roleInfo)}
-                style={{ padding: '0px 2px' }}
               >
-                <span style={{ marginLeft: 4 }}>修改</span>
+                <span className="button-text">修改</span>
               </Button>
               <Popconfirm
                 title="确定要删除吗?"
@@ -64,8 +64,8 @@ const RoleListUI = (props: RoleListUIProps) => {
                 okText="确定"
                 cancelText="取消"
               >
-                <Button type="link" icon={<CloseSquareOutlined />} style={{ padding: '0px 2px' }}>
-                  <span style={{ marginLeft: 4 }}>删除</span>
+                <Button type="link" icon={<CloseSquareOutlined />} className="button-link">
+                  <span className="button-text">删除</span>
                 </Button>
               </Popconfirm>
             </div>
