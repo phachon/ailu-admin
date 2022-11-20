@@ -1,6 +1,5 @@
 import {getUrlConfig} from "../config/url";
 import httpRequest from "./http";
-import {AccountInfoType} from "../store/types/accountType";
 import {ProfileInfoType} from "../store/types/profileType";
 
 const profileUrl = {
@@ -25,7 +24,7 @@ class Profile {
     /**
      * profileUpdate 个人信息更新
      */
-    profileUpdate(profileInfo :{name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
+    profileUpdate(profileInfo: {name: string, given_name: string, email: string, phone: string, mobile: string}): Promise<any> {
         let profileUpdateUrl = getUrlConfig().proxyUrl + profileUrl.profileUpdate
         return httpRequest.post<any>(profileUpdateUrl, {}, profileInfo)
     }
@@ -33,7 +32,7 @@ class Profile {
     /**
      * profileRepass 更新个人中心密码
      */
-    profileRepass(passInfo :{old_pwd :string, new_pwd: string, confirm_pwd: string}): Promise<any> {
+    profileRepass(passInfo: {old_pwd: string, new_pwd: string, confirm_pwd: string}): Promise<any> {
         let profileUpdateUrl = getUrlConfig().proxyUrl + profileUrl.profileRepass
         return httpRequest.post<any>(profileUpdateUrl, {}, passInfo)
     }

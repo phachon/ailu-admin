@@ -1,12 +1,10 @@
-import { Form, message } from 'antd';
-import React, { Component, RefObject, useEffect, useState } from 'react';
+import { message } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { PrivilegeService } from '../../../services/Privilege';
 import { PrivilegeInfoType, PrivilegeListItemType } from '../../../store/types/privilegeType';
 import PrivilegeFormUI from '../component/FormUI';
 
 const PrivilegeAdd: React.FC = () => {
-  const [form] = Form.useForm();
-
   const [privilegeList, setPrivilegeList] = useState<PrivilegeListItemType[]>([]);
 
   useEffect(() => {
@@ -40,11 +38,7 @@ const PrivilegeAdd: React.FC = () => {
 
   return (
     <div className="pdt24">
-      <PrivilegeFormUI
-        formInstance={form}
-        onFinishCallback={onFinishCallback}
-        privilegeList={privilegeList}
-      />
+      <PrivilegeFormUI onFinishCallback={onFinishCallback} privilegeList={privilegeList} />
     </div>
   );
 };

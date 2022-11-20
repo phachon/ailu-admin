@@ -3,14 +3,11 @@ import LoginUI from '../component/LoginUI';
 import { LoginService } from '../../../services/Login';
 import { LoginResponseType } from '../../../store/types/loginType';
 import { DispatchLoginAction } from '../../../store/actions/adminAction';
-import { useDispatch, useSelector } from 'react-redux';
-import { Form, message } from 'antd';
+import { useDispatch } from 'react-redux';
+import { message } from 'antd';
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
-
-  const [systemLoginForm] = Form.useForm();
-  const [domainLoginForm] = Form.useForm();
 
   /**
    * 系统登录操作
@@ -21,7 +18,6 @@ const Login: React.FC = () => {
       account_name: values.account_name,
       password: values.password,
       verify_code: 'mock',
-      // 登录成功
     })
       .then((loginInfo: LoginResponseType) => {
         DispatchLoginAction(dispatch, loginInfo);
@@ -43,10 +39,8 @@ const Login: React.FC = () => {
       account_name: values.account_name,
       password: values.password,
       verify_code: 'mock',
-      // 登录成功
     })
       .then((loginInfo: LoginResponseType) => {
-        // this.props.loginDispatch(loginInfo)  // redux dispatch
         window.location.href = '/';
         // 登录异常
       })
@@ -58,8 +52,6 @@ const Login: React.FC = () => {
   return (
     <>
       <LoginUI
-        systemLoginForm={systemLoginForm}
-        domainLoginForm={domainLoginForm}
         systemLoginFinishCallback={systemLoginCallback}
         domainLoginFinishCallback={domainLoginCallback}
       />

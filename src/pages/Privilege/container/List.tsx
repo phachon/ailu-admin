@@ -1,4 +1,4 @@
-import { Form, message, Modal } from 'antd';
+import { message, Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { PrivilegeService } from '../../../services/Privilege';
 import { PrivilegeInfoType, PrivilegeListItemType } from '../../../store/types/privilegeType';
@@ -6,10 +6,9 @@ import PrivilegeFormUI from '../component/FormUI';
 import PrivilegeListTreeUI from '../component/ListTreeUI';
 
 const PrivilegeList: React.FC = () => {
-  const [editForm] = Form.useForm();
-
   const [privilegeList, setPrivilegeList] = useState<PrivilegeListItemType[]>([]);
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editPrivilegeInfo, setEditPrivilegeInfo] = useState<PrivilegeInfoType>();
 
   useEffect(() => {
     getPrivilegeList();
@@ -29,9 +28,8 @@ const PrivilegeList: React.FC = () => {
    * @param privilegeInfo 权限信息
    */
   const editClickCallback = (privilegeInfo: PrivilegeInfoType) => {
+    setEditPrivilegeInfo(privilegeInfo);
     setEditModalVisible(true);
-    console.log('editClickCallback:', privilegeInfo);
-    editForm.setFieldsValue(privilegeInfo);
   };
 
   /**
@@ -70,8 +68,7 @@ const PrivilegeList: React.FC = () => {
         footer={null}
       >
         <PrivilegeFormUI
-          formInstance={editForm}
-          isEdit={true}
+          privilegeInfo={editPrivilegeInfo}
           onFinishCallback={editFinishCallback}
           privilegeList={privilegeList}
         />

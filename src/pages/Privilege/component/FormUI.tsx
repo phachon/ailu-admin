@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Button,
   Form,
-  FormInstance,
   Input,
   Select,
   Radio,
@@ -19,7 +18,6 @@ import * as icons from '@ant-design/icons';
 import Icon from '@ant-design/icons';
 import { PrivilegeListItemType, PrivilegeInfoType } from '../../../store/types/privilegeType';
 import { DefaultOptionType } from 'antd/lib/select';
-import { useForm } from 'antd/lib/form/Form';
 
 // icon 列表
 const iconList = Object.keys(icons).filter(iconItem => {
@@ -27,6 +25,7 @@ const iconList = Object.keys(icons).filter(iconItem => {
   if (k.indexOf('Outlined') > 0 && typeof icons[k] === 'object') {
     return true;
   }
+  return false;
 });
 
 /**
@@ -35,12 +34,13 @@ const iconList = Object.keys(icons).filter(iconItem => {
  * @return 返回需要的权限列表
  */
 const filterControllerType = (privilegeList: PrivilegeListItemType[]): PrivilegeListItemType[] => {
-  if (!privilegeList || privilegeList.length == 0) return privilegeList;
+  if (!privilegeList || privilegeList.length === 0) return privilegeList;
   let realPrivilegeList = privilegeList
     .filter(filterItem => {
       if (filterItem.privilege_info.privilege_type !== 3) {
         return true;
       }
+      return false;
     })
     .map(privilegeListItem => {
       let privilegeItem = {
@@ -84,7 +84,7 @@ const getParentOptions = (
 ): DefaultOptionType[] => {
   let parentOptions: DefaultOptionType[] = [];
   // 菜单的权限的上级只能是导航或菜单
-  if (privilegeType == 2 || privilegeType == 3) {
+  if (privilegeType === 2 || privilegeType === 3) {
     const parentPrivileges = filterControllerType(privilegeList);
     parentOptions = getParentTypeOptions(parentPrivileges, privilegeType);
   }
@@ -93,15 +93,13 @@ const getParentOptions = (
 
 // PrivilegeFormUIProps 权限表单UI组件依赖
 interface PrivilegeFormUIProps {
-  formInstance: FormInstance<any>;
-  privilegeInfo?: PrivilegeInfoType;
+  privilegeList: PrivilegeListItemType[];
   onFinishCallback: (values: any) => void;
+  privilegeInfo?: PrivilegeInfoType;
   formLayout?: {
     labelCol: { span: number };
     wrapperCol: { span: number };
   };
-  isEdit?: boolean;
-  privilegeList: PrivilegeListItemType[];
 }
 
 /**
@@ -110,30 +108,30 @@ interface PrivilegeFormUIProps {
  * @returns 组件
  */
 const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
-  let layoutForm = props.isEdit ? EditLayoutForm : LayoutForm;
+  const [form] = Form.useForm();
+  const isEdit = props.privilegeInfo ? true : false;
+  let layoutForm = isEdit ? EditLayoutForm : LayoutForm;
   if (props.formLayout) {
     layoutForm = props.formLayout;
   }
   const privilegeList = props.privilegeList;
+  if (props.privilegeInfo) {
+    form.setFieldsValue(props.privilegeInfo);
+  }
 
   /**
    * 权限类型点击操作
    * @param privilegeType 权限类型
    */
   const privilegeTypeOnChange = (privilegeType: number) => {
-    props.formInstance.setFieldsValue({
+    form.setFieldsValue({
       parent_ids: '',
     });
   };
 
   return (
     <div className="panel-body">
-      <Form
-        {...layoutForm}
-        name="basic"
-        form={props.formInstance}
-        onFinish={props.onFinishCallback}
-      >
+      <Form {...layoutForm} name="basic" form={form} onFinish={props.onFinishCallback}>
         <Form.Item noStyle label="权限ID" name="privilege_id"></Form.Item>
 
         <Form.Item
