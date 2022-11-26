@@ -1,52 +1,67 @@
-import {getUrlConfig} from "../config/url";
+import {AccountAddInfoType, AccountDetailInfoType, AccountEditInfoType} from "../store/types/accountType";
 import httpRequest from "./http";
-import {AccountInfoType} from "../store/types/accountType";
+import Base from "./Base";
 
 const accountUrl = {
-    accountInfo: "/admin/account/info",
-    accountUpdate: "/admin/account/update",
-    accountUpdateStatus: "/admin/account/update_status",
-    accountAdd: "/admin/account/add",
-    accountList: "/admin/account/list",
+    add: "/admin/account/add",
+    save: "/admin/account/save",
+    edit: "/admin/account/edit",
+    modify: "/admin/account/modify",
+    detail: "/admin/account/detail",
+    updateStatus: "/admin/account/update_status",
+    list: "/admin/account/list",
 }
 
 /**
  * Account 账号服务
  */
-class Account {
+class Account extends Base {
 
-    /**
-     * getAccountInfo 获取账号信息
-     */
-    getAccountInfo(accountId: bigint): Promise<AccountInfoType> {
-        let accountInfoUrl = getUrlConfig().proxyUrl + accountUrl.accountInfo
-        return httpRequest.get<AccountInfoType>(accountInfoUrl, {
-            account_id: accountId,
-        })
+    public constructor() {
+        super();
     }
 
     /**
-     * accountUpdate 账号更新
+     * getAddAccountInfo 获取添加账号信息
+     * @returns 
      */
-    accountUpdate(accountInfo: {account_id: bigint, name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
-        let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdate
-        return httpRequest.post<any>(accountUpdateUrl, {}, accountInfo)
+    public getAddAccountInfo(): Promise<AccountAddInfoType> {
+        const accountAddUrl = this.getProxyUrl(accountUrl.add)
+        return httpRequest.get<AccountAddInfoType>(accountAddUrl)
     }
 
     /**
-     * accountAddReq 添加账号
+     * saveAccount 添加保存账号
      */
-    accountAdd(accountInfo: {name :string, given_name :string, email: string, phone :string, mobile :string}): Promise<any> {
-        let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountAdd
-        return httpRequest.post<any>(accountUpdateUrl, {}, accountInfo)
+    public saveAccount(accountInfo: {}): Promise<any> {
+        const accountSaveUrl = this.getProxyUrl(accountUrl.save)
+        return httpRequest.post<any>(accountSaveUrl, {}, accountInfo)
+    }
+
+    /**
+     * getEditAccountInfo 获取编辑账号信息
+     */
+     public getEditAccountInfo(account_id: bigint): Promise<any> {
+        const accountEditUrl = this.getProxyUrl(accountUrl.edit)
+         return httpRequest.get<AccountEditInfoType>(accountEditUrl, {
+             account_id: account_id,
+         })
+    }
+
+    /**
+     * modifyAccount 修改保存账号
+     */
+    public modifyAccount(accountEditInfo: {}): Promise<any> {
+        const accountModifyUrl = this.getProxyUrl(accountUrl.modify)
+        return httpRequest.post<any>(accountModifyUrl, {}, accountEditInfo)
     }
 
     /**
      * accountList 账号列表
      */
-    accountList(pageSize: number|undefined, pageNum: number|undefined, keywords: {}): Promise<any> {
-        let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountList
-        return httpRequest.get<any>(accountUpdateUrl, {
+    public accountList(pageSize: number|undefined, pageNum: number|undefined, keywords: {}): Promise<any> {
+        const accountListUrl = this.getProxyUrl(accountUrl.list)
+        return httpRequest.get<any>(accountListUrl, {
             page_size: pageSize,
             page_num: pageNum,
             keywords: JSON.stringify(keywords),
@@ -54,13 +69,25 @@ class Account {
     }
 
     /**
-     * accountUpdate 账号更新
+     * updateAccountStatus 修改账号状态
      */
-    accountUpdateStatus(accountId: bigint, status: number): Promise<any> {
-        let accountUpdateUrl = getUrlConfig().proxyUrl + accountUrl.accountUpdateStatus
-        return httpRequest.post<any>(accountUpdateUrl, {}, {
+    public updateAccountStatus(accountId: bigint, status: number): Promise<any> {
+        let accountUpdateStatueUrl = this.getProxyUrl(accountUrl.updateStatus)
+        return httpRequest.post<any>(accountUpdateStatueUrl, {}, {
             account_id: accountId,
             status: status,
+        })
+    }
+
+    /**
+     * getAccountDetail 获取账号详情
+     * @param accountId 账号ID 
+     * @returns 
+     */
+     public getAccountDetail(accountId: bigint): Promise<AccountDetailInfoType> {
+        const accountDetailUrl = this.getProxyUrl(accountUrl.detail)
+        return httpRequest.get<AccountDetailInfoType>(accountDetailUrl, {
+            account_id: accountId,
         })
     }
 }

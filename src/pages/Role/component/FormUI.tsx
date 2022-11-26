@@ -45,6 +45,10 @@ const RoleFormUI = (props: RoleFormUIProps) => {
           <Input placeholder="请输入角色名" />
         </Form.Item>
 
+        <Form.Item label="备注" name="remark">
+          <Input placeholder="请输入备注信息" />
+        </Form.Item>
+
         <Form.Item wrapperCol={{ offset: layoutForm.labelCol.span }}>
           <Button type="primary" htmlType="submit">
             保存

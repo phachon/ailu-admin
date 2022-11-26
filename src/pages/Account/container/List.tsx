@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import AccountListUI from '../component/ListUI';
-import { AccountInfoType, AccountListType } from '../../../store/types/accountType';
+import {
+  AccountDetailInfoType,
+  AccountEditInfoType,
+  AccountInfoType,
+  AccountListType,
+} from '../../../store/types/accountType';
 import { AccountService } from '../../../services/Account';
 import { message, Modal, TablePaginationConfig } from 'antd';
 import AccountSearchUI from '../component/SearchUI';
 import AccountFormUI from '../component/FormUI';
 import { initPagination } from '../../../store/states/adminState';
+import { RoleInfoType } from '../../../store/types/roleType';
+import AccountDetailUI from '../component/DetailUI';
 
 let searchValues = {};
 
@@ -14,6 +21,9 @@ const AccountList: React.FC = () => {
   const [pagination, setPagination] = useState(initPagination);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
   const [editAccountInfo, setEditAccountInfo] = useState<AccountInfoType>();
+  const [detailAccountInfo, setDetailAccountInfo] = useState<AccountDetailInfoType>();
+  const [detailModalVisible, setDetailModalVisible] = useState<boolean>(false);
+  const [roleList, setRoleList] = useState<RoleInfoType[]>([]);
 
   useEffect(() => {
     getAccountList(initPagination, {});
@@ -22,7 +32,7 @@ const AccountList: React.FC = () => {
   /**
    * 请求账号列表
    * @param pageConfig 翻页信息
-   * @param keywords 搜索信息
+   * @param searchKeywords 搜索信息
    */
   const getAccountList = (pageConfig: TablePaginationConfig, searchKeywords: {}) => {
     searchValues = searchKeywords;
@@ -71,8 +81,40 @@ const AccountList: React.FC = () => {
    * @param accountInfo 账号信息
    */
   const editClickCallback = (accountInfo: AccountInfoType) => {
-    setEditAccountInfo(accountInfo);
-    setEditModalVisible(true);
+    // 获取修改账号需要的信息
+    AccountService.getEditAccountInfo(accountInfo.account_id)
+      .then((editAccountInfo: AccountEditInfoType) => {
+        const roleIds: string[] = [];
+        editAccountInfo.account_roles.forEach((accountRole: RoleInfoType) => {
+          roleIds.push(String(accountRole.role_id));
+        });
+        editAccountInfo.account_info.role_ids = '';
+        if (roleIds.length > 0 && editAccountInfo.account_info) {
+          editAccountInfo.account_info.role_ids = roleIds.toString();
+        }
+        setEditAccountInfo(editAccountInfo.account_info);
+        setRoleList(editAccountInfo.role_list);
+        setEditModalVisible(true);
+      })
+      .catch(e => {
+        console.log('修改失败err:', e);
+      });
+  };
+
+  /**
+   * 详情点击操作
+   * @param accountInfo 账号信息
+   */
+  const detailClickCallback = (accountInfo: AccountInfoType) => {
+    // 获取账号详情信息
+    AccountService.getAccountDetail(accountInfo.account_id)
+      .then((accountDetailInfo: AccountDetailInfoType) => {
+        setDetailAccountInfo(accountDetailInfo);
+        setDetailModalVisible(true);
+      })
+      .catch(e => {
+        console.log('修改失败err:', e);
+      });
   };
 
   /**
@@ -81,7 +123,7 @@ const AccountList: React.FC = () => {
    * @param status
    */
   const updateStatusCallback = (accountInfo: AccountInfoType, status: number) => {
-    AccountService.accountUpdateStatus(accountInfo.account_id, status)
+    AccountService.updateAccountStatus(accountInfo.account_id, status)
       .then(() => {
         message.success('操作成功', 2, () => {
           getAccountList(pagination, searchValues);
@@ -104,7 +146,7 @@ const AccountList: React.FC = () => {
    * @param accountInfo AccountInfoType
    */
   const editOnFinishCallback = (accountInfo: AccountInfoType) => {
-    AccountService.accountUpdate(accountInfo)
+    AccountService.modifyAccount(accountInfo)
       .then(() => {
         message.success('修改成功', 2, () => {
           setEditModalVisible(false);
@@ -130,6 +172,7 @@ const AccountList: React.FC = () => {
         listChangeCallback={listChangeCallback}
         editClickCallback={editClickCallback}
         updateStatusCallback={updateStatusCallback}
+        detailClickCallback={detailClickCallback}
       />
       <Modal
         title="账号修改"
@@ -138,7 +181,22 @@ const AccountList: React.FC = () => {
         onCancel={editModalCancelCallback}
         footer={null}
       >
-        <AccountFormUI accountInfo={editAccountInfo} onFinishCallback={editOnFinishCallback} />
+        <AccountFormUI
+          roleList={roleList}
+          accountInfo={editAccountInfo}
+          onFinishCallback={editOnFinishCallback}
+        />
+      </Modal>
+      <Modal
+        title="账号详情"
+        width={570}
+        visible={detailModalVisible}
+        onCancel={() => {
+          setDetailModalVisible(false);
+        }}
+        footer={null}
+      >
+        <AccountDetailUI accountDetail={detailAccountInfo} />
       </Modal>
     </div>
   );

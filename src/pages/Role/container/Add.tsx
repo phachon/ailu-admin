@@ -9,7 +9,7 @@ const RoleAdd: React.FC = () => {
    * @param values
    */
   const onFinishCallback = (values: any) => {
-    RoleService.roleAdd(values).then(() => {
+    RoleService.saveRole(values).then(() => {
       message.success('添加成功', 2, () => {
         window.location.href = `/role/list`;
       });

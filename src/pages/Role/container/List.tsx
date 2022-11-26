@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { initPagination } from '../../../store/states/adminState';
-import { RoleInfoType, RoleListType } from '../../../store/types/roleType';
+import { RoleEditInfoType, RoleInfoType, RoleListType } from '../../../store/types/roleType';
 import { RoleService } from '../../../services/Role';
 import { message, Modal, TablePaginationConfig } from 'antd';
 import RoleListUI from '../component/ListUI';
@@ -34,8 +34,14 @@ const RoleList: React.FC = () => {
    * @param roleInfo
    */
   const editClickCallback = (roleInfo: RoleInfoType) => {
-    setEditRoleInfo(roleInfo);
-    setEditModalVisible(true);
+    RoleService.getEditRoleInfo(roleInfo.role_id)
+      .then((editRoleInfo: RoleEditInfoType) => {
+        setEditRoleInfo(editRoleInfo.role_info);
+        setEditModalVisible(true);
+      })
+      .catch(e => {
+        console.log('修改角色 err:', e);
+      });
   };
 
   /**
@@ -50,7 +56,7 @@ const RoleList: React.FC = () => {
    * @param roleInfo
    */
   const editFinishCallback = (roleInfo: RoleInfoType) => {
-    RoleService.roleUpdate(roleInfo.role_id, roleInfo.name)
+    RoleService.modifyRole(roleInfo)
       .then(() => {
         message.success('修改成功', 2, () => {
           setEditModalVisible(false);
@@ -67,7 +73,7 @@ const RoleList: React.FC = () => {
    * @param roleInfo
    */
   const deleteConfirmCallback = (roleInfo: RoleInfoType) => {
-    RoleService.roleDelete(roleInfo.role_id)
+    RoleService.deleteRole(roleInfo.role_id)
       .then(() => {
         message.success('删除成功', 2, () => {
           getRoleList(pagination, searchKeyWords);
@@ -102,7 +108,7 @@ const RoleList: React.FC = () => {
     const pageSize = pagination.pageSize;
     const current = pagination.current;
     searchKeyWords = searchValues;
-    RoleService.roleList(pageSize, current, searchValues)
+    RoleService.getRoleList(pageSize, current, searchValues)
       .then((roleList: RoleListType) => {
         setRoleList(roleList.list);
         setPagination({

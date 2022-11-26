@@ -35,7 +35,8 @@ const RoleListUI = (props: RoleListUIProps) => {
           key={'role_id'}
           align={'center'}
         />
-        <Table.Column title={'角色名'} dataIndex="name" key={'name'} />
+        <Table.Column title={'角色名'} dataIndex="name" key={'name'} width={250} />
+        <Table.Column title={'备注'} dataIndex="remark" key={'remark'} />
         <Table.Column
           title={'修改时间'}
           dataIndex="update_time"
