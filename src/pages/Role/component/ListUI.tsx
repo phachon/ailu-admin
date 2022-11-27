@@ -1,6 +1,6 @@
 import { Button, Popconfirm, Table, TablePaginationConfig } from 'antd';
 import { RoleInfoType } from '../../../store/types/roleType';
-import { CloseSquareOutlined, FormOutlined } from '@ant-design/icons';
+import { CloseSquareOutlined, FormOutlined, TeamOutlined, LockOutlined } from '@ant-design/icons';
 
 interface RoleListUIProps {
   listLoading: boolean;
@@ -9,6 +9,8 @@ interface RoleListUIProps {
   listChangeCallback: (pageConfig: TablePaginationConfig, filters: any, sorter: any) => void;
   editClickCallback: (roleInfo: RoleInfoType) => void;
   deleteCallback: (roleInfo: RoleInfoType) => void;
+  accountListClickCallback?: (roleInfo: RoleInfoType) => void;
+  privilegeClickCallback?: (roleInfo: RoleInfoType) => void;
 }
 
 /**
@@ -41,16 +43,36 @@ const RoleListUI = (props: RoleListUIProps) => {
           title={'修改时间'}
           dataIndex="update_time"
           key={'update_time'}
-          width={220}
+          width={200}
           align={'center'}
         />
         <Table.Column
           title={'操作'}
-          width={160}
+          width={260}
           key={'action'}
           align={'center'}
           render={(roleInfo: RoleInfoType) => (
             <div>
+              <Button
+                className="button-link"
+                type="link"
+                icon={<TeamOutlined />}
+                onClick={() =>
+                  props.accountListClickCallback ? props.accountListClickCallback(roleInfo) : null
+                }
+              >
+                <span className="button-text">账号</span>
+              </Button>
+              <Button
+                className="button-link"
+                type="link"
+                icon={<LockOutlined />}
+                onClick={() =>
+                  props.privilegeClickCallback ? props.privilegeClickCallback(roleInfo) : null
+                }
+              >
+                <span className="button-text">权限</span>
+              </Button>
               <Button
                 className="button-link"
                 type="link"

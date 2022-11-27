@@ -1,6 +1,7 @@
 import httpRequest from "./http";
 import {RoleEditInfoType, RoleListType} from "../store/types/roleType";
 import Base from "./Base";
+import { AccountListType } from "../store/types/accountType";
 
 const roleUrl = {
     roleSave: "/admin/role/save",
@@ -8,6 +9,7 @@ const roleUrl = {
     roleModify: "/admin/role/modify",
     roleList: "/admin/role/list",
     roleDelete: "/admin/role/delete",
+    accountList: "/admin/role/account_list",
 }
 
 /**
@@ -30,6 +32,7 @@ class Role extends Base {
 
     /**
      * getEditRoleInfo 获取编辑角色信息
+     * @param roleId 角色id
      */
      public getEditRoleInfo(roleId: number): Promise<RoleEditInfoType> {
         const roleEditUrl = this.getProxyUrl(roleUrl.roleEdit)
@@ -50,6 +53,9 @@ class Role extends Base {
 
     /**
      * getRoleList 获取角色列表
+     * @param pageSize 每一页条数
+     * @param pageNum 页数
+     * @param keywords 搜索值
      */
     public getRoleList(pageSize?: number, pageNum?: number, keywords?: {}): Promise<RoleListType> {
         const roleListUrl = this.getProxyUrl(roleUrl.roleList)
@@ -61,7 +67,23 @@ class Role extends Base {
     }
 
     /**
+     * getAccountList 获取账号列表
+     * @param pageSize 每一页条数
+     * @param pageNum 页数
+     * @param roleId 角色ID
+     */
+     public getAccountList(pageSize?: number, pageNum?: number, roleId?: number): Promise<AccountListType> {
+        const roleAccountListUrl = this.getProxyUrl(roleUrl.accountList)
+        return httpRequest.get<AccountListType>(roleAccountListUrl, {
+            page_size: pageSize,
+            page_num: pageNum,
+            role_id: roleId
+        })
+    }
+
+    /**
      * deleteRole 删除角色
+     * @param roleId 角色id
      */
     public deleteRole(roleId: number): Promise<any> {
         const deleteRoleUrl = this.getProxyUrl(roleUrl.roleDelete)

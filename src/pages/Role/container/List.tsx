@@ -6,14 +6,21 @@ import { message, Modal, TablePaginationConfig } from 'antd';
 import RoleListUI from '../component/ListUI';
 import RoleSearchUI from '../component/SearchUI';
 import RoleFormUI from '../component/FormUI';
+import AccountListUI from '../component/AccountListUI';
+import { AccountInfoType, AccountListType } from '../../../store/types/accountType';
 
 let searchKeyWords = {};
+let accountRoleInfo: RoleInfoType;
 
 const RoleList: React.FC = () => {
   const [roleList, setRoleList] = useState<RoleInfoType[]>([]);
   const [pagination, setPagination] = useState(initPagination);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
+  const [accountModalVisible, setAccountModalVisible] = useState<boolean>(false);
+  const [privilegeModalVisible, setPrivilegeModalVisible] = useState<boolean>(false);
   const [editRoleInfo, setEditRoleInfo] = useState<RoleInfoType>();
+  const [roleAccountList, setRoleAccountList] = useState<AccountInfoType[]>([]);
+  const [accountPagination, setAccountPagination] = useState(initPagination);
 
   useEffect(() => {
     getRoleList(initPagination, {});
@@ -25,7 +32,7 @@ const RoleList: React.FC = () => {
    * @param filters
    * @param sorter
    */
-  const listChangeCallback = (pageConfig: TablePaginationConfig, filters: any, sorter: any) => {
+  const roleListChangeCallback = (pageConfig: TablePaginationConfig, filters: any, sorter: any) => {
     getRoleList(pageConfig, searchKeyWords);
   };
 
@@ -45,11 +52,30 @@ const RoleList: React.FC = () => {
   };
 
   /**
-   * 修改弹框取消
+   * 账号列表点击操作
+   * @param roleInfo 角色信息
    */
-  const editModalCancel = () => {
-    setEditModalVisible(false);
+  const accountListClickCallback = (roleInfo: RoleInfoType) => {
+    accountRoleInfo = roleInfo;
+    getRoleAccountList(initPagination, roleInfo.role_id);
   };
+
+  /**
+   * 账号列表翻页操作
+   */
+  const accountListChangeCallback = (
+    pageConfig: TablePaginationConfig,
+    filters: any,
+    sorter: any
+  ) => {
+    getRoleAccountList(pageConfig, accountRoleInfo?.role_id);
+  };
+
+  /**
+   * 权限列表点击操作
+   * @param roleInfo 角色信息
+   */
+  const privilegeClickCallback = (roleInfo: RoleInfoType) => {};
 
   /**
    * 修改保存操作
@@ -123,6 +149,32 @@ const RoleList: React.FC = () => {
       });
   };
 
+  /**
+   * 获取角色账号列表
+   * @param pagination
+   * @param roleId
+   */
+  const getRoleAccountList = (pagination: TablePaginationConfig, roleId: number) => {
+    const pageSize = pagination.pageSize;
+    const current = pagination.current;
+    RoleService.getAccountList(pageSize, current, roleId)
+      .then((accountList: AccountListType) => {
+        setRoleAccountList(accountList.list);
+        setAccountPagination({
+          ...initPagination,
+          current: accountList.page_info?.page_num,
+          pageSize: accountList.page_info?.page_size,
+          total: accountList.page_info?.total_num,
+        });
+        if (!accountModalVisible) {
+          setAccountModalVisible(true);
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
   return (
     <div className="panel">
       <RoleSearchUI
@@ -133,18 +185,33 @@ const RoleList: React.FC = () => {
         listLoading={false}
         pagination={pagination}
         roleList={roleList}
-        listChangeCallback={listChangeCallback}
+        listChangeCallback={roleListChangeCallback}
         editClickCallback={editClickCallback}
         deleteCallback={deleteConfirmCallback}
+        accountListClickCallback={accountListClickCallback}
+        privilegeClickCallback={privilegeClickCallback}
       />
       <Modal
         title="角色修改"
         width={570}
         visible={editModalVisible}
-        onCancel={editModalCancel}
+        onCancel={() => setEditModalVisible(false)}
         footer={null}
       >
         <RoleFormUI roleInfo={editRoleInfo} onFinishCallback={editFinishCallback} />
+      </Modal>
+      <Modal
+        title="角色账号"
+        width={900}
+        visible={accountModalVisible}
+        onCancel={() => setAccountModalVisible(false)}
+        footer={null}
+      >
+        <AccountListUI
+          accountList={roleAccountList}
+          pagination={accountPagination}
+          listChangeCallback={accountListChangeCallback}
+        />
       </Modal>
     </div>
   );
