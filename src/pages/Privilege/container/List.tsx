@@ -37,7 +37,7 @@ const PrivilegeList: React.FC = () => {
    * @param privilegeInfo 权限信息
    */
   const editFinishCallback = (privilegeInfo: PrivilegeInfoType) => {
-    PrivilegeService.privilegeUpdate(privilegeInfo)
+    PrivilegeService.modifyPrivilege(privilegeInfo)
       .then(() => {
         message.success('修改成功', 2, () => {
           setEditModalVisible(false);

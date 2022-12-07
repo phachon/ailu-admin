@@ -32,3 +32,11 @@ export type PrivilegeListItemType = {
 export type PrivilegeListType = {
     list: PrivilegeListItemType[]
 }
+
+/**
+ * PrivilegeEditInfoType 编辑权限返回结构
+ */
+ export type PrivilegeEditInfoType = {
+    privilege_info: PrivilegeInfoType // 权限信息
+    privilege_list: PrivilegeListItemType[] // 所有的权限
+}

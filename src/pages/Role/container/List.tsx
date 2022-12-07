@@ -8,6 +8,9 @@ import RoleSearchUI from '../component/SearchUI';
 import RoleFormUI from '../component/FormUI';
 import AccountListUI from '../component/AccountListUI';
 import { AccountInfoType, AccountListType } from '../../../store/types/accountType';
+import PrivilegeUI from '../component/PrivilegeUI';
+import { PrivilegeListItemType } from '../../../store/types/privilegeType';
+import { PrivilegeService } from '../../../services/Privilege';
 
 let searchKeyWords = {};
 let accountRoleInfo: RoleInfoType;
@@ -21,6 +24,7 @@ const RoleList: React.FC = () => {
   const [editRoleInfo, setEditRoleInfo] = useState<RoleInfoType>();
   const [roleAccountList, setRoleAccountList] = useState<AccountInfoType[]>([]);
   const [accountPagination, setAccountPagination] = useState(initPagination);
+  const [rolePrivileges, setRolePrivileges] = useState<PrivilegeListItemType[]>([]);
 
   useEffect(() => {
     getRoleList(initPagination, {});
@@ -75,7 +79,16 @@ const RoleList: React.FC = () => {
    * 权限列表点击操作
    * @param roleInfo 角色信息
    */
-  const privilegeClickCallback = (roleInfo: RoleInfoType) => {};
+  const privilegeClickCallback = (roleInfo: RoleInfoType) => {
+    PrivilegeService.privilegeList()
+      .then(privilegeList => {
+        setRolePrivileges(privilegeList.list);
+        setPrivilegeModalVisible(true);
+      })
+      .catch(e => {
+        console.log('获取角色权限列表err:', e);
+      });
+  };
 
   /**
    * 修改保存操作
@@ -212,6 +225,15 @@ const RoleList: React.FC = () => {
           pagination={accountPagination}
           listChangeCallback={accountListChangeCallback}
         />
+      </Modal>
+      <Modal
+        title="角色权限"
+        width={1100}
+        visible={privilegeModalVisible}
+        onCancel={() => setPrivilegeModalVisible(false)}
+        footer={null}
+      >
+        <PrivilegeUI privilegeList={rolePrivileges} onFinishCallback={values => {}} />
       </Modal>
     </div>
   );

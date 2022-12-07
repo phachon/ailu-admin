@@ -1,44 +1,71 @@
-import { getUrlConfig } from "../config/url";
 import httpRequest from "./http";
-import { PrivilegeInfoType, PrivilegeListType } from "../store/types/privilegeType";
+import Base from "./Base";
+import { PrivilegeEditInfoType, PrivilegeInfoType, PrivilegeListType } from "../store/types/privilegeType";
 
 const privilegeUrl = {
     privilegeAdd: "/admin/privilege/add",
+    privilegeSave: "/admin/privilege/save",
     privilegeList: "/admin/privilege/list",
-    privilegeUpdate: "/admin/privilege/update",
+    privilegeEdit: "/admin/privilege/edit",
+    privilegeModify: "/admin/privilege/modify",
+    privilegeDelete: "/admin/privilege/delete",
 }
 
 /**
  * Privilege 权限服务
  */
-class Privilege {
+class Privilege extends Base {
 
-    /**
-     * privilegeUpdate 权限更新
-     * @param privilegeInfo 权限信息
-     * @returns 
-     */
-    public privilegeUpdate(privilegeInfo: PrivilegeInfoType): Promise<any> {
-        let privilegeUpdateUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeUpdate
-        return httpRequest.post<any>(privilegeUpdateUrl, {}, privilegeInfo)
+    public constructor() {
+        super()
     }
 
     /**
-     * privilegeAdd 添加权限
+     * getAddPrivilegeInfo 获取添加权限信息
+     * @returns 
+     */
+    public getAddPrivilegeInfo(): Promise<PrivilegeListType> {
+        let privilegeAddUrl = this.getProxyUrl(privilegeUrl.privilegeAdd)
+        return httpRequest.get<PrivilegeListType>(privilegeAddUrl)
+    }
+
+    /**
+     * savePrivilege 保存权限
      * @param privilegeInfo 权限信息
      * @returns 
      */
-    public privilegeAdd(privilegeInfo: PrivilegeInfoType): Promise<any> {
-        let privilegeUpdateUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeAdd
-        return httpRequest.post<any>(privilegeUpdateUrl, {}, privilegeInfo)
+    public savePrivilege(privilegeInfo: PrivilegeInfoType): Promise<any> {
+        let privilegeSaveUrl = this.getProxyUrl(privilegeUrl.privilegeSave)
+        return httpRequest.post<any>(privilegeSaveUrl, {}, privilegeInfo)
+    }
+
+    /**
+     * 获取编辑权限信息
+     * @returns 
+     */
+    public getEditPrivilegeInfo(privilegeId: bigint): Promise<PrivilegeEditInfoType> { 
+        let privilegeEditUrl = this.getProxyUrl(privilegeUrl.privilegeEdit)
+        return httpRequest.get<PrivilegeEditInfoType>(privilegeEditUrl, {
+            privilege_id: privilegeId
+        })
+    }
+
+    /**
+     * modifyPrivilege 权限修改保存
+     * @param privilegeInfo 权限信息
+     * @returns 
+     */
+    public modifyPrivilege(privilegeInfo: PrivilegeInfoType): Promise<any> {
+        let privilegeModifyUrl = this.getProxyUrl(privilegeUrl.privilegeModify)
+        return httpRequest.post<any>(privilegeModifyUrl, {}, privilegeInfo)
     }
 
     /**
      * privilegeList 权限列表
      */
     public privilegeList(): Promise<PrivilegeListType> {
-        let privilegeListUrl = getUrlConfig().proxyUrl + privilegeUrl.privilegeList
-        return httpRequest.get<any>(privilegeListUrl, {})
+        let privilegeListUrl = this.getProxyUrl(privilegeUrl.privilegeList)
+        return httpRequest.get<PrivilegeListType>(privilegeListUrl, {})
     }
 }
 

@@ -1,5 +1,5 @@
 import httpRequest from "./http";
-import {RoleEditInfoType, RoleListType} from "../store/types/roleType";
+import {RoleEditInfoType, RoleListType, RolePrivilegeEditType} from "../store/types/roleType";
 import Base from "./Base";
 import { AccountListType } from "../store/types/accountType";
 
@@ -10,6 +10,8 @@ const roleUrl = {
     roleList: "/admin/role/list",
     roleDelete: "/admin/role/delete",
     accountList: "/admin/role/account_list",
+    privilegeEdit: "/admin/role/privilege_edit",
+    privilegeModify: "/admin/role/privilege_modify",
 }
 
 /**
@@ -89,6 +91,29 @@ class Role extends Base {
         const deleteRoleUrl = this.getProxyUrl(roleUrl.roleDelete)
         return httpRequest.post<any>(deleteRoleUrl, {
             role_id: roleId,
+        })
+    }
+
+    /**
+     * getPrivilegeEdit 获取权限修改信息
+     * @param roleId 角色ID
+     */
+     public getPrivilegeEdit(roleId: number): Promise<RolePrivilegeEditType> {
+        const rolePrivilegeEditUrl = this.getProxyUrl(roleUrl.privilegeEdit)
+        return httpRequest.get<RolePrivilegeEditType>(rolePrivilegeEditUrl, {
+            role_id: roleId
+        })
+    }
+    
+    /**
+     * modifyRolePrivilege 角色权限保存
+     * @param roleId 角色ID
+     */
+     public modifyRolePrivilege(roleId: number, privilegeIds: BigInt[]): Promise<any> {
+        const rolePrivilegeModifyUrl = this.getProxyUrl(roleUrl.privilegeModify)
+        return httpRequest.post<any>(rolePrivilegeModifyUrl, {
+            role_id: roleId,
+            privilege_ids: privilegeIds.join(",") // eg: "123,456,11,21"
         })
     }
 }

@@ -8,14 +8,14 @@ const PrivilegeAdd: React.FC = () => {
   const [privilegeList, setPrivilegeList] = useState<PrivilegeListItemType[]>([]);
 
   useEffect(() => {
-    getPrivilegeList();
+    getAddPrivilegeInfo();
   }, []);
 
   /**
-   * 获取权限列表
+   * 获取添加权限需要信息
    */
-  const getPrivilegeList = () => {
-    PrivilegeService.privilegeList().then(privilegeList => {
+  const getAddPrivilegeInfo = () => {
+    PrivilegeService.getAddPrivilegeInfo().then(privilegeList => {
       setPrivilegeList(privilegeList.list);
     });
   };
@@ -25,7 +25,7 @@ const PrivilegeAdd: React.FC = () => {
    */
   const onFinishCallback = (values: PrivilegeInfoType) => {
     console.log('onFinishCallback', values);
-    PrivilegeService.privilegeAdd(values)
+    PrivilegeService.savePrivilege(values)
       .then(() => {
         message.success('保存成功', 2, () => {
           window.location.href = `/privilege/list`;

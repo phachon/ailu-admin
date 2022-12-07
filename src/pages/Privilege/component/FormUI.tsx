@@ -29,30 +29,6 @@ const iconList = Object.keys(icons).filter(iconItem => {
 });
 
 /**
- * 过滤控制器类型的权限
- * @param privilegeList 权限列表
- * @return 返回需要的权限列表
- */
-const filterControllerType = (privilegeList: PrivilegeListItemType[]): PrivilegeListItemType[] => {
-  if (!privilegeList || privilegeList.length === 0) return privilegeList;
-  let realPrivilegeList = privilegeList
-    .filter(filterItem => {
-      if (filterItem.privilege_info.privilege_type !== 3) {
-        return true;
-      }
-      return false;
-    })
-    .map(privilegeListItem => {
-      let privilegeItem = {
-        ...privilegeListItem,
-        child_privileges: filterControllerType(privilegeListItem.child_privileges),
-      };
-      return privilegeItem;
-    });
-  return realPrivilegeList;
-};
-
-/**
  * 根据菜单权限下拉框 Options
  * @param privilegeList 权限列表
  * @return Option 下拉数据
@@ -85,8 +61,7 @@ const getParentOptions = (
   let parentOptions: DefaultOptionType[] = [];
   // 菜单的权限的上级只能是导航或菜单
   if (privilegeType === 2 || privilegeType === 3) {
-    const parentPrivileges = filterControllerType(privilegeList);
-    parentOptions = getParentTypeOptions(parentPrivileges, privilegeType);
+    parentOptions = getParentTypeOptions(privilegeList, privilegeType);
   }
   return parentOptions;
 };

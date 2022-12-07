@@ -1,4 +1,5 @@
 import {PageInfoType} from "./baseType";
+import { PrivilegeListItemType } from "./privilegeType";
 
 /**
  * RoleInfoType 角色信息结构
@@ -25,4 +26,12 @@ export type RoleListType = {
  */
 export type RoleEditInfoType = {
     role_info: RoleInfoType
+}
+
+/**
+ * RolePrivilegeEditType 角色权限修改返回结构
+ */
+export type RolePrivilegeEditType = {
+    all_privilege: PrivilegeListItemType[]
+    privilege_ids: BigInt[]
 }
