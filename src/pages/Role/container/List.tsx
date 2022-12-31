@@ -10,21 +10,26 @@ import AccountListUI from '../component/AccountListUI';
 import { AccountInfoType, AccountListType } from '../../../store/types/accountType';
 import PrivilegeUI from '../component/PrivilegeUI';
 import { PrivilegeListItemType } from '../../../store/types/privilegeType';
-import { PrivilegeService } from '../../../services/Privilege';
+import { arrayToString } from '../../../utils/utils';
 
 let searchKeyWords = {};
 let accountRoleInfo: RoleInfoType;
 
 const RoleList: React.FC = () => {
+  // 角色列表相关 state
   const [roleList, setRoleList] = useState<RoleInfoType[]>([]);
   const [pagination, setPagination] = useState(initPagination);
   const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
-  const [accountModalVisible, setAccountModalVisible] = useState<boolean>(false);
-  const [privilegeModalVisible, setPrivilegeModalVisible] = useState<boolean>(false);
+  // 角色修改相关 state
   const [editRoleInfo, setEditRoleInfo] = useState<RoleInfoType>();
+  // 角色账号相关 state
+  const [accountModalVisible, setAccountModalVisible] = useState<boolean>(false);
   const [roleAccountList, setRoleAccountList] = useState<AccountInfoType[]>([]);
   const [accountPagination, setAccountPagination] = useState(initPagination);
-  const [rolePrivileges, setRolePrivileges] = useState<PrivilegeListItemType[]>([]);
+  // 角色权限相关 state
+  const [privilegeModalVisible, setPrivilegeModalVisible] = useState<boolean>(false);
+  const [rolePrivilegIds, setRolePrivilegeIds] = useState<string[]>([]);
+  const [allPrivileges, setAllPrivileges] = useState<PrivilegeListItemType[]>([]);
 
   useEffect(() => {
     getRoleList(initPagination, {});
@@ -79,15 +84,39 @@ const RoleList: React.FC = () => {
    * 权限列表点击操作
    * @param roleInfo 角色信息
    */
-  const privilegeClickCallback = (roleInfo: RoleInfoType) => {
-    PrivilegeService.privilegeList()
+  const privilegeEditClickCallback = (roleInfo: RoleInfoType) => {
+    RoleService.getPrivilegeEdit(roleInfo.role_id)
       .then(privilegeList => {
-        setRolePrivileges(privilegeList.list);
+        setEditRoleInfo(roleInfo);
+        setAllPrivileges(privilegeList.all_privilege);
+        setRolePrivilegeIds(arrayToString(privilegeList.privilege_ids));
         setPrivilegeModalVisible(true);
       })
       .catch(e => {
         console.log('获取角色权限列表err:', e);
       });
+  };
+
+  /**
+   * 角色权限修改保存
+   * @param privilegeIds 权限列表
+   * @returns
+   */
+  const privilegeModifyFinishCallback = (privilegeIds?: string[]) => {
+    // console.log('roleId, privilegeIds:', editRoleInfo?.role_id, privilegeIds);
+    // 修改保存角色权限
+    RoleService.modifyRolePrivilege(editRoleInfo?.role_id, privilegeIds)
+      .then(() => {
+        message.success('保存成功', 2, () => {
+          setPrivilegeModalVisible(false);
+          getRoleList(pagination, searchKeyWords);
+        });
+      })
+      .catch(e => {
+        console.log('保存角色权限err:', e);
+        message.error('保存权限失败', 2);
+      });
+    return;
   };
 
   /**
@@ -202,7 +231,7 @@ const RoleList: React.FC = () => {
         editClickCallback={editClickCallback}
         deleteCallback={deleteConfirmCallback}
         accountListClickCallback={accountListClickCallback}
-        privilegeClickCallback={privilegeClickCallback}
+        privilegeClickCallback={privilegeEditClickCallback}
       />
       <Modal
         title="角色修改"
@@ -233,7 +262,11 @@ const RoleList: React.FC = () => {
         onCancel={() => setPrivilegeModalVisible(false)}
         footer={null}
       >
-        <PrivilegeUI privilegeList={rolePrivileges} onFinishCallback={values => {}} />
+        <PrivilegeUI
+          privilegeList={allPrivileges}
+          defaultPrivilegeIds={rolePrivilegIds}
+          onFinishCallback={privilegeModifyFinishCallback}
+        />
       </Modal>
     </div>
   );

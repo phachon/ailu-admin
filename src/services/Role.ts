@@ -109,11 +109,11 @@ class Role extends Base {
      * modifyRolePrivilege 角色权限保存
      * @param roleId 角色ID
      */
-     public modifyRolePrivilege(roleId: number, privilegeIds: BigInt[]): Promise<any> {
+     public modifyRolePrivilege(roleId?: number, privilegeIds?: string[]): Promise<any> {
         const rolePrivilegeModifyUrl = this.getProxyUrl(roleUrl.privilegeModify)
         return httpRequest.post<any>(rolePrivilegeModifyUrl, {
             role_id: roleId,
-            privilege_ids: privilegeIds.join(",") // eg: "123,456,11,21"
+            privilege_ids: privilegeIds ? privilegeIds.join(",") : "" // eg: "123,456,11,21"
         })
     }
 }
