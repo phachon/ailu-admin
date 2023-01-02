@@ -1,6 +1,7 @@
-import { Button, Popconfirm, Table, TablePaginationConfig } from 'antd';
+import { Button, Popconfirm, Table, TablePaginationConfig, Tag } from 'antd';
 import { RoleInfoType } from '../../../store/types/roleType';
 import { CloseSquareOutlined, FormOutlined, TeamOutlined, LockOutlined } from '@ant-design/icons';
+import RoleToolUI from './RoleToolUI';
 
 interface RoleListUIProps {
   listLoading: boolean;
@@ -39,6 +40,14 @@ const RoleListUI = (props: RoleListUIProps) => {
         />
         <Table.Column title={'角色名'} dataIndex="name" key={'name'} width={250} />
         <Table.Column title={'备注'} dataIndex="remark" key={'remark'} />
+        <Table.Column
+          title={'角色类型'}
+          dataIndex="role_type"
+          key={'role_type'}
+          width={120}
+          align={'center'}
+          render={RoleToolUI.RoleTypeTagUI}
+        />
         <Table.Column
           title={'修改时间'}
           dataIndex="update_time"

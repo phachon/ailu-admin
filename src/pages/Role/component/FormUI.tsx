@@ -1,6 +1,7 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Radio, Space, Tooltip, Typography } from 'antd';
 import { EditLayoutForm, LayoutForm } from '../../../config/layout';
 import { RoleInfoType } from '../../../store/types/roleType';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 interface RoleFormUIProps {
   roleInfo?: RoleInfoType;
@@ -38,14 +39,30 @@ const RoleFormUI = (props: RoleFormUIProps) => {
         )}
 
         <Form.Item
-          label="角色名"
+          label="角色名称"
           name="name"
           rules={[{ required: true, message: '请输入角色名!' }]}
         >
           <Input placeholder="请输入角色名" />
         </Form.Item>
 
-        <Form.Item label="备注" name="remark">
+        <Form.Item label="角色类型" name="role_type" rules={[{ required: true }]} initialValue={0}>
+          <Radio.Group>
+            <Radio value={0}>自定义</Radio>
+            <Radio value={1}>
+              <Space>
+                默认角色
+                <Tooltip title="添加账号默认选择角色">
+                  <Typography.Link>
+                    <QuestionCircleOutlined />
+                  </Typography.Link>
+                </Tooltip>
+              </Space>
+            </Radio>
+          </Radio.Group>
+        </Form.Item>
+
+        <Form.Item label="角色备注" name="remark">
           <Input placeholder="请输入备注信息" />
         </Form.Item>
 

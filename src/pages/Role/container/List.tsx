@@ -147,8 +147,8 @@ const RoleList: React.FC = () => {
           getRoleList(pagination, searchKeyWords);
         });
       })
-      .catch(() => {
-        message.error('修改失败', 2);
+      .catch(e => {
+        console.log('删除角色失败:', e);
       });
   };
 

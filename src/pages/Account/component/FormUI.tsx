@@ -1,8 +1,10 @@
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Input, Select, Tag } from 'antd';
 import { EditLayoutForm, LayoutForm } from '../../../config/layout';
 import { AccountInfoType } from '../../../store/types/accountType';
-import { RoleInfoType } from '../../../store/types/roleType';
+import { RoleInfoType, RoleTypeAccountDefaultRole } from '../../../store/types/roleType';
 import { DefaultOptionType } from 'antd/lib/select';
+import { useEffect } from 'react';
+import RoleToolUI from '../../Role/component/RoleToolUI';
 
 interface AccountFormUIProps {
   roleList?: RoleInfoType[];
@@ -26,11 +28,29 @@ const getRoleOptions = (roleList: RoleInfoType[] | undefined): DefaultOptionType
   }
   roleList.forEach(roleInfo => {
     roleOptions.push({
-      label: roleInfo.name,
+      label: RoleToolUI.RoleNameTagUI(roleInfo, { margin: 0 }),
       value: String(roleInfo.role_id),
     });
   });
   return roleOptions;
+};
+
+/**
+ * 从所有的角色中获取默认的账号角色
+ * @param roleList
+ * @returns 角色ID列表
+ */
+const getDefaultAccountRoleIds = (roleList: RoleInfoType[] | undefined): string => {
+  if (!roleList) {
+    return '';
+  }
+  let defaultAccountRoleIds: string[] = [];
+  roleList.forEach(roleInfo => {
+    if (roleInfo.role_type === RoleTypeAccountDefaultRole) {
+      defaultAccountRoleIds.push(roleInfo.role_id.toString());
+    }
+  });
+  return defaultAccountRoleIds.length > 0 ? defaultAccountRoleIds.toString() : '';
 };
 
 /**
@@ -46,9 +66,22 @@ const AccountFormUI = (props: AccountFormUIProps) => {
   if (props.formLayout) {
     layoutForm = props.formLayout;
   }
-  if (props.accountInfo) {
-    form.setFieldsValue(props.accountInfo);
-  }
+
+  useEffect(() => {
+    const defaultRoleIds = getDefaultAccountRoleIds(props.roleList);
+    if (!isEdit && defaultRoleIds !== '') {
+      form.setFieldsValue({
+        role_ids: defaultRoleIds,
+      });
+    }
+  }, [props.roleList]);
+
+  useEffect(() => {
+    if (props.accountInfo) {
+      form.setFieldsValue(props.accountInfo);
+    }
+  }, [props.accountInfo]);
+
   return (
     <div className="panel-body">
       <Form {...layoutForm} name="basic" onFinish={props.onFinishCallback} form={form}>

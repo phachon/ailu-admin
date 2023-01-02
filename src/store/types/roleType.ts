@@ -1,6 +1,9 @@
 import {PageInfoType} from "./baseType";
 import { PrivilegeListItemType } from "./privilegeType";
 
+export const RoleTypeCustomRole         = 0 // 自定义角色
+export const RoleTypeAccountDefaultRole = 1 // 账号默认角色
+
 /**
  * RoleInfoType 角色信息结构
  */
@@ -9,6 +12,7 @@ export type RoleInfoType = {
     name: string, // 角色名
     remark: string, // 角色备注
     status: number, // 状态
+    role_type: number, // 角色类型
     create_time: string, // 创建时间
     update_time: string, // 修改时间
 }
