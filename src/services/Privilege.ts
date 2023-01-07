@@ -61,6 +61,16 @@ class Privilege extends Base {
     }
 
     /**
+     * deletePrivilege 删除权限
+     * @param privilegeInfo 权限信息
+     * @returns 
+     */
+     public deletePrivilege(privilegeInfo: PrivilegeInfoType): Promise<any> {
+        let privilegeDeleteUrl = this.getProxyUrl(privilegeUrl.privilegeDelete)
+        return httpRequest.post<any>(privilegeDeleteUrl, {}, privilegeInfo)
+    }
+
+    /**
      * privilegeList 权限列表
      */
     public privilegeList(): Promise<PrivilegeListType> {

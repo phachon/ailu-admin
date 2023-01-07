@@ -33,6 +33,22 @@ const PrivilegeList: React.FC = () => {
   };
 
   /**
+   * 删除点击操作
+   * @param privilegeInfo 权限信息
+   */
+  const deleteClickCallback = (privilegeInfo: PrivilegeInfoType) => {
+    PrivilegeService.deletePrivilege(privilegeInfo)
+      .then(() => {
+        message.success('删除成功', 2, () => {
+          getPrivilegeList();
+        });
+      })
+      .catch(e => {
+        console.log('删除权限失败：', e);
+      });
+  };
+
+  /**
    * 修改保存操作
    * @param privilegeInfo 权限信息
    */
@@ -59,7 +75,11 @@ const PrivilegeList: React.FC = () => {
 
   return (
     <>
-      <PrivilegeListTreeUI privilegeList={privilegeList} editClickCallback={editClickCallback} />
+      <PrivilegeListTreeUI
+        privilegeList={privilegeList}
+        editClickCallback={editClickCallback}
+        deleteClickCallback={deleteClickCallback}
+      />
       <Modal
         title="权限修改"
         width={670}

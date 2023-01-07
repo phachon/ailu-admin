@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Table, TablePaginationConfig, Tag } from 'antd';
+import { Button, Popconfirm, Table, TablePaginationConfig } from 'antd';
 import { RoleInfoType } from '../../../store/types/roleType';
 import { CloseSquareOutlined, FormOutlined, TeamOutlined, LockOutlined } from '@ant-design/icons';
 import { RoleTypeTagUI } from './RoleToolUI';

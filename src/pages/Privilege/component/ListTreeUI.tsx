@@ -1,4 +1,4 @@
-import { Card, Empty, List, Tabs, Tree } from 'antd';
+import { Card, Empty, List, Popconfirm, Tabs, Tree } from 'antd';
 import DynamicIcon from '../../../components/DynamicIcon/DynamicIcon';
 import { PrivilegeInfoType, PrivilegeListItemType } from '../../../store/types/privilegeType';
 import { EditOutlined, DeleteOutlined, CaretDownOutlined } from '@ant-design/icons';
@@ -18,6 +18,7 @@ const menuGrid = {
 interface PrivilegeListTreeUIProps {
   privilegeList: PrivilegeListItemType[];
   editClickCallback: (privilegeInfo: PrivilegeInfoType) => void;
+  deleteClickCallback: (privilegeInfo: PrivilegeInfoType) => void;
 }
 
 /**
@@ -49,9 +50,18 @@ const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
             <a onClick={() => props.editClickCallback(privilegeItem.privilege_info)}>
               <EditOutlined style={{ marginLeft: 6 }} />
             </a>
-            <a onClick={() => {}}>
-              <DeleteOutlined style={{ marginLeft: 6 }} />
-            </a>
+            <Popconfirm
+              title="确定要删除吗?"
+              onConfirm={() => {
+                props.deleteClickCallback(privilegeItem.privilege_info);
+              }}
+              okText="确定"
+              cancelText="取消"
+            >
+              <a href="javascript:;">
+                <DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} />
+              </a>
+            </Popconfirm>
           </span>
         ),
         key:
@@ -83,6 +93,18 @@ const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
                 <a onClick={() => props.editClickCallback(privilegeListItem.privilege_info)}>
                   <EditOutlined style={{ marginLeft: 6, marginRight: 0 }} />
                 </a>
+                <Popconfirm
+                  title="确定要删除吗?"
+                  onConfirm={() => {
+                    props.deleteClickCallback(privilegeListItem.privilege_info);
+                  }}
+                  okText="确定"
+                  cancelText="取消"
+                >
+                  <a href="javascript:;">
+                    <DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} />
+                  </a>
+                </Popconfirm>
               </span>
             }
           >
@@ -107,13 +129,23 @@ const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
                     extra={
                       <span>
                         <a
+                          href="javascript:;"
                           onClick={() => props.editClickCallback(menuPrivilegeItem.privilege_info)}
                         >
                           <EditOutlined style={{ marginLeft: 6, marginRight: 0 }} />
                         </a>
-                        <a href="#">
-                          <DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} />
-                        </a>
+                        <Popconfirm
+                          title="确定要删除吗?"
+                          onConfirm={() => {
+                            props.deleteClickCallback(privilegeListItem.privilege_info);
+                          }}
+                          okText="确定"
+                          cancelText="取消"
+                        >
+                          <a href="javascript:;">
+                            <DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} />
+                          </a>
+                        </Popconfirm>
                       </span>
                     }
                   >
