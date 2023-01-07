@@ -11,7 +11,7 @@ import {
  * @param roleType
  * @returns
  */
-const RoleTypeTagUI = (roleType: number) => {
+export const RoleTypeTagUI = (roleType: number) => {
   switch (roleType) {
     case RoleTypeCustomRole:
       return <Tag color="blue">自定义</Tag>;
@@ -23,34 +23,17 @@ const RoleTypeTagUI = (roleType: number) => {
 };
 
 /**
- * 角色名标签UI组件
+ * 选择角色外显UI组件
  * @param roleInfo 角色信息
  * @returns
  */
-const RoleNameTagUI = (roleInfo: RoleInfoType, style?: CSSProperties | undefined) => {
+export const SelectRoleLabelUI = (roleInfo: RoleInfoType, style?: CSSProperties | undefined) => {
   switch (roleInfo.role_type) {
     case RoleTypeCustomRole:
-      return (
-        <Tag color="blue" style={style}>
-          {roleInfo.name}
-        </Tag>
-      );
+      return '自定义：' + roleInfo.name;
     case RoleTypeAccountDefaultRole:
-      return (
-        <Tag color="red" style={style}>
-          {roleInfo.name}
-        </Tag>
-      );
+      return '默认：' + roleInfo.name;
     default:
-      return (
-        <Tag color="cyan" style={style}>
-          {roleInfo.name}
-        </Tag>
-      );
+      return '未知：' + roleInfo.name;
   }
-};
-
-export default {
-  RoleTypeTagUI,
-  RoleNameTagUI,
 };

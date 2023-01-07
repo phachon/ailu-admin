@@ -1,10 +1,10 @@
-import { Button, Form, Input, Select, Tag } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import { EditLayoutForm, LayoutForm } from '../../../config/layout';
 import { AccountInfoType } from '../../../store/types/accountType';
 import { RoleInfoType, RoleTypeAccountDefaultRole } from '../../../store/types/roleType';
 import { DefaultOptionType } from 'antd/lib/select';
 import { useEffect } from 'react';
-import RoleToolUI from '../../Role/component/RoleToolUI';
+import Role from '../../Role';
 
 interface AccountFormUIProps {
   roleList?: RoleInfoType[];
@@ -28,7 +28,7 @@ const getRoleOptions = (roleList: RoleInfoType[] | undefined): DefaultOptionType
   }
   roleList.forEach(roleInfo => {
     roleOptions.push({
-      label: RoleToolUI.RoleNameTagUI(roleInfo, { margin: 0 }),
+      label: Role.SelectRoleLabelUI(roleInfo, { margin: 0 }),
       value: String(roleInfo.role_id),
     });
   });
@@ -74,7 +74,7 @@ const AccountFormUI = (props: AccountFormUIProps) => {
         role_ids: defaultRoleIds,
       });
     }
-  }, [props.roleList]);
+  }, [props.roleList, isEdit]);
 
   useEffect(() => {
     if (props.accountInfo) {

@@ -1,7 +1,7 @@
 import { Button, Popconfirm, Table, TablePaginationConfig, Tag } from 'antd';
 import { RoleInfoType } from '../../../store/types/roleType';
 import { CloseSquareOutlined, FormOutlined, TeamOutlined, LockOutlined } from '@ant-design/icons';
-import RoleToolUI from './RoleToolUI';
+import { RoleTypeTagUI } from './RoleToolUI';
 
 interface RoleListUIProps {
   listLoading: boolean;
@@ -46,7 +46,7 @@ const RoleListUI = (props: RoleListUIProps) => {
           key={'role_type'}
           width={120}
           align={'center'}
-          render={RoleToolUI.RoleTypeTagUI}
+          render={RoleTypeTagUI}
         />
         <Table.Column
           title={'修改时间'}

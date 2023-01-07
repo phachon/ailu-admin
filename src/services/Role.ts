@@ -10,6 +10,7 @@ const roleUrl = {
     roleList: "/admin/role/list",
     roleDelete: "/admin/role/delete",
     accountList: "/admin/role/account_list",
+    accountRemove: "/admin/role/account_remove",
     privilegeEdit: "/admin/role/privilege_edit",
     privilegeModify: "/admin/role/privilege_modify",
 }
@@ -114,6 +115,18 @@ class Role extends Base {
         return httpRequest.post<any>(rolePrivilegeModifyUrl, {
             role_id: roleId,
             privilege_ids: privilegeIds ? privilegeIds.join(",") : "" // eg: "123,456,11,21"
+        })
+     }
+    
+    /**
+     * removeRoleAccount 移除角色下账号
+     * @param roleId 角色ID
+     */
+     public removeRoleAccount(roleId?: number, accountId?: bigint): Promise<any> {
+        const accountRemoveUrl = this.getProxyUrl(roleUrl.accountRemove)
+        return httpRequest.post<any>(accountRemoveUrl, {
+            role_id: roleId,
+            account_id: accountId
         })
     }
 }

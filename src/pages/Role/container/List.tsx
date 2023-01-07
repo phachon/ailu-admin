@@ -13,7 +13,7 @@ import { PrivilegeListItemType } from '../../../store/types/privilegeType';
 import { arrayToString } from '../../../utils/utils';
 
 let searchKeyWords = {};
-let accountRoleInfo: RoleInfoType;
+let accountListRoleInfo: RoleInfoType; // 账号列表角色信息
 
 const RoleList: React.FC = () => {
   // 角色列表相关 state
@@ -65,7 +65,7 @@ const RoleList: React.FC = () => {
    * @param roleInfo 角色信息
    */
   const accountListClickCallback = (roleInfo: RoleInfoType) => {
-    accountRoleInfo = roleInfo;
+    accountListRoleInfo = roleInfo;
     getRoleAccountList(initPagination, roleInfo.role_id);
   };
 
@@ -77,7 +77,23 @@ const RoleList: React.FC = () => {
     filters: any,
     sorter: any
   ) => {
-    getRoleAccountList(pageConfig, accountRoleInfo?.role_id);
+    getRoleAccountList(pageConfig, accountListRoleInfo?.role_id);
+  };
+
+  /**
+   * 账号移除操作
+   * @param accountInfo 账号信息
+   */
+  const accountRemoveChangeCallback = (accountInfo: AccountInfoType) => {
+    RoleService.removeRoleAccount(accountListRoleInfo?.role_id, accountInfo.account_id)
+      .then(() => {
+        message.success('移除成功', 2, () => {
+          getRoleAccountList(accountPagination, accountListRoleInfo?.role_id);
+        });
+      })
+      .catch(e => {
+        console.log('移除账号失败：', e);
+      });
   };
 
   /**
@@ -103,7 +119,6 @@ const RoleList: React.FC = () => {
    * @returns
    */
   const privilegeModifyFinishCallback = (privilegeIds?: string[]) => {
-    // console.log('roleId, privilegeIds:', editRoleInfo?.role_id, privilegeIds);
     // 修改保存角色权限
     RoleService.modifyRolePrivilege(editRoleInfo?.role_id, privilegeIds)
       .then(() => {
@@ -253,6 +268,7 @@ const RoleList: React.FC = () => {
           accountList={roleAccountList}
           pagination={accountPagination}
           listChangeCallback={accountListChangeCallback}
+          removeChangeCallback={accountRemoveChangeCallback}
         />
       </Modal>
       <Modal

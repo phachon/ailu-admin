@@ -1,5 +1,6 @@
-import { Table, TablePaginationConfig } from 'antd';
+import { Button, Popconfirm, Table, TablePaginationConfig } from 'antd';
 import { AccountInfoType } from '../../../store/types/accountType';
+import { CloseCircleOutlined } from '@ant-design/icons';
 
 /**
  * 账号列表 UI 组件 props
@@ -8,6 +9,7 @@ interface AccountListUIProps {
   accountList?: AccountInfoType[];
   pagination?: TablePaginationConfig;
   listChangeCallback?: (pageConfig: TablePaginationConfig, filters: any, sorter: any) => void;
+  removeChangeCallback?: (accountInfo: AccountInfoType) => void;
 }
 
 /**
@@ -44,6 +46,32 @@ const AccountListUI = (props: AccountListUIProps) => {
         dataIndex="update_time"
         key={'update_time'}
         align={'center'}
+      />
+      <Table.Column
+        title={'操作'}
+        key={'action'}
+        align={'center'}
+        render={(accountInfo: AccountInfoType) => (
+          <span>
+            <Popconfirm
+              title="确定要移除吗?"
+              onConfirm={() =>
+                props.removeChangeCallback ? props.removeChangeCallback(accountInfo) : undefined
+              }
+              okText="确定"
+              cancelText="取消"
+            >
+              <Button
+                className="button-link"
+                icon={<CloseCircleOutlined />}
+                type="link"
+                size="small"
+              >
+                <span className="button-text">移除</span>
+              </Button>
+            </Popconfirm>
+          </span>
+        )}
       />
     </Table>
   );
