@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, MenuProps, Spin } from 'antd';
+import { Layout, MenuProps } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
 import { ProfileService } from '../../../services/Profile';
 import { ProfileInfoType } from '../../../store/types/profileType';
@@ -11,37 +11,29 @@ import FrameHeaderUI from '../component/HeaderUI';
 import FrameSidebarUI from '../component/SidebarUI';
 import FrameBreadcrumbUI from '../component/BreadcrumbUI';
 import FrameFooterUI from '../component/FooterUI';
-import {
-  ProfileOutlined,
-  TeamOutlined,
-  UnorderedListOutlined,
-  UserOutlined,
-  LockOutlined,
-} from '@ant-design/icons';
 import { setProfileAccountInfo } from '../../../store/local';
-import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import { PrivilegeListItemType, PrivilegeTypeNav } from '../../../store/types/privilegeType';
 import DynamicIcon from '../../../components/DynamicIcon/DynamicIcon';
 
-const mockMenuItems: MenuProps['items'] = [
-  // {
-  //   label: '权限管理',
-  //   key: 'privilege',
-  //   children: [
-  //     {
-  //       label: <Link to="/privilege/add">添加权限</Link>,
-  //       key: 'privilege-add',
-  //       icon: <UnorderedListOutlined />,
-  //     },
-  //     {
-  //       label: <Link to="/privilege/list">权限列表</Link>,
-  //       key: 'privilege-list',
-  //       icon: <UnorderedListOutlined />,
-  //     },
-  //   ],
-  //   icon: <LockOutlined />,
-  // },
-];
+// const mockMenuItems: MenuProps['items'] = [
+//   {
+//     label: '权限管理',
+//     key: 'privilege',
+//     children: [
+//       {
+//         label: <Link to="/privilege/add">添加权限</Link>,
+//         key: 'privilege-add',
+//         icon: <UnorderedListOutlined />,
+//       },
+//       {
+//         label: <Link to="/privilege/list">权限列表</Link>,
+//         key: 'privilege-list',
+//         icon: <UnorderedListOutlined />,
+//       },
+//     ],
+//     icon: <LockOutlined />,
+//   }
+// ];
 
 /**
  * 根据权限列表返回获取导航item列表
@@ -56,7 +48,7 @@ const getNavItemsByPrivilegeList = (
     return navItems;
   }
   privilegeList.forEach(privilegeItem => {
-    if (privilegeItem.privilege_info.privilege_type == PrivilegeTypeNav) {
+    if (privilegeItem.privilege_info.privilege_type === PrivilegeTypeNav) {
       navItems?.push({
         label: privilegeItem.privilege_info.name,
         key: String(privilegeItem.privilege_info.privilege_id),
@@ -76,7 +68,7 @@ const getMenuItemsByPrivilegeList = (
   privilegeList?: PrivilegeListItemType[]
 ): MenuProps['items'] => {
   let menuItems: MenuProps['items'] = [];
-  if (!privilegeList || privilegeList.length == 0) {
+  if (!privilegeList || privilegeList.length === 0) {
     return undefined;
   }
   privilegeList.forEach(privilegeItem => {
@@ -125,7 +117,7 @@ const FrameHome: React.FC = () => {
     // 查找导航对应的菜单权限
     let menuPrivileges: PrivilegeListItemType[] = [];
     privilegeList?.forEach(privilegeItem => {
-      if (String(privilegeItem.privilege_info.privilege_id) == navIdStr) {
+      if (String(privilegeItem.privilege_info.privilege_id) === navIdStr) {
         menuPrivileges = privilegeItem.child_privileges;
       }
     });
@@ -164,7 +156,7 @@ const FrameHome: React.FC = () => {
    * @param privilegeList 权限列表
    */
   const setPrivilegeMenusItems = (privilegeList?: PrivilegeListItemType[]) => {
-    if (!privilegeList || privilegeList.length == 0) {
+    if (!privilegeList || privilegeList.length === 0) {
       setMenuItems([]);
       return;
     }
@@ -176,7 +168,7 @@ const FrameHome: React.FC = () => {
     // 查找导航对应的菜单权限
     let menuPrivileges: PrivilegeListItemType[] = [];
     privilegeList?.forEach(privilegeItem => {
-      if (privilegeItem.privilege_info.privilege_id == defNavId) {
+      if (privilegeItem.privilege_info.privilege_id === defNavId) {
         menuPrivileges = privilegeItem.child_privileges;
       }
     });
