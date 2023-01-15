@@ -1,5 +1,9 @@
 import { PageInfoType } from "./baseType";
 
+export const PrivilegeTypeNav = 1; // 权限类型：导航
+export const PrivilegeTypeMenu = 2; // 权限类型：菜单
+export const PrivilegeTypeController = 3; // 权限类型：控制器
+
 /**
  * PrivilegeInfoType 权限返回结构
  */
