@@ -1,6 +1,5 @@
 import * as icons from '@ant-design/icons';
-import Icon from '@ant-design/icons';
-import React from "react";
+import React from 'react';
 import { CSSProperties } from 'react';
 
 interface DynamicIconProps {
@@ -11,10 +10,10 @@ interface DynamicIconProps {
 const DynamicIcon = (props: DynamicIconProps) => {
   const { name, style } = props;
   const antIcon: { [key: string]: any } = icons;
-  if (antIcon[name] == undefined || antIcon[name] == null) {
-    return null
+  if (antIcon[name] === undefined || antIcon[name] === null) {
+    return null;
   }
-  return React.createElement(antIcon[name], { style })
-}
+  return React.createElement(antIcon[name], { style });
+};
 
-export default DynamicIcon
+export default DynamicIcon;
