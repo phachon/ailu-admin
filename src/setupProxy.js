@@ -4,7 +4,6 @@ module.exports = function (app) {
     app.use(
         createProxyMiddleware("/admin-api", {
             // target: "http://127.0.0.1:8088/",
-            target: "http://www.dingxn.cn:28088/",
             changeOrigin: true,
             pathRewrite: {
                 "^/admin-api": ""
