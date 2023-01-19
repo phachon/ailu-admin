@@ -2,10 +2,11 @@ import React, { ReactNode } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 export interface IRouter {
-  path: string;
+  path?: string;
   key: string;
   component?: ReactNode;
   children?: IRouter[];
+  index?: boolean;
 }
 
 interface RouterViewProps {
@@ -26,6 +27,7 @@ const RouterView = (props: RouterViewProps) => {
                       path={childrenRouter.path}
                       key={childrenRouter.key}
                       element={childrenRouter.component}
+                      index={childrenRouter.index}
                     />
                   );
                 })}

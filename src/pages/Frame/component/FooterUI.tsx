@@ -1,13 +1,15 @@
-import React from "react";
-import {Layout} from "antd";
+import React from 'react';
+import { Layout } from 'antd';
 
-const FrameFooterUI = () => {
-    return (
-        <Layout.Footer
-            className="admin-footer">
-            AiLu Admin ©2022 Created by phachon
-        </Layout.Footer>
-    );
+/**
+ * FrameFooterUIProps 底部区块 props
+ */
+interface FrameFooterUIProps {
+  text: string;
 }
 
-export default FrameFooterUI
+const FrameFooterUI = (props: FrameFooterUIProps) => {
+  return <Layout.Footer className="admin-footer">{props.text}</Layout.Footer>;
+};
+
+export default FrameFooterUI;

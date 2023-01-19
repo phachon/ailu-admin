@@ -1,15 +1,25 @@
-import React from "react";
-import {Link} from "react-router-dom";
+import { Breadcrumb, DropdownProps, MenuProps } from 'antd';
+import { HashRouter, Link, Route, Routes, useLocation } from 'react-router-dom';
+import { FrameBreadcrumbItem } from '../../../store/types/adminType';
 
-const FrameBreadcrumbUI = () => {
-    return (
-        <div className="admin-breadcrumb">
-            <div className="admin-breadcrumb-nav">
-                <Link to="/">我的</Link>/
-                <Link to="/apps">个人中心</Link>
-            </div>
-        </div>
-    );
+interface FrameBreadcrumbUIProps {
+  items: FrameBreadcrumbItem[];
 }
 
-export default FrameBreadcrumbUI
+const FrameBreadcrumbUI = (props: FrameBreadcrumbUIProps) => {
+  return (
+    <div className="admin-breadcrumb">
+      <div className="admin-breadcrumb-nav">
+        <Breadcrumb style={{ margin: '0 4px' }} separator="/">
+          {props.items.map(item => (
+            <Breadcrumb.Item key={item.key}>
+              <Link to={item.link}>{item.name} </Link>
+            </Breadcrumb.Item>
+          ))}
+        </Breadcrumb>
+      </div>
+    </div>
+  );
+};
+
+export default FrameBreadcrumbUI;

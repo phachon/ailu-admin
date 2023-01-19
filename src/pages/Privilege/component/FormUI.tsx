@@ -107,7 +107,9 @@ const PrivilegeFormUI = (props: PrivilegeFormUIProps) => {
   return (
     <div className="panel-body">
       <Form {...layoutForm} name="basic" form={form} onFinish={props.onFinishCallback}>
-        <Form.Item name="privilege_id" noStyle></Form.Item>
+        <Form.Item name="privilege_id" noStyle>
+          <Input hidden />
+        </Form.Item>
 
         <Form.Item
           label="权限名称"

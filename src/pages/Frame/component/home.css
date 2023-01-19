@@ -90,6 +90,7 @@ html,body,#root{
 
 .admin-sidebar-menu {
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .ant-layout-sider-trigger {
@@ -120,13 +121,15 @@ html,body,#root{
 }
 
 .admin-breadcrumb-nav {
-    height: 35px;
     line-height: 35px;
 }
 
 .admin-breadcrumb-nav a {
     line-height: 35px;
-    padding: 0 8px;
+}
+
+.ant-breadcrumb-separator {
+    margin: 0 4px;
 }
 
 .admin-footer {

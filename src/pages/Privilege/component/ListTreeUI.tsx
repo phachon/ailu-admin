@@ -58,7 +58,7 @@ const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
               okText="确定"
               cancelText="取消"
             >
-              <a href="javascript:;">
+              <a href="#!">
                 <DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} />
               </a>
             </Popconfirm>
@@ -77,95 +77,114 @@ const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
     return listTreeData;
   };
 
+  /**
+   * 获取 tabs 下的内容
+   * @param privilegeListItem
+   * @returns
+   */
+  const getTabsContent = (privilegeListItem: PrivilegeListItemType) => {
+    return (
+      <List
+        grid={menuGrid}
+        dataSource={privilegeListItem.child_privileges}
+        renderItem={menuPrivilegeItem => (
+          <List.Item key={menuPrivilegeItem.privilege_info?.privilege_id.toString()}>
+            <Card
+              size={'small'}
+              title={
+                <span>
+                  <DynamicIcon
+                    name={menuPrivilegeItem.privilege_info?.icon}
+                    style={{ marginRight: '6px' }}
+                  />
+                  {menuPrivilegeItem.privilege_info?.name}
+                </span>
+              }
+              type="inner"
+              bodyStyle={{ padding: 0 }}
+              extra={
+                <span>
+                  <a
+                    href="#!"
+                    onClick={() => props.editClickCallback(menuPrivilegeItem.privilege_info)}
+                  >
+                    <EditOutlined style={{ marginLeft: 6, marginRight: 0 }} />
+                  </a>
+                  <Popconfirm
+                    title="确定要删除吗?"
+                    onConfirm={() => {
+                      props.deleteClickCallback(privilegeListItem.privilege_info);
+                    }}
+                    okText="确定"
+                    cancelText="取消"
+                  >
+                    <a href="#!">
+                      <DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} />
+                    </a>
+                  </Popconfirm>
+                </span>
+              }
+            >
+              <Tree
+                autoExpandParent
+                showIcon
+                showLine={{ showLeafIcon: false }}
+                switcherIcon={<CaretDownOutlined />}
+                rootStyle={{ padding: 8 }}
+                checkStrictly={true}
+                defaultExpandAll={true}
+                treeData={getListTreeData(menuPrivilegeItem.child_privileges, [])}
+              />
+            </Card>
+          </List.Item>
+        )}
+      />
+    );
+  };
+
+  /**
+   * 获取每个 tab item 信息
+   * @param privilegeListItem
+   * @returns
+   */
+  const getTabsItem = (privilegeListItem: PrivilegeListItemType) => {
+    return {
+      key: privilegeListItem.privilege_info.privilege_id.toString(),
+      label: (
+        <span>
+          <DynamicIcon
+            name={privilegeListItem.privilege_info.icon}
+            style={{ marginRight: '6px' }}
+          />
+          {privilegeListItem.privilege_info.name}
+          <a onClick={() => props.editClickCallback(privilegeListItem.privilege_info)}>
+            <EditOutlined style={{ marginLeft: 6, marginRight: 0 }} />
+          </a>
+          <Popconfirm
+            title="确定要删除吗?"
+            onConfirm={() => {
+              props.deleteClickCallback(privilegeListItem.privilege_info);
+            }}
+            okText="确定"
+            cancelText="取消"
+          >
+            <a href="#!">
+              <DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} />
+            </a>
+          </Popconfirm>
+        </span>
+      ),
+      children: getTabsContent(privilegeListItem),
+    };
+  };
+
   return (
     <div className="panel-body">
-      <Tabs type="card" style={{ marginTop: 10 }}>
-        {privilegeList?.map((privilegeListItem: PrivilegeListItemType) => (
-          <Tabs.TabPane
-            key={privilegeListItem.privilege_info.privilege_id.toString()}
-            tab={
-              <span>
-                <DynamicIcon
-                  name={privilegeListItem.privilege_info.icon}
-                  style={{ marginRight: '6px' }}
-                />
-                {privilegeListItem.privilege_info.name}
-                <a onClick={() => props.editClickCallback(privilegeListItem.privilege_info)}>
-                  <EditOutlined style={{ marginLeft: 6, marginRight: 0 }} />
-                </a>
-                <Popconfirm
-                  title="确定要删除吗?"
-                  onConfirm={() => {
-                    props.deleteClickCallback(privilegeListItem.privilege_info);
-                  }}
-                  okText="确定"
-                  cancelText="取消"
-                >
-                  <a href="javascript:;">
-                    <DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} />
-                  </a>
-                </Popconfirm>
-              </span>
-            }
-          >
-            <List
-              grid={menuGrid}
-              dataSource={privilegeListItem.child_privileges}
-              renderItem={menuPrivilegeItem => (
-                <List.Item key={menuPrivilegeItem.privilege_info?.privilege_id.toString()}>
-                  <Card
-                    size={'small'}
-                    title={
-                      <span>
-                        <DynamicIcon
-                          name={menuPrivilegeItem.privilege_info?.icon}
-                          style={{ marginRight: '6px' }}
-                        />
-                        {menuPrivilegeItem.privilege_info?.name}
-                      </span>
-                    }
-                    type="inner"
-                    bodyStyle={{ padding: 0 }}
-                    extra={
-                      <span>
-                        <a
-                          href="javascript:;"
-                          onClick={() => props.editClickCallback(menuPrivilegeItem.privilege_info)}
-                        >
-                          <EditOutlined style={{ marginLeft: 6, marginRight: 0 }} />
-                        </a>
-                        <Popconfirm
-                          title="确定要删除吗?"
-                          onConfirm={() => {
-                            props.deleteClickCallback(privilegeListItem.privilege_info);
-                          }}
-                          okText="确定"
-                          cancelText="取消"
-                        >
-                          <a href="javascript:;">
-                            <DeleteOutlined style={{ marginLeft: 6, marginRight: 0 }} />
-                          </a>
-                        </Popconfirm>
-                      </span>
-                    }
-                  >
-                    <Tree
-                      autoExpandParent
-                      showIcon
-                      showLine={{ showLeafIcon: false }}
-                      switcherIcon={<CaretDownOutlined />}
-                      rootStyle={{ padding: 8 }}
-                      checkStrictly={true}
-                      defaultExpandAll={true}
-                      treeData={getListTreeData(menuPrivilegeItem.child_privileges, [])}
-                    />
-                  </Card>
-                </List.Item>
-              )}
-            />
-          </Tabs.TabPane>
-        ))}
-      </Tabs>
+      <Tabs
+        type="card"
+        style={{ marginTop: 10 }}
+        items={privilegeList.map(privilegeListItem => getTabsItem(privilegeListItem))}
+      ></Tabs>
     </div>
   );
 };

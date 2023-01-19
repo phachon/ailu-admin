@@ -236,72 +236,89 @@ const PrivilegeUI = (props: PrivilegeUIProps) => {
     });
   };
 
+  /**
+   * 获取 tabs 下的内容
+   * @param privilegeListItem
+   */
+  const getTabsContent = (privilegeListItem: PrivilegeListItemType) => {
+    return (
+      <List
+        grid={menuGrid}
+        dataSource={privilegeListItem.child_privileges}
+        renderItem={menuPrivilegeItem => (
+          <List.Item key={menuPrivilegeItem.privilege_info?.privilege_id.toString()}>
+            <Card
+              size={'small'}
+              title={
+                <span>
+                  <Checkbox
+                    onChange={e => menuCheckOnChange(menuPrivilegeItem, e)}
+                    checked={menuNavIsChecked(menuPrivilegeItem.privilege_info?.privilege_id)}
+                  >
+                    <DynamicIcon
+                      name={menuPrivilegeItem.privilege_info?.icon}
+                      style={{ marginRight: '6px' }}
+                    />
+                    {menuPrivilegeItem.privilege_info?.name}
+                  </Checkbox>
+                </span>
+              }
+              type="inner"
+              bodyStyle={{ padding: 0 }}
+            >
+              <Tree
+                key={menuPrivilegeItem.privilege_info.privilege_id.toString()}
+                checkable
+                autoExpandParent
+                showIcon
+                showLine={{ showLeafIcon: false }}
+                switcherIcon={<CaretDownOutlined />}
+                rootStyle={{ padding: 8 }}
+                treeData={getListTreeData(menuPrivilegeItem.child_privileges)}
+                onCheck={(checkedKeysValue: React.Key[] | any, info: any) => {
+                  menuTreeOnCheckCallback(checkedKeysValue, info, menuPrivilegeItem);
+                }}
+                checkedKeys={getMenuTreeCheckedKeys(menuPrivilegeItem.child_privileges)}
+              />
+            </Card>
+          </List.Item>
+        )}
+      />
+    );
+  };
+
+  /**
+   * 获取每个 tab item 信息
+   * @param privilegeListItem
+   * @returns
+   */
+  const getTabsItem = (privilegeListItem: PrivilegeListItemType) => {
+    return {
+      key: privilegeListItem.privilege_info.privilege_id.toString(),
+      label: (
+        <span>
+          <Checkbox
+            style={{ marginRight: '6px' }}
+            onChange={e => navCheckOnChange(privilegeListItem, e)}
+            checked={menuNavIsChecked(privilegeListItem.privilege_info?.privilege_id)}
+          ></Checkbox>
+          <DynamicIcon
+            name={privilegeListItem.privilege_info.icon}
+            style={{ marginRight: '6px' }}
+          />
+          {privilegeListItem.privilege_info.name}
+        </span>
+      ),
+      children: getTabsContent(privilegeListItem),
+    };
+  };
+
   return (
     <>
-      <Tabs type="card">
-        {privilegeList?.map((privilegeListItem: PrivilegeListItemType) => (
-          <Tabs.TabPane
-            key={privilegeListItem.privilege_info.privilege_id.toString()}
-            tab={
-              <span>
-                <Checkbox
-                  style={{ marginRight: '6px' }}
-                  onChange={e => navCheckOnChange(privilegeListItem, e)}
-                  checked={menuNavIsChecked(privilegeListItem.privilege_info?.privilege_id)}
-                ></Checkbox>
-                <DynamicIcon
-                  name={privilegeListItem.privilege_info.icon}
-                  style={{ marginRight: '6px' }}
-                />
-                {privilegeListItem.privilege_info.name}
-              </span>
-            }
-          >
-            <List
-              grid={menuGrid}
-              dataSource={privilegeListItem.child_privileges}
-              renderItem={menuPrivilegeItem => (
-                <List.Item key={menuPrivilegeItem.privilege_info?.privilege_id.toString()}>
-                  <Card
-                    size={'small'}
-                    title={
-                      <span>
-                        <Checkbox
-                          onChange={e => menuCheckOnChange(menuPrivilegeItem, e)}
-                          checked={menuNavIsChecked(menuPrivilegeItem.privilege_info?.privilege_id)}
-                        >
-                          <DynamicIcon
-                            name={menuPrivilegeItem.privilege_info?.icon}
-                            style={{ marginRight: '6px' }}
-                          />
-                          {menuPrivilegeItem.privilege_info?.name}
-                        </Checkbox>
-                      </span>
-                    }
-                    type="inner"
-                    bodyStyle={{ padding: 0 }}
-                  >
-                    <Tree
-                      key={menuPrivilegeItem.privilege_info.privilege_id.toString()}
-                      checkable
-                      autoExpandParent
-                      showIcon
-                      showLine={{ showLeafIcon: false }}
-                      switcherIcon={<CaretDownOutlined />}
-                      rootStyle={{ padding: 8 }}
-                      treeData={getListTreeData(menuPrivilegeItem.child_privileges)}
-                      onCheck={(checkedKeysValue: React.Key[] | any, info: any) => {
-                        menuTreeOnCheckCallback(checkedKeysValue, info, menuPrivilegeItem);
-                      }}
-                      checkedKeys={getMenuTreeCheckedKeys(menuPrivilegeItem.child_privileges)}
-                    />
-                  </Card>
-                </List.Item>
-              )}
-            />
-          </Tabs.TabPane>
-        ))}
-      </Tabs>
+      <Tabs
+        type="card"
+        items={privilegeList.map(privilegeListItem => getTabsItem(privilegeListItem))}
+      ></Tabs>
       <Button type="primary" onClick={() => props.onFinishCallback(checkedPrivilegeIds)}>
         保存
       </Button>

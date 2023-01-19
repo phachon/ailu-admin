@@ -19,15 +19,15 @@ const RoleList: React.FC = () => {
   // 角色列表相关 state
   const [roleList, setRoleList] = useState<RoleInfoType[]>([]);
   const [pagination, setPagination] = useState(initPagination);
-  const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
+  const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
   // 角色修改相关 state
   const [editRoleInfo, setEditRoleInfo] = useState<RoleInfoType>();
   // 角色账号相关 state
-  const [accountModalVisible, setAccountModalVisible] = useState<boolean>(false);
+  const [accountModalOpen, setAccountModalOpen] = useState<boolean>(false);
   const [roleAccountList, setRoleAccountList] = useState<AccountInfoType[]>([]);
   const [accountPagination, setAccountPagination] = useState(initPagination);
   // 角色权限相关 state
-  const [privilegeModalVisible, setPrivilegeModalVisible] = useState<boolean>(false);
+  const [privilegeModalOpen, setPrivilegeModalOpen] = useState<boolean>(false);
   const [rolePrivilegIds, setRolePrivilegeIds] = useState<string[]>([]);
   const [allPrivileges, setAllPrivileges] = useState<PrivilegeListItemType[]>([]);
 
@@ -53,7 +53,7 @@ const RoleList: React.FC = () => {
     RoleService.getEditRoleInfo(roleInfo.role_id)
       .then((editRoleInfo: RoleEditInfoType) => {
         setEditRoleInfo(editRoleInfo.role_info);
-        setEditModalVisible(true);
+        setEditModalOpen(true);
       })
       .catch(e => {
         console.log('修改角色 err:', e);
@@ -106,7 +106,7 @@ const RoleList: React.FC = () => {
         setEditRoleInfo(roleInfo);
         setAllPrivileges(privilegeList.all_privilege);
         setRolePrivilegeIds(arrayToString(privilegeList.privilege_ids));
-        setPrivilegeModalVisible(true);
+        setPrivilegeModalOpen(true);
       })
       .catch(e => {
         console.log('获取角色权限列表err:', e);
@@ -123,7 +123,7 @@ const RoleList: React.FC = () => {
     RoleService.modifyRolePrivilege(editRoleInfo?.role_id, privilegeIds)
       .then(() => {
         message.success('保存成功', 2, () => {
-          setPrivilegeModalVisible(false);
+          setPrivilegeModalOpen(false);
           getRoleList(pagination, searchKeyWords);
         });
       })
@@ -142,7 +142,7 @@ const RoleList: React.FC = () => {
     RoleService.modifyRole(roleInfo)
       .then(() => {
         message.success('修改成功', 2, () => {
-          setEditModalVisible(false);
+          setEditModalOpen(false);
           getRoleList(pagination, searchKeyWords);
         });
       })
@@ -223,8 +223,8 @@ const RoleList: React.FC = () => {
           pageSize: accountList.page_info?.page_size,
           total: accountList.page_info?.total_num,
         });
-        if (!accountModalVisible) {
-          setAccountModalVisible(true);
+        if (!accountModalOpen) {
+          setAccountModalOpen(true);
         }
       })
       .catch(e => {
@@ -251,8 +251,8 @@ const RoleList: React.FC = () => {
       <Modal
         title="角色修改"
         width={570}
-        visible={editModalVisible}
-        onCancel={() => setEditModalVisible(false)}
+        open={editModalOpen}
+        onCancel={() => setEditModalOpen(false)}
         footer={null}
       >
         <RoleFormUI roleInfo={editRoleInfo} onFinishCallback={editFinishCallback} />
@@ -260,8 +260,8 @@ const RoleList: React.FC = () => {
       <Modal
         title="角色账号"
         width={900}
-        visible={accountModalVisible}
-        onCancel={() => setAccountModalVisible(false)}
+        open={accountModalOpen}
+        onCancel={() => setAccountModalOpen(false)}
         footer={null}
       >
         <AccountListUI
@@ -274,8 +274,8 @@ const RoleList: React.FC = () => {
       <Modal
         title="角色权限"
         width={1100}
-        visible={privilegeModalVisible}
-        onCancel={() => setPrivilegeModalVisible(false)}
+        open={privilegeModalOpen}
+        onCancel={() => setPrivilegeModalOpen(false)}
         footer={null}
       >
         <PrivilegeUI

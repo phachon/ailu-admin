@@ -12,28 +12,37 @@ import FrameSidebarUI from '../component/SidebarUI';
 import FrameBreadcrumbUI from '../component/BreadcrumbUI';
 import FrameFooterUI from '../component/FooterUI';
 import { setProfileAccountInfo } from '../../../store/local';
-import { PrivilegeListItemType, PrivilegeTypeNav } from '../../../store/types/privilegeType';
+import {
+  PrivilegeInfoType,
+  PrivilegeListItemType,
+  PrivilegeTypeNav,
+} from '../../../store/types/privilegeType';
 import DynamicIcon from '../../../components/DynamicIcon/DynamicIcon';
+import { FrameBreadcrumbItem } from '../../../store/types/adminType';
 
-// const mockMenuItems: MenuProps['items'] = [
-//   {
-//     label: '权限管理',
-//     key: 'privilege',
-//     children: [
-//       {
-//         label: <Link to="/privilege/add">添加权限</Link>,
-//         key: 'privilege-add',
-//         icon: <UnorderedListOutlined />,
-//       },
-//       {
-//         label: <Link to="/privilege/list">权限列表</Link>,
-//         key: 'privilege-list',
-//         icon: <UnorderedListOutlined />,
-//       },
-//     ],
-//     icon: <LockOutlined />,
-//   }
-// ];
+const homeConfig = {
+  footerText: 'AiLu Admin ©2022 Created by phachon',
+};
+
+const mockMenuItems: MenuProps['items'] = [
+  // {
+  //   label: '权限管理',
+  //   key: 'privilege',
+  //   children: [
+  //     {
+  //       label: <Link to="/privilege/add">添加权限</Link>,
+  //       key: 'privilege-add',
+  //       // icon: <UnorderedListOutlined />,
+  //     },
+  //     {
+  //       label: <Link to="/privilege/list">权限列表</Link>,
+  //       key: 'privilege-list',
+  //       // icon: <UnorderedListOutlined />,
+  //     },
+  //   ],
+  //   // icon: <LockOutlined />,
+  // },
+];
 
 /**
  * 根据权限列表返回获取导航item列表
@@ -94,6 +103,7 @@ const FrameHome: React.FC = () => {
   const [privilegeList, setPrivilegeList] = useState<PrivilegeListItemType[]>();
   const [navItems, setNavItems] = useState<MenuProps['items']>([]); // 导航列表
   const [menuItems, setMenuItems] = useState<MenuProps['items']>([]); // 菜单列表
+  const [breadcrumbItems, setBreadcrumbItems] = useState<FrameBreadcrumbItem[]>([]); // 面包导航
 
   const dispatch = useDispatch();
 
@@ -174,8 +184,39 @@ const FrameHome: React.FC = () => {
     });
     let menuItems = getMenuItemsByPrivilegeList(menuPrivileges);
     // todo 测试加上mock
-    // menuItems?.push(...mockMenuItems);
+    menuItems?.push(...mockMenuItems);
     setMenuItems(menuItems);
+  };
+
+  /**
+   * 菜单点击回调
+   * @param e
+   */
+  const menuClickCallback = (e: any) => {
+    const menuId: string = e.key;
+    if (menuId === '') {
+      return;
+    }
+    console.log(e);
+    let updateBreadcrumbItems: FrameBreadcrumbItem[] = [
+      {
+        key: '1',
+        name: '系统',
+        link: '',
+      },
+      {
+        key: '2',
+        name: '个人中心',
+        link: '',
+      },
+      {
+        key: '3',
+        name: '个人中心',
+        link: '/profile/info',
+      },
+    ];
+    // todo
+    setBreadcrumbItems(updateBreadcrumbItems);
   };
 
   return (
@@ -187,13 +228,13 @@ const FrameHome: React.FC = () => {
         navSelectCallback={navSelectCallback}
       />
       <Layout>
-        <FrameSidebarUI menuItems={menuItems} />
+        <FrameSidebarUI menuItems={menuItems} menuClickCallback={menuClickCallback} />
         <Layout className="admin-main">
-          <FrameBreadcrumbUI />
+          <FrameBreadcrumbUI items={breadcrumbItems} />
           <Layout.Content className="admin-content">
             <Outlet />
           </Layout.Content>
-          <FrameFooterUI />
+          <FrameFooterUI text={homeConfig.footerText} />
         </Layout>
       </Layout>
     </Layout>

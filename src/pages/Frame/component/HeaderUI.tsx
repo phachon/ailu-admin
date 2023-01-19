@@ -1,4 +1,3 @@
-import React from 'react';
 import { Menu, Dropdown, Layout, Space, MenuProps } from 'antd';
 import {
   UserOutlined,
@@ -11,6 +10,7 @@ import {
 import logoImg from '../../../assets/images/logo_2.png';
 import { Link } from 'react-router-dom';
 import { AccountInfoType } from '../../../store/types/accountType';
+import { ItemType } from 'antd/lib/menu/hooks/useItems';
 
 interface FrameHeaderUIProps {
   loginAccountInfo?: AccountInfoType;
@@ -20,20 +20,26 @@ interface FrameHeaderUIProps {
 }
 
 const FrameHeaderUI = (props: FrameHeaderUIProps) => {
-  const menu = (
-    <Menu>
-      <Menu.Item icon={<ProfileOutlined />} key={'profile_info'}>
-        <Link to="/profile/info">个人信息</Link>
-      </Menu.Item>
-      <Menu.Item icon={<LockOutlined />} key={'profile_repass'}>
-        <Link to="/profile/repass">修改密码</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item icon={<LoginOutlined />} key={'profile_logout'} onClick={props.logoutCallback}>
-        退出登录
-      </Menu.Item>
-    </Menu>
-  );
+  const menuItems: MenuProps['items'] = [
+    {
+      label: <Link to="/profile/info">个人信息</Link>,
+      key: 'profile_info',
+      icon: <ProfileOutlined />,
+    },
+    {
+      label: <Link to="/profile/repass">修改密码</Link>,
+      key: 'profile_repass',
+      icon: <LockOutlined />,
+    },
+    {
+      type: 'divider',
+    },
+    {
+      label: <a onClick={props.logoutCallback}>退出登录</a>,
+      key: 'profile_logout',
+      icon: <LoginOutlined />,
+    },
+  ];
   return (
     <Layout.Header className="admin-header">
       <div className="admin-header-logo">
@@ -58,7 +64,7 @@ const FrameHeaderUI = (props: FrameHeaderUIProps) => {
               <GithubOutlined />
             </a>
           </span>
-          <Dropdown overlay={menu}>
+          <Dropdown menu={{ items: menuItems }}>
             <span className="admin-header-action">
               <Space>
                 <UserOutlined />

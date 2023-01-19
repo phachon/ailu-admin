@@ -7,7 +7,7 @@ import PrivilegeListTreeUI from '../component/ListTreeUI';
 
 const PrivilegeList: React.FC = () => {
   const [privilegeList, setPrivilegeList] = useState<PrivilegeListItemType[]>([]);
-  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const [editPrivilegeInfo, setEditPrivilegeInfo] = useState<PrivilegeInfoType>();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const PrivilegeList: React.FC = () => {
    */
   const editClickCallback = (privilegeInfo: PrivilegeInfoType) => {
     setEditPrivilegeInfo(privilegeInfo);
-    setEditModalVisible(true);
+    setEditModalOpen(true);
   };
 
   /**
@@ -56,7 +56,7 @@ const PrivilegeList: React.FC = () => {
     PrivilegeService.modifyPrivilege(privilegeInfo)
       .then(() => {
         message.success('修改成功', 2, () => {
-          setEditModalVisible(false);
+          setEditModalOpen(false);
           getPrivilegeList();
         });
       })
@@ -70,7 +70,7 @@ const PrivilegeList: React.FC = () => {
    * 修改取消弹窗
    */
   const editModalCancel = () => {
-    setEditModalVisible(false);
+    setEditModalOpen(false);
   };
 
   return (
@@ -83,7 +83,7 @@ const PrivilegeList: React.FC = () => {
       <Modal
         title="权限修改"
         width={670}
-        visible={editModalVisible}
+        open={editModalOpen}
         onCancel={editModalCancel}
         footer={null}
       >

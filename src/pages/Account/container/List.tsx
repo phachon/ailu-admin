@@ -19,10 +19,10 @@ let searchValues = {};
 const AccountList: React.FC = () => {
   const [accountList, setAccountList] = useState<AccountInfoType[]>([]);
   const [pagination, setPagination] = useState(initPagination);
-  const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
+  const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [editAccountInfo, setEditAccountInfo] = useState<AccountInfoType>();
   const [detailAccountInfo, setDetailAccountInfo] = useState<AccountDetailInfoType>();
-  const [detailModalVisible, setDetailModalVisible] = useState<boolean>(false);
+  const [detailModalOpen, setDetailModalOpen] = useState<boolean>(false);
   const [roleList, setRoleList] = useState<RoleInfoType[]>([]);
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const AccountList: React.FC = () => {
         }
         setEditAccountInfo(editAccountInfo.account_info);
         setRoleList(editAccountInfo.role_list);
-        setEditModalVisible(true);
+        setEditModalOpen(true);
       })
       .catch(e => {
         console.log('修改失败err:', e);
@@ -110,7 +110,7 @@ const AccountList: React.FC = () => {
     AccountService.getAccountDetail(accountInfo.account_id)
       .then((accountDetailInfo: AccountDetailInfoType) => {
         setDetailAccountInfo(accountDetailInfo);
-        setDetailModalVisible(true);
+        setDetailModalOpen(true);
       })
       .catch(e => {
         console.log('修改失败err:', e);
@@ -138,7 +138,7 @@ const AccountList: React.FC = () => {
    * 修改弹框取消操作
    */
   const editModalCancelCallback = () => {
-    setEditModalVisible(false);
+    setEditModalOpen(false);
   };
 
   /**
@@ -149,7 +149,7 @@ const AccountList: React.FC = () => {
     AccountService.modifyAccount(accountInfo)
       .then(() => {
         message.success('修改成功', 2, () => {
-          setEditModalVisible(false);
+          setEditModalOpen(false);
           getAccountList(pagination, searchValues);
         });
       })
@@ -177,7 +177,7 @@ const AccountList: React.FC = () => {
       <Modal
         title="账号修改"
         width={570}
-        visible={editModalVisible}
+        open={editModalOpen}
         onCancel={editModalCancelCallback}
         footer={null}
       >
@@ -190,13 +190,16 @@ const AccountList: React.FC = () => {
       <Modal
         title="账号详情"
         width={570}
-        visible={detailModalVisible}
+        open={detailModalOpen}
         onCancel={() => {
-          setDetailModalVisible(false);
+          setDetailModalOpen(false);
         }}
         footer={null}
       >
-        <AccountDetailUI accountDetail={detailAccountInfo} />
+        <AccountDetailUI
+          accountDetail={detailAccountInfo}
+          key={detailAccountInfo?.account_info.account_id.toString()}
+        />
       </Modal>
     </div>
   );
