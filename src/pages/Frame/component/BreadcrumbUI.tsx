@@ -8,7 +8,7 @@ interface FrameBreadcrumbUIProps {
 
 const FrameBreadcrumbUI = (props: FrameBreadcrumbUIProps) => {
   return (
-    <div className="admin-breadcrumb">
+    <div className="admin-breadcrumb" style={{ marginTop: props.items.length > 0 ? 8 : 0 }}>
       <div className="admin-breadcrumb-nav">
         <Breadcrumb style={{ margin: '0 4px' }} separator="/">
           {props.items.map(item => (

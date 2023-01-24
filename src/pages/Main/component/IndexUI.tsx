@@ -1,3 +1,6 @@
+import { Alert } from 'antd';
+import Marquee from 'react-fast-marquee';
+
 interface MainIndexUIProps {}
 
 /**
@@ -6,7 +9,18 @@ interface MainIndexUIProps {}
  * @returns
  */
 const MainIndexUI = (props: MainIndexUIProps) => {
-  return <div className="panel-body">这里是默认的主页页面</div>;
+  return (
+    <div className="panel-body">
+      <Alert
+        banner
+        message={
+          <Marquee pauseOnHover gradient={false}>
+            公告：xxxxxxxxxxxx
+          </Marquee>
+        }
+      />
+    </div>
+  );
 };
 
 export default MainIndexUI;

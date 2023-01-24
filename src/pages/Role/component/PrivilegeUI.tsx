@@ -96,12 +96,12 @@ const getAllChildPrivilegeIds = (privilegeList: PrivilegeListItemType[]): bigint
  */
 const PrivilegeUI = (props: PrivilegeUIProps) => {
   const privilegeList = props.privilegeList;
-  const defaultPrivilegeIds = props.defaultPrivilegeIds ? props.defaultPrivilegeIds : [];
-  const [checkedPrivilegeIds, setCheckedPrivilegeIds] = useState<string[]>(defaultPrivilegeIds);
+  const [checkedPrivilegeIds, setCheckedPrivilegeIds] = useState<string[]>([]);
 
   useEffect(() => {
+    const defaultPrivilegeIds = props.defaultPrivilegeIds ? props.defaultPrivilegeIds : [];
     setCheckedPrivilegeIds(defaultPrivilegeIds);
-  }, [defaultPrivilegeIds]);
+  }, [props.defaultPrivilegeIds]);
 
   if (privilegeList.length === 0) {
     return <Empty></Empty>;

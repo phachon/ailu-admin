@@ -28,7 +28,7 @@ interface PrivilegeListTreeUIProps {
  */
 const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
   const privilegeList = props.privilegeList;
-  if (privilegeList.length == 0) {
+  if (privilegeList.length === 0) {
     return <Empty></Empty>;
   }
 
@@ -47,7 +47,7 @@ const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
         title: (
           <span>
             {privilegeItem.privilege_info.name}
-            <a onClick={() => props.editClickCallback(privilegeItem.privilege_info)}>
+            <a href="#!" onClick={() => props.editClickCallback(privilegeItem.privilege_info)}>
               <EditOutlined style={{ marginLeft: 6 }} />
             </a>
             <Popconfirm
@@ -157,7 +157,7 @@ const PrivilegeListTreeUI = (props: PrivilegeListTreeUIProps) => {
             style={{ marginRight: '6px' }}
           />
           {privilegeListItem.privilege_info.name}
-          <a onClick={() => props.editClickCallback(privilegeListItem.privilege_info)}>
+          <a href="#!" onClick={() => props.editClickCallback(privilegeListItem.privilege_info)}>
             <EditOutlined style={{ marginLeft: 6, marginRight: 0 }} />
           </a>
           <Popconfirm
