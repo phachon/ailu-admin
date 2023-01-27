@@ -83,7 +83,7 @@ html,body,#root{
 }
 
 .admin-sidebar {
-    box-shadow: 1px 0 4px rgba(0,21,41,.35);
+    box-shadow: 0 0 2px rgba(0,21,41,.35);
     transition: all 0.3s ease 0s;
     overflow-x: visible;
 }
@@ -104,7 +104,7 @@ html,body,#root{
     /*padding: 8px 8px;*/
     width: auto;
     background: #fff;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     border-radius: 5px;
     -moz-border-radius: 5px;
     box-shadow: 0 1px 1px rgba(0,0,0,.05);

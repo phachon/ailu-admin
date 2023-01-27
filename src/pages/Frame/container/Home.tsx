@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, MenuProps } from 'antd';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { ProfileService } from '../../../services/Profile';
 import { ProfileInfoType } from '../../../store/types/profileType';
 import { useDispatch } from 'react-redux';
@@ -107,8 +107,11 @@ const FrameHome: React.FC = () => {
 
   const dispatch = useDispatch();
 
+  const location = useLocation();
+
   useEffect(() => {
     getProfileInfo();
+    // console.log(location);
   }, []);
 
   /**
