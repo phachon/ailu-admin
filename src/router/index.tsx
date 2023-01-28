@@ -9,6 +9,7 @@ import { LoginTokenStore } from '../store/local';
 import Role from '../pages/Role';
 import { IRouter } from '../components/Router/View';
 import Main from '../pages/Main';
+import Log from '../pages/Log';
 
 function home(): ReactNode {
   if (LoginTokenStore.checkTokenExpire()) {
@@ -77,6 +78,11 @@ const AdminRouters: IRouter[] = [
         path: '/privilege/list',
         key: 'privilege_list',
         component: <Privilege.PrivilegeList />,
+      },
+      {
+        path: '/log/list',
+        key: 'log_list',
+        component: <Log.LogList />,
       },
       {
         path: '*',
